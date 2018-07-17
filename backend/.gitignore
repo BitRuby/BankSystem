@@ -25,4 +25,4 @@
 /.nb-gradle/
 
 ### Logger ###
-*.log
+logback.xml
