@@ -1,3 +1,15 @@
+branches:
+  only:
+    - master
+    - develop
+    - op-26
+notifications:
+  email:
+    recipients:
+        - kamil.swiader@hotmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
+
 matrix:
   - language: java
     jdk:
@@ -8,23 +20,13 @@ matrix:
       - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
     script:
       - mvn test
-    branches:
-      only:
-        - master
-        - develop
-        - op-26
-    notifications:
-      email:
-          recipients:
-                  - kamil.swiader@hotmail.com
-          on_success: never # default: change
-          on_failure: always # default: always
-
+    after_script:
+      - cd ..
   - language: node_js
         node_js: stable
-        install:
-          - npm install
         before_install:
           - cd frontend
+        install:
+          - npm install
         script:
-          - npm run build
+          - npm run test
