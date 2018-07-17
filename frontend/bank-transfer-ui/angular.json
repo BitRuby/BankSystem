@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "BankTransferSystem": {
+    "bank-transfer-ui": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/BankTransferSystem",
+            "outputPath": "dist/bank-transfer-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -50,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "BankTransferSystem:build"
+            "browserTarget": "bank-transfer-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "BankTransferSystem:build:production"
+              "browserTarget": "bank-transfer-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "BankTransferSystem:build"
+            "browserTarget": "bank-transfer-ui:build"
           }
         },
         "test": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "BankTransferSystem-e2e": {
+    "bank-transfer-ui-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -103,11 +103,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "BankTransferSystem:serve"
+            "devServerTarget": "bank-transfer-ui:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "BankTransferSystem:serve:production"
+              "devServerTarget": "bank-transfer-ui:serve:production"
             }
           }
         },
@@ -123,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "BankTransferSystem"
+  "defaultProject": "bank-transfer-ui"
 }
