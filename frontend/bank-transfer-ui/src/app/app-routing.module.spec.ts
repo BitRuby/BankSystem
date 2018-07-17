@@ -1,6 +1,6 @@
 import { AppRoutingModule } from './app-routing.module';
 
-describe('AppRoutingModule', () => {
+describe('LoginRoutingModule', () => {
   let appRoutingModule: AppRoutingModule;
 
   beforeEach(() => {
