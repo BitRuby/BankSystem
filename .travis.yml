@@ -1,23 +1,16 @@
 matrix:
   include:
-    - language: node_js
-      node_js:
-      - "8"
-      before_install: cd frontend
-      install:
-      - npm install
-      script:
-      - npm run build
-
     - language: java
-      jdk:
-      - oraclejdk8
+      jdk: oraclejdk8
       before_install: cd backend
-      install:
-      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-      script:
-      - mvn test
+      install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      script:  mvn test
 
+    - language: node_js
+      node_js: "8"
+      before_install: cd frontend
+      install: npm install
+      script: npm run build
 
 branches:
   only:
