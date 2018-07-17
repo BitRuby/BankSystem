@@ -1,19 +1,30 @@
-language: java
-jdk:
-  - oraclejdk8
-before_install: cd backend
-install:
-- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-script:
-- mvn test
-branches:
-  only:
-    - master
-    - develop
-    - op-26
-notifications:
-  email:
-      recipients:
-              - kamil.swiader@hotmail.com
-      on_success: never # default: change
-      on_failure: always # default: always
+matrix:
+  - language: java
+    jdk:
+      - oraclejdk8
+    before_install:
+      - cd backend
+    install:
+      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    script:
+      - mvn test
+    branches:
+      only:
+        - master
+        - develop
+        - op-26
+    notifications:
+      email:
+          recipients:
+                  - kamil.swiader@hotmail.com
+          on_success: never # default: change
+          on_failure: always # default: always
+
+  - language: node_js
+        node_js: stable
+        install:
+          - npm install
+        before_install:
+          - cd frontend
+        script:
+          - npm run build
