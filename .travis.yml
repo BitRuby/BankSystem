@@ -16,11 +16,14 @@ branches:
   only:
     - master
     - develop
-    - op-26
 
 notifications:
   email:
     recipients:
       - kamil.swiader@hotmail.com
+      - tomaszwozniak96@gmail.com
+      - norbert.wychowski@gmail.com
+      - firewallosiem@gmail.com
+      - bartosz.sadel@onwelo.com
     on_success: never # default: change
     on_failure: always # default: always
