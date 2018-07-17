@@ -10,7 +10,8 @@ notifications:
     on_success: never # default: change
     on_failure: always # default: always
 
-
+matrix:
+ include:
   - language: node_js
         node_js: stable
         before_install:
@@ -21,3 +22,14 @@ notifications:
           - npm run test
         after_script:
           - cd ..
+  - language: java
+    jdk:
+      - oraclejdk8
+    before_install:
+      - cd backend
+    install:
+      - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    script:
+      - mvn test
+    after_script:
+      - cd ..
