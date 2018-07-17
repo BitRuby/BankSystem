@@ -13,7 +13,7 @@ install:
 - npm install
 script:
 - npm run build
-- npm tun test
+- npm run test
 
 
 
