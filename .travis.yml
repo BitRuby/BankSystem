@@ -1,7 +1,8 @@
 matrix:
  include:
-  - language: node_js
-        node_js: stable
+  - language:
+        node_js:
+        - stable
         before_install:
           - cd frontend
         install:
