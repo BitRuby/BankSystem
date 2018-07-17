@@ -1,11 +1,16 @@
-language: java
-jdk:
-  - oraclejdk8
-before_install: cd backend
-install:
-- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+language: node_js
+node_js:
+  - "8"
+dist: trusty
+sudo: false
+
+cache:
+  directories:
+    - node_modules
+
 script:
-- mvn test
+  - npm run build
+
 branches:
   only:
     - master
