@@ -4,13 +4,15 @@ import { AccountDetailsComponent } from "./account-details/account-details.compo
 import { NewTransferComponent } from "./new-transfer/new-transfer.component";
 import { TransferListComponent } from "./transfer-list/transfer-list.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
+import { TransferDetailsComponent } from "./transfer-details/transfer-details.component";
 
 const routes: Routes = [
   { path: 'account-details', component: AccountDetailsComponent },
+  { path: 'transfer-details', component: TransferDetailsComponent },
   { path: 'new-transfer', component: NewTransferComponent },
   { path: 'transfer-list', component: TransferListComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+  { path: '', redirectTo: 'dashboard' }
 ];
 
 @NgModule({
