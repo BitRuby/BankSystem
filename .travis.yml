@@ -11,6 +11,16 @@ notifications:
     on_failure: always # default: always
 
 matrix:
+  - language: node_js
+        node_js: stable
+        before_install:
+          - cd frontend
+        install:
+          - npm install
+        script:
+          - npm run test
+        after_script:
+          - cd ..
   - language: java
     jdk:
       - oraclejdk8
@@ -22,11 +32,3 @@ matrix:
       - mvn test
     after_script:
       - cd ..
-  - language: node_js
-        node_js: stable
-        before_install:
-          - cd frontend
-        install:
-          - npm install
-        script:
-          - npm run test
