@@ -8,6 +8,7 @@ install:
 - npm install
 script:
 - npm run test
+
 - language: java
 jdk:
 - oraclejdk8
@@ -16,11 +17,13 @@ install:
 - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
 - mvn test
+
 branches:
 only:
 - master
 - develop
 - op-26
+
 notifications:
 email:
 recipients:
