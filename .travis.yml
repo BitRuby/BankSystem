@@ -1,13 +1,4 @@
-matrix:
- include:
-  - language: node_js
-     node_js:
-        - stable
-        before_install: cd frontend
-        install:
-          - npm install
-        script:
-          - npm run test
+
   - language: java
     jdk:
       - oraclejdk8
