@@ -1,3 +1,10 @@
 language: java
 jdk:
   - oraclejdk10
+notifications:
+  email:
+      recipients:
+              - kamil.swiader@hotmail.com
+              - tomaszwozniak96@gmail.com
+      on_success: never # default: change
+      on_failure: always # default: always
