@@ -1,41 +1,45 @@
 package com.onwelo.practice.bts.entity;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "bank_account")
+@Where(clause = "is_active=1")
 public class BankAccount {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String bankNumber;
+    @Column(unique = true, name = "account_no")
+    private String accountNo;
 
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "money_amount")
     private Float moneyAmount;
 
+    @Column(name = "money_blocked")
     private Float moneyBlocked;
 
-    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Transfer> incomingTransfers;
+    @OneToMany(mappedBy = "sourceAcc", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Transfer> transfers;
 
-    @OneToMany(mappedBy = "source", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Transfer> outgoingTransfers;
+    @Column(name = "is_active")
+    private Boolean active = true;
 
     public BankAccount() {
     }
 
-    public BankAccount(String bankNumber, String firstName, String lastName, Float moneyAmount, Float moneyBlocked) {
-        this.bankNumber = bankNumber;
+    public BankAccount(String accountNo, String firstName, String lastName, Float moneyAmount, Float moneyBlocked) {
+        this.accountNo = accountNo;
         this.firstName = firstName;
         this.lastName = lastName;
         this.moneyAmount = moneyAmount;
@@ -50,12 +54,12 @@ public class BankAccount {
         this.id = id;
     }
 
-    public String getBankNumber() {
-        return bankNumber;
+    public String getAccountNo() {
+        return accountNo;
     }
 
-    public void setBankNumber(String bankNumber) {
-        this.bankNumber = bankNumber;
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
     }
 
     public String getFirstName() {
@@ -90,20 +94,19 @@ public class BankAccount {
         this.moneyBlocked = moneyBlocked;
     }
 
-    public List<Transfer> getIncomingTransfers() {
-        return incomingTransfers;
+    public List<Transfer> getTransfers() {
+        return transfers;
     }
 
-    public void setIncomingTransfers(List<Transfer> incomingTransfers) {
-        this.incomingTransfers = incomingTransfers;
+    public void setTransfers(List<Transfer> transfers) {
+        this.transfers = transfers;
     }
 
-    public List<Transfer> getOutgoingTransfers() {
-        return outgoingTransfers;
+    public Boolean isActive() {
+        return active;
     }
 
-    public void setOutgoingTransfers(List<Transfer> outgoingTransfers) {
-        this.outgoingTransfers = outgoingTransfers;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
-
 }

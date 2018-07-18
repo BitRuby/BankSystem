@@ -36,7 +36,7 @@ public class BankAccountServiceTest {
     }
 
     @Test
-    public void getIncomingTransfers() {
+    public void getTransfers() {
         BankAccount bankIn = new BankAccount("140159260076545510730339",
                 "Jan", "Kowalski", 1000.0f, 0.0f);
         BankAccount bankOut = new BankAccount("330006100519786457841326",
@@ -44,39 +44,13 @@ public class BankAccountServiceTest {
         bankAccountService.addBankAccount(bankIn);
         bankAccountService.addBankAccount(bankOut);
 
-        Transfer transfer = new Transfer("przelew", 100.0f, bankIn, bankOut);
-        transferService.addTransfer(transfer);
+        Transfer transfer1 = new Transfer("przelew", 100.0f, bankIn, bankOut.getAccountNo(), "inner");
+        Transfer transfer2 = new Transfer("przelew", 100.0f, bankOut, bankIn.getAccountNo(), "inner");
+        transferService.addTransfer(transfer1);
+        transferService.addTransfer(transfer2);
 
-        Assert.assertNotNull(transferService.getTransferById(transfer.getId()));
-        ArrayList<Transfer> in = new ArrayList<>(
-                bankAccountService.getBankAccountById(bankOut.getId()).getIncomingTransfers());
-        Assert.assertNotNull(in);
-        Assert.assertEquals(in.get(0).getId(), transferService.getTransferById(transfer.getId()).getId());
-
-        transferService.deleteTransfer(transfer.getId());
-        bankAccountService.deleteBankAccount(bankIn.getId());
-        bankAccountService.deleteBankAccount(bankOut.getId());
-    }
-
-    @Test
-    public void getOutgoingTransfers() {
-        BankAccount bankIn = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-        BankAccount bankOut = new BankAccount("330006100519786457841326",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-        bankAccountService.addBankAccount(bankIn);
-        bankAccountService.addBankAccount(bankOut);
-
-        Transfer transfer = new Transfer("przelew", 100.0f, bankIn, bankOut);
-        transferService.addTransfer(transfer);
-
-        Assert.assertNotNull(transferService.getTransferById(transfer.getId()));
-        ArrayList<Transfer> out = new ArrayList<>(
-                bankAccountService.getBankAccountById(bankIn.getId()).getOutgoingTransfers());
-        Assert.assertNotNull(out);
-        Assert.assertEquals(out.get(0).getId(), transferService.getTransferById(transfer.getId()).getId());
-
-        transferService.deleteTransfer(transfer.getId());
+        transferService.deleteTransfer(transfer1.getId());
+        transferService.deleteTransfer(transfer2.getId());
         bankAccountService.deleteBankAccount(bankIn.getId());
         bankAccountService.deleteBankAccount(bankOut.getId());
     }
@@ -100,7 +74,7 @@ public class BankAccountServiceTest {
 
         bankAccountService.addBankAccount(bankAccount);
         Assert.assertEquals(bankAccount.getId(),
-                bankAccountService.getBankAccountByNumber(bankAccount.getBankNumber()).getId());
+                bankAccountService.getBankAccountByNumber(bankAccount.getAccountNo()).getId());
 
         bankAccountService.deleteBankAccount(bankAccount.getId());
     }
@@ -129,13 +103,23 @@ public class BankAccountServiceTest {
         bankAccountService.deleteBankAccount(bankAccount.getId());
     }
 
+//    @Test
+//    public void deleteBankAccount() {
+//        BankAccount bankAccount = new BankAccount("140159260076545510730339",
+//                "Jan", "Kowalski", 1000.0f, 0.0f);
+//
+//        bankAccountService.addBankAccount(bankAccount);
+//        bankAccountService.deleteBankAccount(bankAccount.getId());
+//        Assert.assertNull(bankAccountService.getBankAccountById(bankAccount.getId()));
+//    }
+
     @Test
-    public void deleteBankAccount() {
-        BankAccount bankAccount = new BankAccount("140159260076545510730339",
+    public void deactivateBankAccount() {
+        BankAccount bankAccount = new BankAccount("240159260076545510730339",
                 "Jan", "Kowalski", 1000.0f, 0.0f);
 
         bankAccountService.addBankAccount(bankAccount);
-        bankAccountService.deleteBankAccount(bankAccount.getId());
+        bankAccountService.deactivateBankAccount(bankAccount.getId());
         Assert.assertNull(bankAccountService.getBankAccountById(bankAccount.getId()));
     }
 }

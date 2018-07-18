@@ -7,29 +7,37 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "transfer")
 public class Transfer {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "value")
     private Float value;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "source_id")
+    @JoinColumn(name = "source_acc_id")
     @JsonBackReference
-    private BankAccount source;
+    private BankAccount sourceAcc;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "destination_id")
-    @JsonBackReference
-    private BankAccount destination;
+    @Column(name = "account_no")
+    private String accountNo;
 
+    @Column(name = "status")
     private String status;
 
+    @Column(name = "transfer_type")
+    private String transferType;
+
+    @Column(name = "create_time")
     private java.sql.Timestamp createTime;
 
+    @Column(name = "booking_date")
     private LocalDate bookingDate;
 
     @PrePersist
@@ -41,11 +49,16 @@ public class Transfer {
 
     }
 
-    public Transfer(String title, Float value, BankAccount source, BankAccount destination) {
+    public Transfer(String title, Float value, BankAccount sourceAcc, String accountNo, String transferType) {
         this.title = title;
         this.value = value;
-        this.source = source;
-        this.destination = destination;
+        this.sourceAcc = sourceAcc;
+        this.accountNo = accountNo;
+        this.transferType = transferType;
+
+        if(transferType.equals("inner")) {
+            this.status = "realized";
+        }
     }
 
     public Long getId() {
@@ -72,20 +85,24 @@ public class Transfer {
         this.value = value;
     }
 
-    public BankAccount getSource() {
-        return source;
+    public BankAccount getSourceAcc() {
+        return sourceAcc;
     }
 
-    public void setSource(BankAccount source) {
-        this.source = source;
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
     }
 
-    public BankAccount getDestination() {
-        return destination;
+    public String getAccountNo() {
+        return accountNo;
     }
 
-    public void setDestination(BankAccount destination) {
-        this.destination = destination;
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public void setSource(BankAccount sourceAcc) {
+        this.sourceAcc = sourceAcc;
     }
 
     public String getStatus() {
@@ -108,7 +125,11 @@ public class Transfer {
         return bookingDate;
     }
 
-    public void setBookingDate(LocalDate bookingDate) {
-        this.bookingDate = bookingDate;
+    public String getTransferType() {
+        return transferType;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
     }
 }

@@ -18,6 +18,10 @@ public class TransferService {
         return new ArrayList<>(transferRepository.findAll());
     }
 
+    public List<Transfer> getTransfersByStatus(String state) {
+        return transferRepository.findAllByState(state);
+    }
+
     public Transfer getTransferById(Long id) {
         return transferRepository.findById(id).orElse(null);
     }

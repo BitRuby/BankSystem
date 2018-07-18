@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
 
-    @Query("SELECT DISTINCT b FROM BankAccount b WHERE b.bankNumber = :accountNumber")
-    Optional<BankAccount> findByAccountNumber(@Param("accountNumber") String accountNumber);
+    @Query("SELECT DISTINCT b FROM BankAccount b WHERE b.accountNo = :accountNo")
+    Optional<BankAccount> findByAccountNumber(@Param("accountNo") String accountNo);
 }
