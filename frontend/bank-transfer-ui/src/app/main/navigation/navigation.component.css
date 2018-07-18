@@ -8,16 +8,39 @@
   font-weight: normal;
   font-style: normal;
 }
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: .9rem;
+    padding-left: .9rem;
+  }
+  .nav-item:last-child {
+    border: 1px solid;
+    border-color: rgb(108, 117, 125);
+  }
+}
+@media (min-width: 576px) and (max-width: 991px) {
+  .container-custom {
+    padding-left: 0;
+  }
+}
 .navbar {
   padding: .7rem 1rem;
 }
 .navbar-brand {
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   font-family: "pt_sansbold", sans-serif;
 }
-.navbar-brand .brand-color{
+.navbar-brand .brand-color,
+.navbar-dark .navbar-nav .nav-link.active {
   color: rgb(113, 200, 55);
 }
 .bg-custom {
   background: rgb(57, 63, 77);
 }
+.header {
+  color: rgb(255, 255, 255);
+}
+.hd-custom {
+  background: rgb(65, 72, 87);
+}
+
