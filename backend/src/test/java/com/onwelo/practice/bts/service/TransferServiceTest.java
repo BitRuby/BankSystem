@@ -2,19 +2,24 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
-import junit.framework.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class TransferServiceTest {
+public class TransferServiceTest implements Extension {
 
     @Autowired
     private TransferService transferService;
@@ -32,7 +37,9 @@ public class TransferServiceTest {
 
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
-        Assert.assertNotNull(transferService.getAllTransfers());
+        assertNotNull(transferService.getAllTransfers());
+
+        transferService.getAllTransfers().forEach(System.out::println);
 
         transfers.stream().map(Transfer::getId).forEach(transferService::deleteTransfer);
         bankAccountService.deleteBankAccount(bankIn.getId());
@@ -59,8 +66,13 @@ public class TransferServiceTest {
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
 
-        Assert.assertEquals(5, transferService.getTransfersByStatus("realized").size());
-        Assert.assertEquals(10, transferService.getTransfersByStatus("pending").size());
+        assertEquals(5, transferService.getTransfersByStatus("realized").size());
+        assertEquals(10, transferService.getTransfersByStatus("pending").size());
+
+        System.out.println("realized:");
+        transferService.getTransfersByStatus("realized").forEach(System.out::println);
+        System.out.println("pending:");
+        transferService.getTransfersByStatus("pending").forEach(System.out::println);
     }
 
     @Test
@@ -77,5 +89,27 @@ public class TransferServiceTest {
 
     @Test
     public void deleteTransfer() {
+        BankAccount bankAccount = new BankAccount("140159260076545510730339",
+                "Jan", "Kowalski", 1000.0f, 0.0f);
+
+        Transfer transfer = new Transfer("przelew", 100.0f, bankAccount, "240159260076545510730339", "inner");
+
+        bankAccountService.addBankAccount(bankAccount);
+        transferService.addTransfer(transfer);
+
+        assertNotNull(bankAccountService.getBankAccountById(bankAccount.getId()));
+        assertNotNull(transferService.getTransferById(transfer.getId()));
+
+        transferService.deleteTransfer(transfer.getId());
+        assertNull(transferService.getTransferById(transfer.getId()));
+
+        bankAccountService.deleteBankAccount(bankAccount.getId());
+        assertNull(bankAccountService.getBankAccountById(bankAccount.getId()));
+    }
+
+    @AfterEach
+    public void delete() {
+        transferService.getAllTransfers().stream().map(Transfer::getId).forEach(transferService::deleteTransfer);
+        bankAccountService.getAllBankAccounts().stream().map(BankAccount::getId).forEach(bankAccountService::deleteBankAccount);
     }
 }
