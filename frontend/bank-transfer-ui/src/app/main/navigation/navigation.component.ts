@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import  $ from 'jquery';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -7,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    $(window).on("load resize scroll",function(e){
+      var upHeight = $('.navbar').height() + $('.header').height();
+      $('.content').css("min-height", "calc(100vh - 90px - "+upHeight+"px)");
+    });
+  }
 
   ngOnInit() {
   }
