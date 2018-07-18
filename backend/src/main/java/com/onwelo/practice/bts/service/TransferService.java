@@ -19,8 +19,7 @@ public class TransferService {
     }
 
     public Transfer getTransferById(Long id) {
-        return transferRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not fund transfer with id: " + id));
+        return transferRepository.findById(id).orElse(null);
     }
 
     public void addTransfer(Transfer transfer) {

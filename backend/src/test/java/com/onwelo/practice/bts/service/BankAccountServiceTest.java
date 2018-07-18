@@ -129,7 +129,7 @@ public class BankAccountServiceTest {
         bankAccountService.deleteBankAccount(bankAccount.getId());
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void deleteBankAccount() {
         BankAccount bankAccount = new BankAccount("140159260076545510730339",
                 "Jan", "Kowalski", 1000.0f, 0.0f);

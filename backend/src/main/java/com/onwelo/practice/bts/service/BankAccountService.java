@@ -20,25 +20,25 @@ public class BankAccountService {
     }
 
     public Collection getIncomingTransfers(Long id) {
-        BankAccount bankAccount = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not found bank account with id: " + id));
-        return bankAccount.getIncomingTransfers();
+        BankAccount bankAccount = bankAccountRepository.findById(id).orElse(null);
+        if (bankAccount != null)
+            return bankAccount.getIncomingTransfers();
+        else return null;
     }
 
     public Collection getOutgoingTransfers(Long id) {
-        BankAccount bankAccount = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not found bank account with id: " + id));
-        return bankAccount.getOutgoingTransfers();
+        BankAccount bankAccount = bankAccountRepository.findById(id).orElse(null);
+        if (bankAccount != null)
+            return bankAccount.getOutgoingTransfers();
+        else return null;
     }
 
     public BankAccount getBankAccountById(Long id) {
-        return bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not found bank account with id: " + id));
+        return bankAccountRepository.findById(id).orElse(null);
     }
 
     public BankAccount getBankAccountByNumber(String accountNumber) {
-        return bankAccountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new RuntimeException("could not found bank account: " + accountNumber));
+        return bankAccountRepository.findByAccountNumber(accountNumber).orElse(null);
     }
 
     public void addBankAccount(BankAccount bankAccount) {
