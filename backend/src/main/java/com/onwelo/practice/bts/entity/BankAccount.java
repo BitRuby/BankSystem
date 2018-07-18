@@ -1,15 +1,18 @@
 package com.onwelo.practice.bts.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table(name = "bank_account")
 public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String bankNumber;
 
     private String firstName;
@@ -20,11 +23,13 @@ public class BankAccount {
 
     private Float moneyBlocked;
 
-    @OneToMany(mappedBy = "destination", targetEntity = Transfer.class, fetch = FetchType.EAGER)
-    private Collection incomingTransfers;
+    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Transfer> incomingTransfers;
 
-    @OneToMany(mappedBy = "source", targetEntity = Transfer.class, fetch = FetchType.EAGER)
-    private Collection outgoingTransfers;
+    @OneToMany(mappedBy = "source", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Transfer> outgoingTransfers;
 
     public BankAccount() {
     }
@@ -85,11 +90,20 @@ public class BankAccount {
         this.moneyBlocked = moneyBlocked;
     }
 
-    public Collection getIncomingTransfers() {
+    public List<Transfer> getIncomingTransfers() {
         return incomingTransfers;
     }
 
-    public Collection getOutgoingTransfers() {
+    public void setIncomingTransfers(List<Transfer> incomingTransfers) {
+        this.incomingTransfers = incomingTransfers;
+    }
+
+    public List<Transfer> getOutgoingTransfers() {
         return outgoingTransfers;
     }
+
+    public void setOutgoingTransfers(List<Transfer> outgoingTransfers) {
+        this.outgoingTransfers = outgoingTransfers;
+    }
+
 }
