@@ -20,7 +20,7 @@ public class Transfer {
     @Column(name = "value")
     private Float value;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "source_acc_id")
     @JsonBackReference
     private BankAccount sourceAcc;
@@ -46,7 +46,6 @@ public class Transfer {
     }
 
     public Transfer() {
-
     }
 
     public Transfer(String title, Float value, BankAccount sourceAcc, String accountNo, String transferType) {
@@ -56,7 +55,7 @@ public class Transfer {
         this.accountNo = accountNo;
         this.transferType = transferType;
 
-        if(transferType.equals("inner")) {
+        if (transferType.equals("inner")) {
             this.status = "realized";
         }
     }
@@ -131,5 +130,20 @@ public class Transfer {
 
     public void setTransferType(String transferType) {
         this.transferType = transferType;
+    }
+
+    @Override
+    public String toString() {
+        return "Transfer{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", value=" + value +
+                ", sourceAcc=" + sourceAcc.getId() +
+                ", accountNo='" + accountNo + '\'' +
+                ", status='" + status + '\'' +
+                ", transferType='" + transferType + '\'' +
+                ", createTime=" + createTime +
+                ", bookingDate=" + bookingDate +
+                '}';
     }
 }

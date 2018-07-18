@@ -24,6 +24,7 @@
         <java.version>1.8</java.version>
         <spring-version>2.0.3.RELEASE</spring-version>
         <javax-version>2.3.0</javax-version>
+        <junit.version>5.2.0</junit.version>
     </properties>
 
     <dependencies>
@@ -70,6 +71,13 @@
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- logger -->
         <dependency>

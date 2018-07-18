@@ -29,11 +29,24 @@ public class BankAccount {
     @Column(name = "money_blocked")
     private Float moneyBlocked;
 
-    @OneToMany(mappedBy = "sourceAcc", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sourceAcc", cascade = CascadeType.ALL)
     private List<Transfer> transfers;
 
     @Column(name = "is_active")
     private Boolean active = true;
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "id=" + id +
+                ", accountNo='" + accountNo + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", moneyAmount=" + moneyAmount +
+                ", moneyBlocked=" + moneyBlocked +
+                ", active=" + active +
+                '}';
+    }
 
     public BankAccount() {
     }
