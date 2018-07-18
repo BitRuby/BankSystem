@@ -1,0 +1,30 @@
+matrix:
+  include:
+    - language: java
+      jdk: oraclejdk8
+      before_install: cd backend
+      install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      script:  mvn test
+
+    - language: node_js
+      node_js: "8"
+      before_install: cd frontend
+      install: npm install
+      script: npm run build
+
+branches:
+  only:
+    - master
+    - develop
+
+
+notifications:
+  email:
+    recipients:
+      - kamil.swiader@hotmail.com
+      - tomaszwozniak96@gmail.com
+      - norbert.wychowski@gmail.com
+      - firewallosiem@gmail.com
+      - bartosz.sadel@onwelo.com
+    on_success: never # default: change
+    on_failure: always # default: always
