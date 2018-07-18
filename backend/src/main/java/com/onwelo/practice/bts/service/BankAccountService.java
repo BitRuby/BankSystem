@@ -36,7 +36,7 @@ public class BankAccountService {
     }
 
     public BankAccount getBankAccountByNumber(String accountNo) {
-        return bankAccountRepository.findByAccountNumber(accountNo).orElse(null);
+        return bankAccountRepository.findByAccountNo(accountNo).orElse(null);
     }
 
     public void addBankAccount(BankAccount bankAccount) {
@@ -54,9 +54,5 @@ public class BankAccountService {
             bankAccount.setActive(false);
             bankAccountRepository.save(bankAccount);
         }
-    }
-
-    public void deleteBankAccount(Long id) {
-        bankAccountRepository.deleteById(id);
     }
 }

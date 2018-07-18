@@ -2,6 +2,8 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
+import com.onwelo.practice.bts.repository.BankAccountRepository;
+import com.onwelo.practice.bts.repository.TransferRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +27,13 @@ public class TransferServiceTest implements Extension {
     private TransferService transferService;
 
     @Autowired
+    private TransferRepository transferRepository;
+
+    @Autowired
     private BankAccountService bankAccountService;
+
+    @Autowired
+    private BankAccountRepository bankAccountRepository;
 
     @Test
     public void getAllTransfers() {
@@ -42,7 +50,6 @@ public class TransferServiceTest implements Extension {
         transferService.getAllTransfers().forEach(System.out::println);
 
         transfers.stream().map(Transfer::getId).forEach(transferService::deleteTransfer);
-        bankAccountService.deleteBankAccount(bankIn.getId());
     }
 
     @Test
@@ -102,14 +109,11 @@ public class TransferServiceTest implements Extension {
 
         transferService.deleteTransfer(transfer.getId());
         assertNull(transferService.getTransferById(transfer.getId()));
-
-        bankAccountService.deleteBankAccount(bankAccount.getId());
-        assertNull(bankAccountService.getBankAccountById(bankAccount.getId()));
     }
 
     @AfterEach
-    public void delete() {
-        transferService.getAllTransfers().stream().map(Transfer::getId).forEach(transferService::deleteTransfer);
-        bankAccountService.getAllBankAccounts().stream().map(BankAccount::getId).forEach(bankAccountService::deleteBankAccount);
+    public void cleanUp() {
+        transferRepository.deleteAll();
+        bankAccountRepository.deleteAll();
     }
 }

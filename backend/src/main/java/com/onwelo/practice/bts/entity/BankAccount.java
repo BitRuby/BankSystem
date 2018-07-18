@@ -1,52 +1,51 @@
 package com.onwelo.practice.bts.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@ToString(exclude = "transfers")
 @Table(name = "bank_account")
 @Where(clause = "is_active=1")
 public class BankAccount {
     @Id
+    @Getter @Setter
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter @Setter
     @Column(unique = true, name = "account_no")
     private String accountNo;
 
+    @Getter @Setter
     @Column(name = "first_name")
     private String firstName;
 
+    @Getter @Setter
     @Column(name = "last_name")
     private String lastName;
 
+    @Getter @Setter
     @Column(name = "money_amount")
     private Float moneyAmount;
 
+    @Getter @Setter
     @Column(name = "money_blocked")
     private Float moneyBlocked;
 
+    @Getter @Setter
     @OneToMany(mappedBy = "sourceAcc", cascade = CascadeType.ALL)
     private List<Transfer> transfers;
 
+    @Getter @Setter
     @Column(name = "is_active")
     private Boolean active = true;
-
-    @Override
-    public String toString() {
-        return "BankAccount{" +
-                "id=" + id +
-                ", accountNo='" + accountNo + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", moneyAmount=" + moneyAmount +
-                ", moneyBlocked=" + moneyBlocked +
-                ", active=" + active +
-                '}';
-    }
 
     public BankAccount() {
     }
@@ -57,69 +56,5 @@ public class BankAccount {
         this.lastName = lastName;
         this.moneyAmount = moneyAmount;
         this.moneyBlocked = moneyBlocked;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAccountNo() {
-        return accountNo;
-    }
-
-    public void setAccountNo(String accountNo) {
-        this.accountNo = accountNo;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Float getMoneyAmount() {
-        return moneyAmount;
-    }
-
-    public void setMoneyAmount(Float moneyAmount) {
-        this.moneyAmount = moneyAmount;
-    }
-
-    public Float getMoneyBlocked() {
-        return moneyBlocked;
-    }
-
-    public void setMoneyBlocked(Float moneyBlocked) {
-        this.moneyBlocked = moneyBlocked;
-    }
-
-    public List<Transfer> getTransfers() {
-        return transfers;
-    }
-
-    public void setTransfers(List<Transfer> transfers) {
-        this.transfers = transfers;
-    }
-
-    public Boolean isActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 }

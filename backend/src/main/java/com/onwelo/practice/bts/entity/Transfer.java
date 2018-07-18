@@ -1,42 +1,55 @@
 package com.onwelo.practice.bts.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
+@ToString(exclude = "sourceAcc")
 @Table(name = "transfer")
 public class Transfer {
     @Id
+    @Getter @Setter
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter @Setter
     @Column(name = "title")
     private String title;
 
+    @Getter @Setter
     @Column(name = "value")
     private Float value;
 
+    @Getter @Setter
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "source_acc_id")
     @JsonBackReference
     private BankAccount sourceAcc;
 
+    @Getter @Setter
     @Column(name = "account_no")
     private String accountNo;
 
+    @Getter @Setter
     @Column(name = "status")
     private String status;
 
+    @Getter @Setter
     @Column(name = "transfer_type")
     private String transferType;
 
+    @Getter @Setter
     @Column(name = "create_time")
     private java.sql.Timestamp createTime;
 
+    @Getter @Setter
     @Column(name = "booking_date")
     private LocalDate bookingDate;
 
@@ -58,92 +71,5 @@ public class Transfer {
         if (transferType.equals("inner")) {
             this.status = "realized";
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Float getValue() {
-        return value;
-    }
-
-    public void setValue(Float value) {
-        this.value = value;
-    }
-
-    public BankAccount getSourceAcc() {
-        return sourceAcc;
-    }
-
-    public void setBookingDate(LocalDate bookingDate) {
-        this.bookingDate = bookingDate;
-    }
-
-    public String getAccountNo() {
-        return accountNo;
-    }
-
-    public void setAccountNo(String accountNo) {
-        this.accountNo = accountNo;
-    }
-
-    public void setSource(BankAccount sourceAcc) {
-        this.sourceAcc = sourceAcc;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDate getBookingDate() {
-        return bookingDate;
-    }
-
-    public String getTransferType() {
-        return transferType;
-    }
-
-    public void setTransferType(String transferType) {
-        this.transferType = transferType;
-    }
-
-    @Override
-    public String toString() {
-        return "Transfer{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", value=" + value +
-                ", sourceAcc=" + sourceAcc.getId() +
-                ", accountNo='" + accountNo + '\'' +
-                ", status='" + status + '\'' +
-                ", transferType='" + transferType + '\'' +
-                ", createTime=" + createTime +
-                ", bookingDate=" + bookingDate +
-                '}';
     }
 }

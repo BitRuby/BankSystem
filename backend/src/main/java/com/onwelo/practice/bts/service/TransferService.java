@@ -19,7 +19,7 @@ public class TransferService {
     }
 
     public List<Transfer> getTransfersByStatus(String state) {
-        return transferRepository.findAllByState(state);
+        return transferRepository.findAllByStatus(state);
     }
 
     public Transfer getTransferById(Long id) {

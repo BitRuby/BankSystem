@@ -25,6 +25,7 @@
         <spring-version>2.0.3.RELEASE</spring-version>
         <javax-version>2.3.0</javax-version>
         <junit.version>5.2.0</junit.version>
+        <lombok.version>1.18.0</lombok.version>
     </properties>
 
     <dependencies>
@@ -95,6 +96,15 @@
             <artifactId>jaxb-api</artifactId>
             <version>${javax-version}</version>
         </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
