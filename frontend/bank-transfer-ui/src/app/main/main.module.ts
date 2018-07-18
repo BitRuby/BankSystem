@@ -9,6 +9,7 @@ import { TransferDetailsComponent } from "./transfer-details/transfer-details.co
 import { TransferListComponent } from "./transfer-list/transfer-list.component";
 import { NavigationComponent } from "./navigation/navigation.component";
 import { FooterComponent } from './footer/footer.component';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FooterComponent } from './footer/footer.component';
   ],
   imports: [
     CommonModule,
-    MainRoutingModule
+    MainRoutingModule,
+    NgbModule
   ],
   providers: []
 })

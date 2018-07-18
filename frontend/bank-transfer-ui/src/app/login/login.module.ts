@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { LoginComponent } from "./login.component";
-import {LoginRoutingModule} from "./login-routing.module";
+import { LoginRoutingModule } from "./login-routing.module";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import {LoginRoutingModule} from "./login-routing.module";
   ],
   imports: [
     CommonModule,
-    LoginRoutingModule
+    LoginRoutingModule,
+    NgbModule
   ],
   providers: []
 })
