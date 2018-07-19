@@ -58,7 +58,7 @@ public class CsvServiceTest {
         }
 
         for (int i = 1; i < 100; i++) {
-            transfers.add(new Transfer("przelew " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.INCOMING));
+            transfers.add(new Transfer("przelew " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.OUTGOING));
         }
 
         for (Transfer transfer : transfers)
@@ -68,5 +68,10 @@ public class CsvServiceTest {
 
         File file = csvService.getCsvFile("tmp.csv");
         Assertions.assertNotNull(file);
+    }
+
+    @Test
+    void readTransfersFromCsv() {
+
     }
 }

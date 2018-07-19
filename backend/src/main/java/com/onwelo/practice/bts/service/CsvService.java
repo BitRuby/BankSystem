@@ -5,10 +5,7 @@ import com.onwelo.practice.bts.utils.TransferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 @Service
@@ -26,8 +23,12 @@ public class CsvService {
         return createFile(new File(filename), TransferStatus.PENDING);
     }
 
+    public ArrayList<Transfer> getTransfersFromCsv(String filename) {
+        return parseFromCsv(readFile(filename));
+    }
+
     private File createFile(File file, TransferStatus transferStatus) {
-        ArrayList<String> lines = parseTransfers(transferStatus);
+        ArrayList<String> lines = parseToCsv(transferStatus);
 
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
             lines.forEach(writer::append);
@@ -38,7 +39,7 @@ public class CsvService {
         return file;
     }
 
-    private ArrayList<String> parseTransfers(TransferStatus transferStatus) {
+    private ArrayList<String> parseToCsv(TransferStatus transferStatus) {
         ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(transferStatus);
         ArrayList<String> lines = new ArrayList<>();
 
@@ -49,5 +50,27 @@ public class CsvService {
         }
 
         return lines;
+    }
+
+    private ArrayList<String[]> readFile(String filename) {
+        ArrayList<String[]> transferLines = new ArrayList<>();
+        File file = new File(filename);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                transferLines.add(line.split(","));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return transferLines;
+    }
+
+    private ArrayList<Transfer> parseFromCsv(ArrayList<String[]> transferLines) {
+        ArrayList<Transfer> transfers = new ArrayList<>();
+        return transfers;
     }
 }
