@@ -42,19 +42,40 @@ public class BankAccountService {
     }
 
     public BankAccount addBankAccount(BankAccount bankAccount) {
-        if (bankAccount.getAccountNo() == null)
+        if (bankAccount.getAccountNo() == null) {
             throw new MissingFieldException("missing bank account field= account no");
-        if (bankAccount.getFirstName() == null)
+        }
+        if (bankAccount.getFirstName() == null) {
             throw new MissingFieldException("missing bank account field= first name");
-        if (bankAccount.getLastName() == null) throw new MissingFieldException("missing bank account field= last name");
+        }
+        if (bankAccount.getLastName() == null) {
+            throw new MissingFieldException("missing bank account field= last name");
+        }
 
         BankAccount b = bankAccountRepository.findByAccountNo(bankAccount.getAccountNo()).orElse(null);
-        if (b != null) throw new UniqueFieldException("account no is already taken");
+        if (b != null) {
+            throw new UniqueFieldException("account no is already taken");
+        }
 
         return bankAccountRepository.save(bankAccount);
     }
 
     public BankAccount updateBankAccount(BankAccount bankAccount) {
+        if (bankAccount.getFirstName() == null) {
+            throw new MissingFieldException("missing bank account field= first name");
+        }
+        if (bankAccount.getAccountNo() == null) {
+            throw new MissingFieldException("missing bank account field= account no");
+        }
+        if (bankAccount.getLastName() == null) {
+            throw new MissingFieldException("missing bank account field= last name");
+        }
+
+        BankAccount b = bankAccountRepository.findByAccountNo(bankAccount.getAccountNo()).orElse(null);
+        if (b != null) {
+            throw new UniqueFieldException("account no is already taken");
+        }
+
         return bankAccountRepository.save(bankAccount);
     }
 
