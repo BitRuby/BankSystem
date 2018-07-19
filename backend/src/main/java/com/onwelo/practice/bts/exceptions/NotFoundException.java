@@ -4,20 +4,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class BankAccountNotFoundException extends RuntimeException {
-    public BankAccountNotFoundException() {
+public class NotFoundException extends RuntimeException {
+    public NotFoundException() {
         super();
     }
 
-    public BankAccountNotFoundException(String message) {
+    public NotFoundException(String message) {
         super(message);
     }
 
-    public BankAccountNotFoundException(Throwable cause) {
+    public NotFoundException(Throwable cause) {
         super(cause);
     }
 
-    public BankAccountNotFoundException(String message, Throwable cause) {
+    public NotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }

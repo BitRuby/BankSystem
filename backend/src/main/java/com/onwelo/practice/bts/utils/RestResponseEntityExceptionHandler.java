@@ -2,7 +2,7 @@ package com.onwelo.practice.bts.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.onwelo.practice.bts.exceptions.BankAccountNotFoundException;
+import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.exceptions.MissingFieldException;
 import com.onwelo.practice.bts.exceptions.UniqueFieldException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {BankAccountNotFoundException.class})
+    @ExceptionHandler(value = {NotFoundException.class})
     protected ResponseEntity<String> handleBankAccountNotFound(RuntimeException e) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return new ResponseEntity<>(gson.toJson(e.getMessage()), HttpStatus.NOT_FOUND);

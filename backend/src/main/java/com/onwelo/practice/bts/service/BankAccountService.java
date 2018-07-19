@@ -2,7 +2,7 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
-import com.onwelo.practice.bts.exceptions.BankAccountNotFoundException;
+import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.exceptions.MissingFieldException;
 import com.onwelo.practice.bts.exceptions.UniqueFieldException;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
@@ -26,19 +26,19 @@ public class BankAccountService {
 
     public List<Transfer> getTransfers(Long id) {
         BankAccount bankAccount = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new BankAccountNotFoundException("could not found account with id=" + id));
+                .orElseThrow(() -> new NotFoundException("could not found account with id=" + id));
 
         return new ArrayList<>(bankAccount.getTransfers());
     }
 
     public BankAccount getBankAccountById(Long id) {
         return bankAccountRepository.findById(id)
-                .orElseThrow(() -> new BankAccountNotFoundException("could not found account with id=" + id));
+                .orElseThrow(() -> new NotFoundException("could not found account with id=" + id));
     }
 
     public BankAccount getBankAccountByNumber(String accountNo) {
         return bankAccountRepository.findByAccountNo(accountNo)
-                .orElseThrow(() -> new BankAccountNotFoundException("could not found account with accountNo=" + accountNo));
+                .orElseThrow(() -> new NotFoundException("could not found account with accountNo=" + accountNo));
     }
 
     public void addBankAccount(BankAccount bankAccount) {
@@ -60,7 +60,7 @@ public class BankAccountService {
 
     public void deactivateBankAccount(Long id) {
         BankAccount bankAccount = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new BankAccountNotFoundException("could not found account with id=" + id));
+                .orElseThrow(() -> new NotFoundException("could not found account with id=" + id));
 
         bankAccount.setActive(false);
         bankAccountRepository.save(bankAccount);
