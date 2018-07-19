@@ -27,13 +27,10 @@ public class CsvService {
     }
 
     private File createFile(File file, TransferStatus transferStatus) {
-        ArrayList<String> transfers = parseTransfers(transferStatus);
+        ArrayList<String> lines = parseTransfers(transferStatus);
 
-        try {
-            PrintWriter writer = new PrintWriter(new FileOutputStream(file, true));
-            for (String string : transfers) {
-                writer.append(string);
-            }
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
+            lines.forEach(writer::append);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -45,21 +42,11 @@ public class CsvService {
         ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(transferStatus);
         ArrayList<String> lines = new ArrayList<>();
 
-        if (!transfers.isEmpty()) {
-            for (Transfer transfer : transfers) {
-                lines.add(transfer.getCreateTime().toString() + "," + transfer.getTitle() + "," + transfer.getValue() +
-                        "," + transfer.getAccountId().getAccountNo() + // owner
-                        "," + transfer.getAccountNo()); // target
-            }
+        for (Transfer transfer : transfers) {
+            lines.add(transfer.getCreateTime().toString() + "," + transfer.getTitle() + "," + transfer.getValue() +
+                    "," + transfer.getAccountId().getAccountNo() + // owner
+                    "," + transfer.getAccountNo() + "\n"); // target
         }
-
-        else {
-            System.out.println("There is no transfers!");
-        }
-
-
-        if (!lines.isEmpty())
-            System.out.println(lines);
 
         return lines;
     }

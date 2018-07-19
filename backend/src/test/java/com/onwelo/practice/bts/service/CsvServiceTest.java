@@ -26,9 +26,6 @@ public class CsvServiceTest {
     private CsvService csvService;
 
     @Autowired
-    private TransferService transferService;
-
-    @Autowired
     private TransferRepository transferRepository;
 
     @Autowired
@@ -42,27 +39,27 @@ public class CsvServiceTest {
         bankAccountRepository.deleteAll();
         transferRepository.deleteAll();
 
-        /*
         File file = new File("tmp.csv");
         if (!file.delete())
             throw new Exception("unable to delete file");
-            */
     }
 
     @Test
-    void createCsv() {
-        BankAccount bankAccount1 = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-
-        BankAccount bankAccount2 = new BankAccount("140159265125215510730339",
-                "Jan", "Niekowalski", 1000.0f, 0.0f);
-
-        bankAccountService.addBankAccount(bankAccount1);
-        bankAccountService.addBankAccount(bankAccount2);
-
+    void createCsvFromDatabase() {
+        List<BankAccount> accounts  = new ArrayList<>();
         List<Transfer> transfers = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
-            transfers.add(new Transfer("przelew", 100.0f, bankAccount1, bankAccount2.getAccountNo(), TransferType.INCOMING));
+
+        for (int i = 1; i < 101; i++) {
+            accounts.add(new BankAccount(String.valueOf((123456 * i)), "Jan " + i, "Kowalski " + i, 100.0f * i, 0.0f));
+        }
+
+        for (BankAccount bankAccount : accounts) {
+            bankAccountService.addBankAccount(bankAccount);
+        }
+
+        for (int i = 1; i < 100; i++) {
+            transfers.add(new Transfer("przelew " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.INCOMING));
+        }
 
         for (Transfer transfer : transfers)
             transfer.setStatus(TransferStatus.PENDING);
