@@ -78,55 +78,7 @@ public class BankAccountServiceTest implements Extension {
                 "Jan", "Kowalski", 1000.0f, 0.0f);
 
         bankAccountService.addBankAccount(bankAccount);
-        BankAccount bankAccount2 = bankAccountService.getBankAccountById(bankAccount.getId());
-        assertEquals(bankAccount.getId(), bankAccount2.getId());
+        Assert.notNull(bankAccountService.getBankAccountById(bankAccount.getId()));
     }
 
-    @Test
-    public void getBankAccountByNumber() {
-        BankAccount bankAccount = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-
-        bankAccountService.addBankAccount(bankAccount);
-        assertEquals(bankAccount.getId(),
-                bankAccountService.getBankAccountByNumber(bankAccount.getAccountNo()).getId());
-    }
-
-    @Test
-    public void addBankAccount() {
-        BankAccount bankAccount = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-
-        bankAccountService.addBankAccount(bankAccount);
-        assertNotNull(bankAccountService.getBankAccountById(bankAccount.getId()));
-    }
-
-    @Test
-    public void updateBankAccount() {
-        BankAccount bankAccount = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-
-        bankAccountService.addBankAccount(bankAccount);
-        assertNotNull(bankAccountService.getBankAccountById(bankAccount.getId()));
-
-        bankAccount.setFirstName("Adam");
-        bankAccountService.updateBankAccount(bankAccount);
-        assertEquals(bankAccount.getFirstName(), bankAccountService.getBankAccountById(bankAccount.getId()).getFirstName());
-    }
-
-    @Test
-    public void deactivateBankAccount() {
-        BankAccount bankAccount = new BankAccount("240159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-
-        bankAccountService.addBankAccount(bankAccount);
-        bankAccountService.deactivateBankAccount(bankAccount.getId());
-        assertNull(bankAccountService.getBankAccountById(bankAccount.getId()));
-    }
-
-    @AfterEach
-    public void cleanUp() {
-        transferRepository.deleteAll();
-        bankAccountRepository.deleteAll();
-    }
 }
