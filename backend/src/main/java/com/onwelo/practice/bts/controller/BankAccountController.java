@@ -3,11 +3,10 @@ package com.onwelo.practice.bts.controller;
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.service.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RepositoryRestController
+@RestController
 @RequestMapping("/accounts")
 public class BankAccountController {
     @Autowired
@@ -18,26 +17,27 @@ public class BankAccountController {
         return ResponseEntity.ok(bankAccountService.getAllBankAccounts());
     }
 
-    @GetMapping(path = "/:id")
-    public ResponseEntity show(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(bankAccountService.getBankAccountById(id));
+    @GetMapping(path = "/{id}")
+    public BankAccount show(@PathVariable("id") Long id) {
+        return bankAccountService.getBankAccountById(id);
     }
 
     @PostMapping
-    public ResponseEntity.BodyBuilder create(@RequestBody BankAccount bankAccount) {
+    public ResponseEntity create(@RequestBody BankAccount bankAccount) {
         bankAccountService.addBankAccount(bankAccount);
-        return ResponseEntity.ok();
+        return ResponseEntity.ok(bankAccount);
     }
 
-    @PutMapping(path = "/:id")
+    @PutMapping(path = "/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody BankAccount bankAccount) {
-        BankAccount bankAcc = bankAccountService.getBankAccountById(id);
+        bankAccount.setId(id);
+        bankAccountService.updateBankAccount(bankAccount);
+        return ResponseEntity.ok(bankAccount);
+    }
 
-        if(bankAcc == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-
-            return ResponseEntity.ok(bankAccount);
-        }
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id) {
+        bankAccountService.deactivateBankAccount(id);
+        return ResponseEntity.ok().build();
     }
 }
