@@ -1,6 +1,8 @@
 package com.onwelo.practice.bts.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.onwelo.practice.bts.utils.TransferStatus;
+import com.onwelo.practice.bts.utils.TransferType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,9 +31,9 @@ public class Transfer {
 
     @Getter @Setter
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "source_acc_id")
+    @JoinColumn(name = "account_id")
     @JsonBackReference
-    private BankAccount sourceAcc;
+    private BankAccount accountId;
 
     @Getter @Setter
     @Column(name = "account_no")
@@ -39,11 +41,11 @@ public class Transfer {
 
     @Getter @Setter
     @Column(name = "status")
-    private String status;
+    private TransferStatus status;
 
     @Getter @Setter
     @Column(name = "transfer_type")
-    private String transferType;
+    private TransferType transferType;
 
     @Getter @Setter
     @Column(name = "create_time")
@@ -61,15 +63,11 @@ public class Transfer {
     public Transfer() {
     }
 
-    public Transfer(String title, Float value, BankAccount sourceAcc, String accountNo, String transferType) {
+    public Transfer(String title, Float value, BankAccount accountId, String accountNo, TransferType transferType) {
         this.title = title;
         this.value = value;
-        this.sourceAcc = sourceAcc;
+        this.accountId = accountId;
         this.accountNo = accountNo;
         this.transferType = transferType;
-
-        if (transferType.equals("inner")) {
-            this.status = "realized";
-        }
     }
 }

@@ -4,6 +4,7 @@ import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
+import com.onwelo.practice.bts.utils.TransferType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,8 +57,8 @@ public class BankAccountServiceTest implements Extension {
         bankAccountService.addBankAccount(bankIn);
         bankAccountService.addBankAccount(bankOut);
 
-        Transfer transfer1 = new Transfer("przelew", 100.0f, bankIn, bankOut.getAccountNo(), "inner");
-        Transfer transfer2 = new Transfer("przelew", 100.0f, bankOut, bankIn.getAccountNo(), "inner");
+        Transfer transfer1 = new Transfer("przelew", 100.0f, bankIn, bankOut.getAccountNo(), TransferType.INCOMING);
+        Transfer transfer2 = new Transfer("przelew", 100.0f, bankOut, bankIn.getAccountNo(), TransferType.OUTGOING);
         transferService.addTransfer(transfer1);
         transferService.addTransfer(transfer2);
 

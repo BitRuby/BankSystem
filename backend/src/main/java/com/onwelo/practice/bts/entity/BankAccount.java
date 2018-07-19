@@ -40,7 +40,7 @@ public class BankAccount {
     private Float moneyBlocked;
 
     @Getter @Setter
-    @OneToMany(mappedBy = "sourceAcc", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "accountId", cascade = CascadeType.ALL)
     private List<Transfer> transfers;
 
     @Getter @Setter

@@ -4,6 +4,8 @@ import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
+import com.onwelo.practice.bts.utils.TransferStatus;
+import com.onwelo.practice.bts.utils.TransferType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +43,7 @@ public class TransferServiceTest implements Extension {
                 "Jan", "Kowalski", 1000.0f, 0.0f);
         List<Transfer> transfers = new ArrayList<>();
         for (int i = 0; i < 10; i++)
-            transfers.add(new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", "outer"));
+            transfers.add(new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", TransferType.INCOMING));
 
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
@@ -59,27 +61,27 @@ public class TransferServiceTest implements Extension {
         List<Transfer> transfers = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            Transfer transfer = new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", "outer");
-            transfer.setStatus("realized");
+            Transfer transfer = new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", TransferType.INCOMING);
+            transfer.setStatus(TransferStatus.REALIZED);
             transfers.add(transfer);
         }
 
         for (int i = 0; i < 10; i++) {
-            Transfer transfer = new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", "outer");
-            transfer.setStatus("pending");
+            Transfer transfer = new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", TransferType.OUTGOING);
+            transfer.setStatus(TransferStatus.PENDING);
             transfers.add(transfer);
         }
 
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
 
-        assertEquals(5, transferService.getTransfersByStatus("realized").size());
-        assertEquals(10, transferService.getTransfersByStatus("pending").size());
+        assertEquals(5, transferService.getTransfersByStatus(TransferStatus.REALIZED).size());
+        assertEquals(10, transferService.getTransfersByStatus(TransferStatus.PENDING).size());
 
         System.out.println("realized:");
-        transferService.getTransfersByStatus("realized").forEach(System.out::println);
+        transferService.getTransfersByStatus(TransferStatus.REALIZED).forEach(System.out::println);
         System.out.println("pending:");
-        transferService.getTransfersByStatus("pending").forEach(System.out::println);
+        transferService.getTransfersByStatus(TransferStatus.PENDING).forEach(System.out::println);
     }
 
     @Test
@@ -99,7 +101,7 @@ public class TransferServiceTest implements Extension {
         BankAccount bankAccount = new BankAccount("140159260076545510730339",
                 "Jan", "Kowalski", 1000.0f, 0.0f);
 
-        Transfer transfer = new Transfer("przelew", 100.0f, bankAccount, "240159260076545510730339", "inner");
+        Transfer transfer = new Transfer("przelew", 100.0f, bankAccount, "240159260076545510730339", TransferType.OUTGOING);
 
         bankAccountService.addBankAccount(bankAccount);
         transferService.addTransfer(transfer);
