@@ -6,6 +6,7 @@ import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.utils.TransferType;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
@@ -34,6 +35,12 @@ public class BankAccountServiceTest implements Extension {
     @Autowired
     private TransferRepository transferRepository;
 
+    @AfterEach
+    public void cleanUp() {
+        transferRepository.deleteAll();
+        bankAccountRepository.deleteAll();
+    }
+
     @Test
     public void getAllBankAccounts() {
         List<BankAccount> bankAccounts = new ArrayList<BankAccount>() {{
@@ -44,8 +51,6 @@ public class BankAccountServiceTest implements Extension {
         }};
         bankAccounts.forEach(bankAccountService::addBankAccount);
         assertNotNull(bankAccountService.getAllBankAccounts());
-
-        bankAccountService.getAllBankAccounts().forEach(System.out::println);
     }
 
     @Test
@@ -78,7 +83,7 @@ public class BankAccountServiceTest implements Extension {
                 "Jan", "Kowalski", 1000.0f, 0.0f);
 
         bankAccountService.addBankAccount(bankAccount);
-        Assert.notNull(bankAccountService.getBankAccountById(bankAccount.getId()));
+        Assertions.assertNotNull(bankAccountService.getBankAccountById(bankAccount.getId()));
     }
 
 }

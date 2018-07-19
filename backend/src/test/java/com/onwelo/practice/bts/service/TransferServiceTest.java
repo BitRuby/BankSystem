@@ -37,6 +37,12 @@ public class TransferServiceTest implements Extension {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    @AfterEach
+    public void cleanUp() {
+        transferRepository.deleteAll();
+        bankAccountRepository.deleteAll();
+    }
+
     @Test
     public void getAllTransfers() {
         BankAccount bankIn = new BankAccount("140159260076545510730339",
@@ -99,11 +105,5 @@ public class TransferServiceTest implements Extension {
 
         transferService.deleteTransfer(transfer.getId());
         assertNull(transferService.getTransferById(transfer.getId()));
-    }
-
-    @AfterEach
-    public void cleanUp() {
-        transferRepository.deleteAll();
-        bankAccountRepository.deleteAll();
     }
 }
