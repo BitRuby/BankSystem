@@ -1,15 +1,17 @@
 package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.BankAccount;
+import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
+@Transactional
 public class BankAccountService {
 
     @Autowired
@@ -19,26 +21,22 @@ public class BankAccountService {
         return new ArrayList<>(bankAccountRepository.findAll());
     }
 
-    public Collection getIncomingTransfers(Long id) {
-        BankAccount bankAccount = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not found bank account with id: " + id));
-        return bankAccount.getIncomingTransfers();
-    }
+    public List<Transfer> getTransfers(Long id) {
+        BankAccount bankAccount = getBankAccountById(id);
 
-    public Collection getOutgoingTransfers(Long id) {
-        BankAccount bankAccount = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not found bank account with id: " + id));
-        return bankAccount.getOutgoingTransfers();
+        if (bankAccount != null) {
+            return new ArrayList<>(bankAccount.getTransfers());
+        } else {
+            return null;
+        }
     }
 
     public BankAccount getBankAccountById(Long id) {
-        return bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not found bank account with id: " + id));
+        return bankAccountRepository.findById(id).orElse(null);
     }
 
-    public BankAccount getBankAccountByNumber(String accountNumber) {
-        return bankAccountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new RuntimeException("could not found bank account: " + accountNumber));
+    public BankAccount getBankAccountByNumber(String accountNo) {
+        return bankAccountRepository.findByAccountNo(accountNo).orElse(null);
     }
 
     public void addBankAccount(BankAccount bankAccount) {
@@ -49,7 +47,12 @@ public class BankAccountService {
         bankAccountRepository.save(bankAccount);
     }
 
-    public void deleteBankAccount(Long id) {
-        bankAccountRepository.deleteById(id);
+    public void deactivateBankAccount(Long id) {
+        BankAccount bankAccount = bankAccountRepository.findById(id).orElse(null);
+
+        if (bankAccount != null) {
+            bankAccount.setActive(false);
+            bankAccountRepository.save(bankAccount);
+        }
     }
 }
