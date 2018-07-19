@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/accounts")
 public class BankAccountController {
@@ -23,13 +25,13 @@ public class BankAccountController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody BankAccount bankAccount) {
+    public ResponseEntity create(@Valid @RequestBody BankAccount bankAccount) {
         bankAccountService.addBankAccount(bankAccount);
         return ResponseEntity.ok(bankAccount);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody BankAccount bankAccount) {
+    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody BankAccount bankAccount) {
         bankAccount.setId(id);
         bankAccountService.updateBankAccount(bankAccount);
         return ResponseEntity.ok(bankAccount);
