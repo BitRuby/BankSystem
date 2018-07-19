@@ -24,8 +24,12 @@
         <java.version>1.8</java.version>
         <spring-version>2.0.3.RELEASE</spring-version>
         <javax-version>2.3.0</javax-version>
+        <junit5.jupiter.version>5.2.0</junit5.jupiter.version>
+        <junit5.platform.version>1.2.0</junit5.platform.version>
         <itext.version>5.5.10</itext.version>
         <xmlworker.version>5.5.10</xmlworker.version>
+        <poi-ooxml.version>3.15</poi-ooxml.version>
+        <poi-scratchpad.version>3.15</poi-scratchpad.version>
     </properties>
 
     <dependencies>
@@ -60,6 +64,22 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit5.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit5.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -103,6 +123,16 @@
             <groupId>com.itextpdf.tool</groupId>
             <artifactId>xmlworker</artifactId>
             <version>${xmlworker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi-ooxml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>${poi-scratchpad.version}</version>
         </dependency>
     </dependencies>
 
