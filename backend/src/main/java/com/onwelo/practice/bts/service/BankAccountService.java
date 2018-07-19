@@ -41,7 +41,7 @@ public class BankAccountService {
                 .orElseThrow(() -> new NotFoundException("could not found account with accountNo=" + accountNo));
     }
 
-    public void addBankAccount(BankAccount bankAccount) {
+    public BankAccount addBankAccount(BankAccount bankAccount) {
         if (bankAccount.getAccountNo() == null)
             throw new MissingFieldException("missing bank account field= account no");
         if (bankAccount.getFirstName() == null)
@@ -51,11 +51,11 @@ public class BankAccountService {
         BankAccount b = bankAccountRepository.findByAccountNo(bankAccount.getAccountNo()).orElse(null);
         if (b != null) throw new UniqueFieldException("account no is already taken");
 
-        bankAccountRepository.save(bankAccount);
+        return bankAccountRepository.save(bankAccount);
     }
 
-    public void updateBankAccount(BankAccount bankAccount) {
-        bankAccountRepository.save(bankAccount);
+    public BankAccount updateBankAccount(BankAccount bankAccount) {
+        return bankAccountRepository.save(bankAccount);
     }
 
     public void deactivateBankAccount(Long id) {

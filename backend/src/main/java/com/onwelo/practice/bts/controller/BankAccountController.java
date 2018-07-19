@@ -26,15 +26,13 @@ public class BankAccountController {
 
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody BankAccount bankAccount) {
-        bankAccountService.addBankAccount(bankAccount);
-        return ResponseEntity.ok(bankAccount);
+        return ResponseEntity.ok(bankAccountService.addBankAccount(bankAccount));
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody BankAccount bankAccount) {
         bankAccount.setId(id);
-        bankAccountService.updateBankAccount(bankAccount);
-        return ResponseEntity.ok(bankAccount);
+        return ResponseEntity.ok(bankAccountService.updateBankAccount(bankAccount));
     }
 
     @DeleteMapping(path = "/{id}")
