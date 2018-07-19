@@ -79,11 +79,11 @@ public class BankAccountService {
         return bankAccountRepository.save(bankAccount);
     }
 
-    public void deactivateBankAccount(Long id) {
+    public BankAccount deactivateBankAccount(Long id) {
         BankAccount bankAccount = bankAccountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("could not found account with id=" + id));
 
         bankAccount.setActive(false);
-        bankAccountRepository.save(bankAccount);
+        return bankAccountRepository.save(bankAccount);
     }
 }

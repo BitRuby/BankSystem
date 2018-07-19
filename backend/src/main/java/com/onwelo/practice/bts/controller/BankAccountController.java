@@ -37,7 +37,6 @@ public class BankAccountController {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        bankAccountService.deactivateBankAccount(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(bankAccountService.deactivateBankAccount(id));
     }
 }
