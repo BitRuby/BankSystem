@@ -27,12 +27,12 @@ public class TransferService {
         return transferRepository.findById(id).orElse(null);
     }
 
-    public void addTransfer(Transfer transfer) {
-        transferRepository.save(transfer);
+    public Transfer addTransfer(Transfer transfer) {
+        return transferRepository.save(transfer);
     }
 
-    public void updateTransfer(Transfer transfer) {
-        transferRepository.save(transfer);
+    public Transfer updateTransfer(Transfer transfer) {
+        return transferRepository.save(transfer);
     }
 
     public void deleteTransfer(Long id) {

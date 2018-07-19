@@ -83,7 +83,6 @@ public class BankAccountServiceTest implements Extension {
                 "Jan", "Kowalski", 1000.0f, 0.0f);
 
         bankAccountService.addBankAccount(bankAccount);
-        Assertions.assertNotNull(bankAccountService.getBankAccountById(bankAccount.getId()));
+        Assertions.assertDoesNotThrow(() -> bankAccountService.getBankAccountById(bankAccount.getId()));
     }
-
 }
