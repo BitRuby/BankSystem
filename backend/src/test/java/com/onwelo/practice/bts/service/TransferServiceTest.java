@@ -85,18 +85,6 @@ public class TransferServiceTest implements Extension {
     }
 
     @Test
-    public void getTransferById() {
-    }
-
-    @Test
-    public void addTransfer() {
-    }
-
-    @Test
-    public void updateTransfer() {
-    }
-
-    @Test
     public void deleteTransfer() {
         BankAccount bankAccount = new BankAccount("140159260076545510730339",
                 "Jan", "Kowalski", 1000.0f, 0.0f);
