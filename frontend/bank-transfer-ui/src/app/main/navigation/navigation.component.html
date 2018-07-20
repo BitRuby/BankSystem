@@ -1,22 +1,22 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-custom">
 <div class="container">
-  <a class="navbar-brand" routerLink="/main/dashboard">Bank<span class="brand-color" (click)="navbarCollapsed = true">UI</span></a>
-  <button (click)="navbarCollapsed = !navbarCollapsed" [attr.aria-expanded]="!navbarCollapsed" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" routerLink="/main/dashboard" (click)="navbarCollapsed = true">Bank<span class="brand-color">UI</span></a>
+  <button (click)="isNavbarCollapsed = !isNavbarCollapsed" data-target="#navbarsDefault" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse justify-content-stretch" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse justify-content-stretch" id="navbarsDefault" [ngbCollapse]="isNavbarCollapsed">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/main/dashboard" routerLinkActive="active">Dashboard <span class="sr-only">(current)</span></a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/main/dashboard">Dashboard <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/main/new-transfer" routerLinkActive="active">New transfer</a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/main/new-transfer">New transfer</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/main/transfer-list" routerLinkActive="active">History</a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/main/transfer-list">History</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/main/account-details" routerLinkActive="active">My account</a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/main/account-details">My account</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/login">Logout</a>
