@@ -1,18 +1,3 @@
-@media (min-width: 992px) {
-  .navbar-expand-lg .navbar-nav .nav-link {
-    padding-right: .9rem;
-    padding-left: .9rem;
-  }
-  .nav-item:last-child {
-    border: 1px solid;
-    border-color: rgb(108, 117, 125);
-  }
-}
-@media (min-width: 576px) and (max-width: 991px) {
-  .container {
-    padding-left: 0;
-  }
-}
 .navbar {
   padding: .7rem 1rem;
 }
@@ -33,4 +18,18 @@
 .hd-custom {
   background: rgb(65, 72, 87);
 }
-
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: .9rem;
+    padding-left: .9rem;
+  }
+  .nav-item:last-child {
+    border: 1px solid;
+    border-color: rgb(108, 117, 125);
+  }
+}
+@media (min-width: 576px) and (max-width: 991px) {
+  .container {
+    padding-left: 0;
+  }
+}

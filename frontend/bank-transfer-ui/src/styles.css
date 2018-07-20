@@ -9,3 +9,10 @@
   font-weight: normal;
   font-style: normal;
 }
+
+body {
+  min-height: 100vh !important;
+}
+.content {
+  padding: 20px 0;
+}

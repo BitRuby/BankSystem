@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-custom">
 <div class="container">
-  <a class="navbar-brand" routerLink="/main/dashboard">Bank<span class="brand-color">UI</span></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" routerLink="/main/dashboard">Bank<span class="brand-color" (click)="navbarCollapsed = true">UI</span></a>
+  <button (click)="navbarCollapsed = !navbarCollapsed" [attr.aria-expanded]="!navbarCollapsed" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-stretch" id="navbarSupportedContent">
