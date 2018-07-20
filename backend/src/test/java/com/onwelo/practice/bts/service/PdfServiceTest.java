@@ -11,54 +11,36 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class PdfServiceTest implements Extension {
-    private File htmlFile;
-    private String testPdfContent = "<html>\n" +
-            "    <h1 style=\"color:darkslateblue\" align=\"center\">Bank service cośtam</h1>\n" +
-            "    <h3>Test pdf</h3>\n" +
-            "    <p align=\"justify\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tincidunt maximus est ut mattis. Sed feugiat ligula aliquam elementum vehicula. Nam id lacinia nulla. Vivamus elit enim, euismod eu viverra sit amet, sodales eu elit. Morbi efficitur mattis mauris, consequat tincidunt nulla sollicitudin eleifend. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus est purus, tincidunt vitae massa tempus, aliquam pretium felis. Morbi leo lacus, sagittis ullamcorper porttitor eu, ultrices eu nisi. Pellentesque gravida lectus ut sapien tempor interdum. Nulla id ex vitae tellus pellentesque suscipit sed vitae enim. Morbi efficitur et erat quis ultrices. Quisque vel eros nunc. Praesent at massa rhoncus, convallis nibh at, dictum est.</p>\n" +
-            "</html>";
-
     @SuppressWarnings("SpringJavaAutowiredMembersInspection")
     @Autowired
     private PdfService pdfService;
 
-    @BeforeEach
-    void createFiles() {
-        try (PrintWriter out = new PrintWriter("test.html")) {
-            out.println(testPdfContent);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     @AfterEach
     void deleteFiles() throws Exception {
-        File fileHtml = new File("test.html");
-        File filePdf = new File("test.pdf");
+        // File fileHtml = new File("generatedPdf.html");
+        File filePdf = new File("generatedPdf.pdf");
+        /*
         if (!fileHtml.delete() && !filePdf.delete())
             throw new Exception("failed deletion test files");
+            */
     }
 
     @Test
     void getPdfByName() {
-        Document document = pdfService.createPdf("test.pdf", "test.html");
+        ArrayList<String> transferDetails = new ArrayList<>();
+        transferDetails.add(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+        transferDetails.add("123456");
+        transferDetails.add("654321");
+        transferDetails.add("Testowy tytuł przelewu");
+        transferDetails.add("pięćset pieniędzy");
+        Document document = pdfService.createPdf("generatedPdf.pdf", transferDetails, "generatedPdf.html");
         assertNotNull(document);
-    }
-
-    @Test
-    void getPdfByFile() {
-        Document document = pdfService.createPdf("test.pdf", new File("test.html"));
-        assertNotNull(document);
-    }
-
-    @Test
-    void compareDocuments() {
-
     }
 }
