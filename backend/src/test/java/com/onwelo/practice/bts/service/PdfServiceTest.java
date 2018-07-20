@@ -24,23 +24,20 @@ class PdfServiceTest implements Extension {
 
     @AfterEach
     void deleteFiles() throws Exception {
-        // File fileHtml = new File("generatedPdf.html");
         File filePdf = new File("generatedPdf.pdf");
-        /*
-        if (!fileHtml.delete() && !filePdf.delete())
+        if (!filePdf.delete())
             throw new Exception("failed deletion test files");
-            */
     }
 
     @Test
-    void getPdfByName() {
+    void getPdf() {
         ArrayList<String> transferDetails = new ArrayList<>();
         transferDetails.add(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         transferDetails.add("123456");
         transferDetails.add("654321");
         transferDetails.add("Testowy tytuł przelewu");
         transferDetails.add("pięćset pieniędzy");
-        Document document = pdfService.createPdf("generatedPdf.pdf", transferDetails, "generatedPdf.html");
+        Document document = pdfService.createPdf("generatedPdf.pdf", transferDetails);
         assertNotNull(document);
     }
 }
