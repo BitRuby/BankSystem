@@ -2,6 +2,7 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.TransferStatus;
+import com.onwelo.practice.bts.utils.TransferType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ public class CsvService {
     @Autowired
     TransferService transferService;
 
+    @Autowired
+    BankAccountService bankAccountService;
+
     // TODO getting csv from server & parsing into collection
 
     public File getCsvFile(String filename, TransferStatus transferStatus) {
@@ -23,8 +27,9 @@ public class CsvService {
         return createFile(new File(filename), TransferStatus.PENDING);
     }
 
-    public ArrayList<Transfer> getTransfersFromCsv(String filename) {
-        return parseFromCsv(readFile(filename));
+    public ArrayList<Transfer> getTransfersFromCsv(File file) {
+        // get file from sftp
+        return parseFromCsv(readFile(file));
     }
 
     private File createFile(File file, TransferStatus transferStatus) {
@@ -52,9 +57,8 @@ public class CsvService {
         return lines;
     }
 
-    private ArrayList<String[]> readFile(String filename) {
+    private ArrayList<String[]> readFile(File file) {
         ArrayList<String[]> transferLines = new ArrayList<>();
-        File file = new File(filename);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
@@ -71,6 +75,10 @@ public class CsvService {
 
     private ArrayList<Transfer> parseFromCsv(ArrayList<String[]> transferLines) {
         ArrayList<Transfer> transfers = new ArrayList<>();
+
+        for (String[] string : transferLines) {
+            transfers.add(new Transfer(string[1], Float.valueOf(string[2]), bankAccountService.getBankAccountByNumber(string[3]), string[2], TransferType.INCOMING));
+        }
         return transfers;
     }
 }

@@ -46,10 +46,24 @@ public class CsvServiceTest {
 
     @Test
     void createCsvFromDatabase() {
+        createTempTransfers();
+        File file = csvService.getCsvFile("tmp.csv");
+        Assertions.assertNotNull(file);
+    }
+
+    @Test
+    void readTransfersFromCsv() {
+        createTempTransfers();
+        ArrayList<Transfer> transfers = csvService.getTransfersFromCsv(csvService.getCsvFile("tmp.csv"));
+        // transfers.forEach(transfer -> System.out.println(transfer + "\n"));
+        Assertions.assertNotNull(transfers);
+    }
+
+    private void createTempTransfers() {
         List<BankAccount> accounts  = new ArrayList<>();
         List<Transfer> transfers = new ArrayList<>();
 
-        for (int i = 1; i < 101; i++) {
+        for (int i = 1; i < 11; i++) {
             accounts.add(new BankAccount(String.valueOf((123456 * i)), "Jan " + i, "Kowalski " + i, 100.0f * i, 0.0f));
         }
 
@@ -57,7 +71,7 @@ public class CsvServiceTest {
             bankAccountService.addBankAccount(bankAccount);
         }
 
-        for (int i = 1; i < 100; i++) {
+        for (int i = 1; i < 10; i++) {
             transfers.add(new Transfer("przelew " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.OUTGOING));
         }
 
@@ -65,13 +79,5 @@ public class CsvServiceTest {
             transfer.setStatus(TransferStatus.PENDING);
 
         transferRepository.saveAll(transfers);
-
-        File file = csvService.getCsvFile("tmp.csv");
-        Assertions.assertNotNull(file);
-    }
-
-    @Test
-    void readTransfersFromCsv() {
-
     }
 }
