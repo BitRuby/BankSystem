@@ -15,7 +15,9 @@ public class PdfService {
 
     public Document createPdf(String filepathPdf, ArrayList<String> transferDetails) {
         Document document = prepareDocuments(transferDetails);
-        document = parseXHtml(document,createWriter(document, filepathPdf));
+        PdfWriter writer = createWriter(document, filepathPdf);
+        document.open();
+        document = parseXHtml(document, writer);
         document.close();
         return document;
     }
@@ -64,7 +66,6 @@ public class PdfService {
             e.printStackTrace();
         }
 
-        document.open();
         return writer;
     }
 
