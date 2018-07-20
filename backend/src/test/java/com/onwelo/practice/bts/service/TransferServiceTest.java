@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd0;
+import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd100;
+import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd1000;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -45,11 +48,10 @@ public class TransferServiceTest implements Extension {
 
     @Test
     public void getAllTransfers() {
-        BankAccount bankIn = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
+        BankAccount bankIn = new BankAccount("140159260076545510730339", "Jan", "Kowalski", bd1000, bd0);
         List<Transfer> transfers = new ArrayList<>();
         for (int i = 0; i < 10; i++)
-            transfers.add(new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", TransferType.INCOMING));
+            transfers.add(new Transfer("przelew", bd100, bankIn, "240159260076545510730339", TransferType.INCOMING));
 
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
@@ -62,18 +64,17 @@ public class TransferServiceTest implements Extension {
 
     @Test
     public void getTransfersByStatus() {
-        BankAccount bankIn = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
+        BankAccount bankIn = new BankAccount("140159260076545510730339", "Jan", "Kowalski", bd1000, bd0);
         List<Transfer> transfers = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            Transfer transfer = new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", TransferType.INCOMING);
+            Transfer transfer = new Transfer("przelew", bd100, bankIn, "240159260076545510730339", TransferType.INCOMING);
             transfer.setStatus(TransferStatus.REALIZED);
             transfers.add(transfer);
         }
 
         for (int i = 0; i < 10; i++) {
-            Transfer transfer = new Transfer("przelew", 100.0f, bankIn, "240159260076545510730339", TransferType.OUTGOING);
+            Transfer transfer = new Transfer("przelew", bd100, bankIn, "240159260076545510730339", TransferType.OUTGOING);
             transfer.setStatus(TransferStatus.PENDING);
             transfers.add(transfer);
         }
@@ -92,10 +93,10 @@ public class TransferServiceTest implements Extension {
 
     @Test
     public void deleteTransfer() {
-        BankAccount bankAccount = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
+        BankAccount bankAccount = new BankAccount("140159260076545510730339", "Jan", "Kowalski", bd1000, bd0);
 
-        Transfer transfer = new Transfer("przelew", 100.0f, bankAccount, "240159260076545510730339", TransferType.OUTGOING);
+
+        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "240159260076545510730339", TransferType.OUTGOING);
 
         bankAccountService.addBankAccount(bankAccount);
         transferService.addTransfer(transfer);

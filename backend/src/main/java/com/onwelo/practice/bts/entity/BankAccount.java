@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -32,10 +33,10 @@ public class BankAccount {
     private String lastName;
 
     @Column(name = "money_amount")
-    private Float moneyAmount;
+    private BigDecimal moneyAmount;
 
     @Column(name = "money_blocked")
-    private Float moneyBlocked;
+    private BigDecimal moneyBlocked;
 
     @OneToMany(mappedBy = "accountId", cascade = CascadeType.ALL)
     private List<Transfer> transfers;
@@ -43,7 +44,7 @@ public class BankAccount {
     @Column(name = "is_active")
     private Boolean active = true;
 
-    public BankAccount(String accountNo, String firstName, String lastName, Float moneyAmount, Float moneyBlocked) {
+    public BankAccount(String accountNo, String firstName, String lastName, BigDecimal moneyAmount, BigDecimal moneyBlocked) {
         this.accountNo = accountNo;
         this.firstName = firstName;
         this.lastName = lastName;

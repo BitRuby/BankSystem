@@ -6,6 +6,7 @@ import com.onwelo.practice.bts.utils.TransferType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -25,7 +26,7 @@ public class Transfer {
     private String title;
 
     @Column(name = "value")
-    private Float value;
+    private BigDecimal value;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
@@ -54,7 +55,7 @@ public class Transfer {
         createTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public Transfer(String title, Float value, BankAccount accountId, String accountNo, TransferType transferType) {
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferType transferType) {
         this.title = title;
         this.value = value;
         this.accountId = accountId;
