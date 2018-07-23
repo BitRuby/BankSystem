@@ -45,10 +45,14 @@ public class BankAccount {
     private Boolean active = true;
 
     public BankAccount(String accountNo, String firstName, String lastName, BigDecimal moneyAmount, BigDecimal moneyBlocked) {
-        this.accountNo = accountNo;
+        this.accountNo = accountNo.replace(" ", "");
         this.firstName = firstName;
         this.lastName = lastName;
         this.moneyAmount = moneyAmount;
         this.moneyBlocked = moneyBlocked;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo.replace(" ", "");
     }
 }

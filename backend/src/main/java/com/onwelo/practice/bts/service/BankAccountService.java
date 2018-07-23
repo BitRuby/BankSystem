@@ -4,12 +4,14 @@ import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.exceptions.MissingFieldException;
+import com.onwelo.practice.bts.exceptions.NotValidField;
 import com.onwelo.practice.bts.exceptions.UniqueFieldException;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,8 @@ public class BankAccountService {
     public BankAccount addBankAccount(BankAccount bankAccount) {
         if (bankAccount.getAccountNo() == null) {
             throw new MissingFieldException("missing bank account field= account no");
+        } else if (!isValid(bankAccount.getAccountNo())) {
+            throw new NotValidField(bankAccount.getAccountNo() + " IBAN is incorrect");
         }
         if (bankAccount.getFirstName() == null) {
             throw new MissingFieldException("missing bank account field= first name");
@@ -85,5 +89,19 @@ public class BankAccountService {
 
         bankAccount.setActive(false);
         return bankAccountRepository.save(bankAccount);
+    }
+
+    public boolean isValid(String accountNo) {
+        if (accountNo == null) return false;
+
+        //2521 otrzymujemy po rozkodowaniu PL - rozpatrujemy tylko polskie rachunki
+        accountNo = accountNo.replace(" ", "");
+
+        if (accountNo.length() != 26) return false;
+
+        accountNo = accountNo.substring(2, 26) + "2521" + accountNo.substring(0, 2);
+
+        BigInteger value = new BigInteger(accountNo);
+        return value.mod(new BigInteger("97")).intValue() == 1;
     }
 }
