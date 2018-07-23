@@ -21,12 +21,14 @@ import java.util.List;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CsvServiceTest {
-
     @Autowired
     private CsvService csvService;
 
     @Autowired
     private TransferRepository transferRepository;
+
+    @Autowired
+    private TransferService transferService;
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -47,14 +49,18 @@ public class CsvServiceTest {
     @Test
     void createCsvFromDatabase() {
         createTempTransfers();
-        File file = csvService.getCsvFile("tmp.csv");
+        ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
+        File file = csvService.getCsvFromTransfers(transfers, "tmp.csv");
         Assertions.assertNotNull(file);
     }
 
     @Test
     void readTransfersFromCsv() {
         createTempTransfers();
-        ArrayList<Transfer> transfers = csvService.getTransfersFromCsv(csvService.getCsvFile("tmp.csv"));
+        ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
+        File file = csvService.getCsvFromTransfers(transfers, "tmp.csv");
+
+        transfers = csvService.getTransfersFromCsv(file);
         transfers.forEach(transfer -> System.out.println(transfer + "\n"));
         Assertions.assertNotNull(transfers);
     }

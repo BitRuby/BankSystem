@@ -19,14 +19,8 @@ public class CsvService {
     @Autowired
     BankAccountService bankAccountService;
 
-    // TODO getting csv from server & parsing into collection
-
-    public File getCsvFile(String filename, TransferStatus transferStatus) {
-        return createFile(new File(filename), transferStatus);
-    }
-
-    public File getCsvFile(String filename) {
-        return createFile(new File(filename), TransferStatus.PENDING);
+    public File getCsvFromTransfers(ArrayList<Transfer> transfers, String filename) {
+        return createFile(new File(filename), parseToCsv(transfers));
     }
 
     public ArrayList<Transfer> getTransfersFromCsv(File file) {
@@ -34,20 +28,7 @@ public class CsvService {
         return parseFromCsv(readFile(file));
     }
 
-    private File createFile(File file, TransferStatus transferStatus) {
-        ArrayList<String> lines = parseToCsv(transferStatus);
-
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
-            lines.forEach(writer::append);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return file;
-    }
-
-    private ArrayList<String> parseToCsv(TransferStatus transferStatus) {
-        ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(transferStatus);
+    private ArrayList<String> parseToCsv(ArrayList<Transfer> transfers) {
         ArrayList<String> lines = new ArrayList<>();
 
         for (Transfer transfer : transfers) {
@@ -57,6 +38,16 @@ public class CsvService {
         }
 
         return lines;
+    }
+
+    private File createFile(File file, ArrayList<String> lines) {
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
+            lines.forEach(writer::append);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return file;
     }
 
     private ArrayList<String[]> readFile(File file) {
