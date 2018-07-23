@@ -17,6 +17,10 @@ public class BankService {
         return bankRepository.saveAll(bank);
     }
 
+    /**
+     * @see <a href="https://pl.wikipedia.org/wiki/Mi%C4%99dzynarodowy_numer_rachunku_bankowego#Sprawdzanie_i_wyliczanie_cyfr_kontrolnych">Wikipedia - polish</a>
+     * @see <a href="https://en.wikipedia.org/wiki/International_Bank_Account_Number#Validating_the_IBAN">Wikipedia - english</a>
+     */
     public Bank getBank(String accountNo) {
         if (accountNo == null || ((accountNo = accountNo.replace(" ", "")).length() != 26)
                 || !BankAccountService.isValid(accountNo)) {
