@@ -84,9 +84,9 @@ public class BankAccountServiceTest implements Extension {
 
     @Test
     public void isValid() {
-        assertTrue(BankAccountService.isValid("29 1160 2202 0000 0003 1193 5598"));
-        assertTrue(BankAccountService.isValid("74 1050 1416 1000 0092 0379 3907"));
-        assertFalse(BankAccountService.isValid("29 1160 2202 0000 0003 1193 5596"));
-        assertFalse(BankAccountService.isValid("29 1160 2202 0000 0003 1193"));
+        assertTrue(BankService.isValid("29 1160 2202 0000 0003 1193 5598"));
+        assertTrue(BankService.isValid("74 1050 1416 1000 0092 0379 3907"));
+        assertFalse(BankService.isValid("29 1160 2202 0000 0003 1193 5596"));
+        assertFalse(BankService.isValid("29 1160 2202 0000 0003 1193"));
     }
 }

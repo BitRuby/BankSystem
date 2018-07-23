@@ -35,7 +35,7 @@ public class TransferService {
     public Transfer addTransfer(Transfer transfer) {
         if (transfer.getAccountNo() == null) {
             throw new MissingFieldException("missing bank account field= account no");
-        } else if (!BankAccountService.isValid(transfer.getAccountNo())) {
+        } else if (!BankService.isValid(transfer.getAccountNo())) {
             throw new NotValidField(transfer.getAccountNo() + " IBAN is incorrect");
         }
 
@@ -45,7 +45,7 @@ public class TransferService {
     public Transfer updateTransfer(Transfer transfer) {
         if (transfer.getAccountNo() == null) {
             throw new MissingFieldException("missing bank account field= account no");
-        } else if (!BankAccountService.isValid(transfer.getAccountNo())) {
+        } else if (!BankService.isValid(transfer.getAccountNo())) {
             throw new NotValidField(transfer.getAccountNo() + " IBAN is incorrect");
         }
 
