@@ -59,7 +59,7 @@ public class Transfer {
         this.title = title;
         this.value = value;
         this.accountId = accountId;
-        this.accountNo = accountNo;
+        this.accountNo = accountNo.replace(" ", "");
         this.transferType = transferType;
     }
 }
