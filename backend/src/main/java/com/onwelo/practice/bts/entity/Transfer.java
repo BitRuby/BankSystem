@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,8 +15,9 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@ToString(exclude = "sourceAcc")
+@ToString(exclude = "accountId")
 @Table(name = "transfer")
+@Where(clause = "is_active=1")
 public class Transfer {
     @Id
     @Column(name = "id")
@@ -50,9 +52,14 @@ public class Transfer {
     @Column(name = "booking_date")
     private LocalDate bookingDate;
 
+    @Column(name = "is_active")
+    private Boolean active = true;
+
     @PrePersist
     protected void onCreate() {
-        createTime = new Timestamp(System.currentTimeMillis());
+        if (createTime == null) {
+            createTime = new Timestamp(System.currentTimeMillis());
+        }
     }
 
     public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferType transferType) {
@@ -61,5 +68,9 @@ public class Transfer {
         this.accountId = accountId;
         this.accountNo = accountNo.replace(" ", "");
         this.transferType = transferType;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo.replace(" ", "");
     }
 }
