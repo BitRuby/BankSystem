@@ -1,7 +1,4 @@
 .footer{
-  position: absolute;
-  bottom: 0;
-  height: 60px;
   width: 100%;
   color: rgb(255, 255, 255);
   background: rgb(57, 63, 77);
@@ -9,11 +6,6 @@
 hr {
   padding: 0;
   margin: 0;
-}
-@media (min-width: 576px) and (max-width: 991px) {
-  .container {
-    padding-left: 0;
-  }
 }
 @media (max-width: 480px) {
   .footer {

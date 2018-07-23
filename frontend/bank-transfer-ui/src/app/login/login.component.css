@@ -1,14 +1,10 @@
 .login-custom-bg {
   background: url("../../assets/images/background.jpg");
-  -webkit-filter: brightness(90%);
-  filter: brightness(90%);
   height: calc(100% - 0px);
   background-position: right top;
   background-repeat: no-repeat;
   background-size: cover;
-  background-size: cover;
   width: 100%;
-  float: right;
   position: absolute;
 }
 .card {

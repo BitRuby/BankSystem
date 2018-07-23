@@ -11,8 +11,21 @@
 }
 
 body {
-  min-height: 100vh !important;
+
 }
 .content {
   padding: 20px 0;
+}
+#main {
+  min-height: 100vh !important;
+  display: flex;
+  flex-direction: column;
+}
+#main > :nth-child(3) {
+  flex: 1;
+}
+@media (min-width: 576px) and (max-width: 991px) {
+  .container {
+    padding-left: 0 !important;
+  }
 }

@@ -28,8 +28,3 @@
     border-color: rgb(108, 117, 125);
   }
 }
-@media (min-width: 576px) and (max-width: 991px) {
-  .container {
-    padding-left: 0;
-  }
-}
