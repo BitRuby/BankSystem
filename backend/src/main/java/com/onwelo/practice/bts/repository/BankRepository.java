@@ -8,7 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface BankRepository extends JpaRepository<Bank, Long> {
-    Optional<Bank> findBySortCode(String sortCode);
-
     Optional<Bank> findFirstBySortCodeIsLike(String regex);
 }

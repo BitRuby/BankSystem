@@ -11,6 +11,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/accounts")
 public class BankAccountController {
+
     @Autowired
     BankAccountService bankAccountService;
 
@@ -25,14 +26,14 @@ public class BankAccountController {
     }
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody BankAccount bankAccount) {
-        return ResponseEntity.ok(bankAccountService.addBankAccount(bankAccount));
+    public BankAccount create(@Valid @RequestBody BankAccount bankAccount) {
+        return bankAccountService.addBankAccount(bankAccount);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody BankAccount bankAccount) {
+    public BankAccount update(@PathVariable("id") Long id, @Valid @RequestBody BankAccount bankAccount) {
         bankAccount.setId(id);
-        return ResponseEntity.ok(bankAccountService.updateBankAccount(bankAccount));
+        return bankAccountService.updateBankAccount(bankAccount);
     }
 
     @DeleteMapping(path = "/{id}")

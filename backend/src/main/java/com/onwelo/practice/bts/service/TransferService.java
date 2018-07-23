@@ -20,9 +20,6 @@ public class TransferService {
     @Autowired
     private TransferRepository transferRepository;
 
-    @Autowired
-    private BankRepository bankRepository;
-
     public List<Transfer> getAllTransfers() {
         return new ArrayList<>(transferRepository.findAll());
     }
@@ -53,12 +50,6 @@ public class TransferService {
         }
 
         return transferRepository.save(transfer);
-    }
-
-
-    public Bank getBank(String accountNo) {
-        if (accountNo == null || (accountNo = accountNo.replace(" ", "")).length() != 26) return null;
-        return bankRepository.findFirstBySortCodeIsLike(accountNo.substring(2, 6) + "%").orElse(null);
     }
 
     public Transfer deactivateTransfer(Long id) {

@@ -3,15 +3,15 @@ package com.onwelo.practice.bts.controller;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RepositoryRestController
+@RestController
 @RequestMapping("/transfers")
 public class TransferController {
+
     @Autowired
     private TransferService transferService;
 
@@ -26,19 +26,18 @@ public class TransferController {
     }
 
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody Transfer transfer) {
-        return ResponseEntity.ok(transferService.addTransfer(transfer));
+    public Transfer create(@Valid @RequestBody Transfer transfer) {
+        return transferService.addTransfer(transfer);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Transfer transfer) {
+    public Transfer update(@PathVariable("id") Long id, @Valid @RequestBody Transfer transfer) {
         transfer.setId(id);
-        return ResponseEntity.ok(transferService.updateTransfer(transfer));
+        return transferService.updateTransfer(transfer);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        transferService.deactivateTransfer(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(transferService.deactivateTransfer(id));
     }
 }

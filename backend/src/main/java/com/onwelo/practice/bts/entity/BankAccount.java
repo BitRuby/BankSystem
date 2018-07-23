@@ -1,5 +1,6 @@
 package com.onwelo.practice.bts.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,6 +40,7 @@ public class BankAccount {
     private BigDecimal moneyBlocked;
 
     @OneToMany(mappedBy = "accountId", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Transfer> transfers;
 
     @Column(name = "is_active")

@@ -3,6 +3,7 @@ package com.onwelo.practice.bts.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ public class Bank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sort_code", length = 8)
+    @Column(unique = true, name = "sort_code", length = 8)
     private String sortCode;
 
     @Column(name = "name")
