@@ -1,95 +1,53 @@
 package com.onwelo.practice.bts.entity;
 
-import javax.persistence.*;
-import java.util.Collection;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.Where;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
+@ToString(exclude = "transfers")
 @Table(name = "bank_account")
+@Where(clause = "is_active=1")
 public class BankAccount {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String bankNumber;
+    @Column(unique = true, name = "account_no")
+    private String accountNo;
 
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "money_amount")
     private Float moneyAmount;
 
+    @Column(name = "money_blocked")
     private Float moneyBlocked;
 
-    @OneToMany(mappedBy = "destination", targetEntity = Transfer.class, fetch = FetchType.EAGER)
-    private Collection incomingTransfers;
+    @OneToMany(mappedBy = "accountId", cascade = CascadeType.ALL)
+    private List<Transfer> transfers;
 
-    @OneToMany(mappedBy = "source", targetEntity = Transfer.class, fetch = FetchType.EAGER)
-    private Collection outgoingTransfers;
+    @Column(name = "is_active")
+    private Boolean active = true;
 
-    public BankAccount() {
-    }
-
-    public BankAccount(String bankNumber, String firstName, String lastName, Float moneyAmount, Float moneyBlocked) {
-        this.bankNumber = bankNumber;
+    public BankAccount(String accountNo, String firstName, String lastName, Float moneyAmount, Float moneyBlocked) {
+        this.accountNo = accountNo;
         this.firstName = firstName;
         this.lastName = lastName;
         this.moneyAmount = moneyAmount;
         this.moneyBlocked = moneyBlocked;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getBankNumber() {
-        return bankNumber;
-    }
-
-    public void setBankNumber(String bankNumber) {
-        this.bankNumber = bankNumber;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Float getMoneyAmount() {
-        return moneyAmount;
-    }
-
-    public void setMoneyAmount(Float moneyAmount) {
-        this.moneyAmount = moneyAmount;
-    }
-
-    public Float getMoneyBlocked() {
-        return moneyBlocked;
-    }
-
-    public void setMoneyBlocked(Float moneyBlocked) {
-        this.moneyBlocked = moneyBlocked;
-    }
-
-    public Collection getIncomingTransfers() {
-        return incomingTransfers;
-    }
-
-    public Collection getOutgoingTransfers() {
-        return outgoingTransfers;
     }
 }

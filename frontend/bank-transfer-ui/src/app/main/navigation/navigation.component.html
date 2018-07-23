@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-custom">
+<div class="container">
+  <a class="navbar-brand" routerLink="/main/dashboard">Bank<span class="brand-color" (click)="navbarCollapsed = true">UI</span></a>
+  <button (click)="navbarCollapsed = !navbarCollapsed" [attr.aria-expanded]="!navbarCollapsed" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-stretch" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/main/dashboard" routerLinkActive="active">Dashboard <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/main/new-transfer" routerLinkActive="active">New transfer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/main/transfer-list" routerLinkActive="active">History</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/main/account-details" routerLinkActive="active">My account</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/login">Logout</a>
+      </li>
+    </ul>
+  </div>
+</div>
+</nav>
+<header class="header hd-custom">
+  <div class="container">
+    <div class="d-flex flex-row">
+      <div class="pl-0 py-3 pr-3"><b>Account ID:</b> 20010</div>
+      <div class="p-3"><b>Balance:</b> $1250</div>
+    </div>
+  </div>
+</header>
+

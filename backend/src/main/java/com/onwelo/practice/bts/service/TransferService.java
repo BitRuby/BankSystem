@@ -2,6 +2,7 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.repository.TransferRepository;
+import com.onwelo.practice.bts.utils.TransferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +19,20 @@ public class TransferService {
         return new ArrayList<>(transferRepository.findAll());
     }
 
+    public List<Transfer> getTransfersByStatus(TransferStatus status) {
+        return transferRepository.findAllByStatus(status);
+    }
+
     public Transfer getTransferById(Long id) {
-        return transferRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("could not fund transfer with id: " + id));
+        return transferRepository.findById(id).orElse(null);
     }
 
-    public void addTransfer(Transfer transfer) {
-        transferRepository.save(transfer);
+    public Transfer addTransfer(Transfer transfer) {
+        return transferRepository.save(transfer);
     }
 
-    public void updateTransfer(Transfer transfer) {
-        transferRepository.save(transfer);
+    public Transfer updateTransfer(Transfer transfer) {
+        return transferRepository.save(transfer);
     }
 
     public void deleteTransfer(Long id) {
