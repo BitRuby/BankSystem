@@ -50,10 +50,10 @@ public class TransferServiceTest implements Extension {
 
     @Test
     public void getAllTransfers() {
-        BankAccount bankIn = new BankAccount("140159260076545510730339", "Jan", "Kowalski", bd1000, bd0);
+        BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
         List<Transfer> transfers = new ArrayList<>();
         for (int i = 0; i < 10; i++)
-            transfers.add(new Transfer("przelew", bd100, bankIn, "240159260076545510730339", TransferType.INCOMING));
+            transfers.add(new Transfer("przelew", bd100, bankIn, "74 1050 1416 1000 0092 0379 3907", TransferType.INCOMING));
 
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
@@ -66,17 +66,17 @@ public class TransferServiceTest implements Extension {
 
     @Test
     public void getTransfersByStatus() {
-        BankAccount bankIn = new BankAccount("140159260076545510730339", "Jan", "Kowalski", bd1000, bd0);
+        BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
         List<Transfer> transfers = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
-            Transfer transfer = new Transfer("przelew", bd100, bankIn, "240159260076545510730339", TransferType.INCOMING);
+            Transfer transfer = new Transfer("przelew", bd100, bankIn, "74 1050 1416 1000 0092 0379 3907", TransferType.INCOMING);
             transfer.setStatus(TransferStatus.REALIZED);
             transfers.add(transfer);
         }
 
         for (int i = 0; i < 10; i++) {
-            Transfer transfer = new Transfer("przelew", bd100, bankIn, "240159260076545510730339", TransferType.OUTGOING);
+            Transfer transfer = new Transfer("przelew", bd100, bankIn, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
             transfer.setStatus(TransferStatus.PENDING);
             transfers.add(transfer);
         }
@@ -95,10 +95,10 @@ public class TransferServiceTest implements Extension {
 
     @Test
     public void deleteTransfer() {
-        BankAccount bankAccount = new BankAccount("140159260076545510730339", "Jan", "Kowalski", bd1000, bd0);
+        BankAccount bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
 
 
-        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "240159260076545510730339", TransferType.OUTGOING);
+        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
 
         bankAccountService.addBankAccount(bankAccount);
         transferService.addTransfer(transfer);
