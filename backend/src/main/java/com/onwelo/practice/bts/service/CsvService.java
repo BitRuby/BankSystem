@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 @Service
 public class CsvService {
+    private final String splitSign = ";";
+
     @Autowired
     TransferService transferService;
 
@@ -49,9 +51,9 @@ public class CsvService {
         ArrayList<String> lines = new ArrayList<>();
 
         for (Transfer transfer : transfers) {
-            lines.add(transfer.getCreateTime().toString() + "," + transfer.getTitle() + "," + transfer.getValue() +
-                    "," + transfer.getAccountId().getAccountNo() + // owner
-                    "," + transfer.getAccountNo() + "\n"); // target
+            lines.add(transfer.getCreateTime().toString() + splitSign + transfer.getTitle() + splitSign + transfer.getValue() +
+                    splitSign + transfer.getAccountId().getAccountNo() + // owner
+                    splitSign + transfer.getAccountNo() + "\n"); // target
         }
 
         return lines;
@@ -63,7 +65,7 @@ public class CsvService {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                transferLines.add(line.split(","));
+                transferLines.add(line.split(splitSign));
             }
 
         } catch (IOException e) {

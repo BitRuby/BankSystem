@@ -55,7 +55,7 @@ public class CsvServiceTest {
     void readTransfersFromCsv() {
         createTempTransfers();
         ArrayList<Transfer> transfers = csvService.getTransfersFromCsv(csvService.getCsvFile("tmp.csv"));
-        // transfers.forEach(transfer -> System.out.println(transfer + "\n"));
+        transfers.forEach(transfer -> System.out.println(transfer + "\n"));
         Assertions.assertNotNull(transfers);
     }
 
@@ -72,7 +72,7 @@ public class CsvServiceTest {
         }
 
         for (int i = 1; i < 10; i++) {
-            transfers.add(new Transfer("przelew " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.OUTGOING));
+            transfers.add(new Transfer("przelew o tytule " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.OUTGOING));
         }
 
         for (Transfer transfer : transfers)
