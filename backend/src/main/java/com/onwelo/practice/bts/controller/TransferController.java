@@ -27,20 +27,18 @@ public class TransferController {
 
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody Transfer transfer) {
-        transferService.addTransfer(transfer);
-        return ResponseEntity.ok(transfer);
+        return ResponseEntity.ok(transferService.addTransfer(transfer));
     }
 
     @PutMapping(path = "/{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Transfer transfer) {
         transfer.setId(id);
-        transferService.updateTransfer(transfer);
-        return ResponseEntity.ok(transfer);
+        return ResponseEntity.ok(transferService.updateTransfer(transfer));
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        transferService.deleteTransfer(id);
+        transferService.deactivateTransfer(id);
         return ResponseEntity.ok().build();
     }
 }

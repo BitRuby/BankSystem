@@ -5,8 +5,8 @@ create table bank
 	city varchar(255) null,
 	department varchar(255) null,
 	name varchar(255) null,
-	post_code varchar(255) null,
-	sort_code bigint null
+	post_code varchar(6) null,
+	sort_code varchar(8) null
 ) engine=MyISAM;
 
 create table bank_account

@@ -2,7 +2,6 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
-import com.onwelo.practice.bts.exceptions.NotValidField;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.utils.TransferType;
@@ -73,12 +72,6 @@ public class BankAccountServiceTest implements Extension {
 
         assertNotNull(bankAccountService.getTransfers(bankIn.getId()));
         assertNotNull(bankAccountService.getTransfers(bankOut.getId()));
-
-        transferService.deleteTransfer(transfer1.getId());
-        transferService.deleteTransfer(transfer2.getId());
-
-        assertNull(transferService.getTransferById(transfer1.getId()));
-        assertNull(transferService.getTransferById(transfer2.getId()));
     }
 
     @Test
@@ -90,10 +83,10 @@ public class BankAccountServiceTest implements Extension {
     }
 
     @Test
-    void isValid() {
-        assertTrue(bankAccountService.isValid("29 1160 2202 0000 0003 1193 5598"));
-        assertTrue(bankAccountService.isValid("74 1050 1416 1000 0092 0379 3907"));
-        assertFalse(bankAccountService.isValid("29 1160 2202 0000 0003 1193 5596"));
-        assertFalse(bankAccountService.isValid("29 1160 2202 0000 0003 1193"));
+    public void isValid() {
+        assertTrue(BankAccountService.isValid("29 1160 2202 0000 0003 1193 5598"));
+        assertTrue(BankAccountService.isValid("74 1050 1416 1000 0092 0379 3907"));
+        assertFalse(BankAccountService.isValid("29 1160 2202 0000 0003 1193 5596"));
+        assertFalse(BankAccountService.isValid("29 1160 2202 0000 0003 1193"));
     }
 }

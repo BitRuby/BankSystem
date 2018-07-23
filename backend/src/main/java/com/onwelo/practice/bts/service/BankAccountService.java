@@ -70,6 +70,8 @@ public class BankAccountService {
         }
         if (bankAccount.getAccountNo() == null) {
             throw new MissingFieldException("missing bank account field= account no");
+        } else if (!isValid(bankAccount.getAccountNo())) {
+            throw new NotValidField(bankAccount.getAccountNo() + " IBAN is incorrect");
         }
         if (bankAccount.getLastName() == null) {
             throw new MissingFieldException("missing bank account field= last name");
@@ -91,7 +93,7 @@ public class BankAccountService {
         return bankAccountRepository.save(bankAccount);
     }
 
-    public boolean isValid(String accountNo) {
+    public static boolean isValid(String accountNo) {
         if (accountNo == null) return false;
 
         //2521 otrzymujemy po rozkodowaniu PL - rozpatrujemy tylko polskie rachunki
