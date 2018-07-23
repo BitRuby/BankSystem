@@ -33,14 +33,14 @@ public class Transfer {
     @JsonBackReference
     private BankAccount accountId;
 
-    @Column(name = "account_no")
+    @Column(name = "account_no", length = 26)
     private String accountNo;
 
-    @Column(name = "status")
+    @Column(name = "status", length = 8)
     @Enumerated(EnumType.STRING)
     private TransferStatus status;
 
-    @Column(name = "transfer_type")
+    @Column(name = "transfer_type", length = 8)
     @Enumerated(EnumType.STRING)
     private TransferType transferType;
 

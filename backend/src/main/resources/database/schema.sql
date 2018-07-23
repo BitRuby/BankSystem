@@ -12,10 +12,10 @@ create table bank
 create table bank_account
 (
 	id bigint auto_increment primary key,
-	account_no varchar(255) null,
+	account_no varchar(26) null,
 	is_active bit null,
-	first_name varchar(255) null,
-	last_name varchar(255) null,
+	first_name varchar(15) null,
+	last_name varchar(25) null,
 	money_amount decimal(19,2) null,
 	money_blocked decimal(19,2) null,
 	constraint UK_account_no unique (account_no)
@@ -24,12 +24,12 @@ create table bank_account
 create table transfer
 (
 	id bigint auto_increment primary key,
-	account_no varchar(255) null,
+	account_no varchar(26) null,
 	booking_date date null,
 	create_time datetime null,
-	status varchar(255) null,
+	status varchar(8) null,
 	title varchar(255) null,
-	transfer_type varchar(255) null,
+	transfer_type varchar(8) null,
 	value decimal(19,2) null,
 	account_id bigint not null
 ) engine=MyISAM;
