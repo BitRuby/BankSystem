@@ -2,3 +2,4 @@
 *.iml
 /data
 /logs
+frontend/node_modules/*
