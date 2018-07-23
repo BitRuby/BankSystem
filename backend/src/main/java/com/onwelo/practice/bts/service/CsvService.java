@@ -3,21 +3,22 @@ package com.onwelo.practice.bts.service;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @Service
 public class CsvService {
-    private final String splitSign = ";";
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(CsvService.class);
+    private static final String SplitSign = ";";
 
     @Autowired
-    TransferService transferService;
-
-    @Autowired
-    BankAccountService bankAccountService;
+    private BankAccountService bankAccountService;
 
     public File getCsvFromTransfers(ArrayList<Transfer> transfers, String filename) {
         return createFile(new File(filename), parseToCsv(transfers));
@@ -32,9 +33,11 @@ public class CsvService {
         ArrayList<String> lines = new ArrayList<>();
 
         for (Transfer transfer : transfers) {
-            lines.add(transfer.getCreateTime().toString() + splitSign + transfer.getTitle() + splitSign + transfer.getValue() +
-                    splitSign + transfer.getAccountId().getAccountNo() + // owner
-                    splitSign + transfer.getAccountNo() + "\n"); // target
+            lines.add(transfer.getCreateTime().toString() + SplitSign +
+                    transfer.getTitle() + SplitSign +
+                    transfer.getValue() + SplitSign +
+                    transfer.getAccountId().getAccountNo() + SplitSign + // owner
+                    transfer.getAccountNo() + "\n"); // target
         }
 
         return lines;
@@ -44,7 +47,7 @@ public class CsvService {
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
             lines.forEach(writer::append);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Logger.debug(e.getMessage());
         }
 
         return file;
@@ -56,11 +59,10 @@ public class CsvService {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                transferLines.add(line.split(splitSign));
+                transferLines.add(line.split(SplitSign));
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.debug(e.getMessage());
         }
 
         return transferLines;
@@ -72,6 +74,7 @@ public class CsvService {
         for (String[] string : transferLines) {
             transfers.add(new Transfer(string[1], Float.valueOf(string[2]), bankAccountService.getBankAccountByNumber(string[3]), string[2], TransferType.INCOMING));
         }
+
         return transfers;
     }
 }

@@ -6,8 +6,9 @@ import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,36 +37,8 @@ public class CsvServiceTest {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
-    @AfterEach
-    void cleanUp() throws Exception {
-        bankAccountRepository.deleteAll();
-        transferRepository.deleteAll();
-
-        File file = new File("tmp.csv");
-        if (!file.delete())
-            throw new Exception("unable to delete file");
-    }
-
-    @Test
-    void createCsvFromDatabase() {
-        createTempTransfers();
-        ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
-        File file = csvService.getCsvFromTransfers(transfers, "tmp.csv");
-        Assertions.assertNotNull(file);
-    }
-
-    @Test
-    void readTransfersFromCsv() {
-        createTempTransfers();
-        ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
-        File file = csvService.getCsvFromTransfers(transfers, "tmp.csv");
-
-        transfers = csvService.getTransfersFromCsv(file);
-        transfers.forEach(transfer -> System.out.println(transfer + "\n"));
-        Assertions.assertNotNull(transfers);
-    }
-
-    private void createTempTransfers() {
+    @BeforeEach
+    void createTempTransfers() {
         List<BankAccount> accounts  = new ArrayList<>();
         List<Transfer> transfers = new ArrayList<>();
 
@@ -81,9 +54,37 @@ public class CsvServiceTest {
             transfers.add(new Transfer("przelew o tytule " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.OUTGOING));
         }
 
-        for (Transfer transfer : transfers)
+        for (Transfer transfer : transfers) {
             transfer.setStatus(TransferStatus.PENDING);
+        }
 
         transferRepository.saveAll(transfers);
+    }
+
+    @AfterEach
+    void cleanUp() throws Exception {
+        bankAccountRepository.deleteAll();
+        transferRepository.deleteAll();
+
+        File file = new File("tmp.csv");
+        if (!file.delete()) {
+            throw new Exception("unable to delete file");
+        }
+    }
+
+    @Test
+    void createCsvFromDatabase() {
+        ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
+        File file = csvService.getCsvFromTransfers(transfers, "tmp.csv");
+        Assertions.assertNotNull(file);
+    }
+
+    @Test
+    void readTransfersFromCsv() {
+        ArrayList<Transfer> tmpTransfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
+        File file = csvService.getCsvFromTransfers(tmpTransfers, "tmp.csv");
+
+        ArrayList<Transfer> transfers = csvService.getTransfersFromCsv(file);
+        Assertions.assertNotNull(transfers);
     }
 }
