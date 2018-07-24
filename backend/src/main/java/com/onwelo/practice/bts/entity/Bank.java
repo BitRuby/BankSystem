@@ -3,6 +3,7 @@ package com.onwelo.practice.bts.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 
@@ -17,8 +18,8 @@ public class Bank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sort_code")
-    private Long sortCode;
+    @Column(unique = true, name = "sort_code", length = 8)
+    private String sortCode;
 
     @Column(name = "name")
     private String name;
@@ -26,7 +27,7 @@ public class Bank {
     @Column(name = "department")
     private String department;
 
-    @Column(name = "post_code")
+    @Column(name = "post_code", length = 6)
     private String postCode;
 
     @Column(name = "city")
@@ -35,11 +36,12 @@ public class Bank {
     @Column(name = "address")
     private String address;
 
-    public Bank(String name, String department, String postCode, String city, String address) {
+    public Bank(String name, String department, String postCode, String city, String address, String sortCode) {
         this.name = name;
         this.department = department;
         this.postCode = postCode;
         this.city = city;
         this.address = address;
+        this.sortCode = sortCode;
     }
 }

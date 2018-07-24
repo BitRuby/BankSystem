@@ -15,15 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd0;
-import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd100;
-import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd1000;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.onwelo.practice.bts.service.BankAccountServiceTest.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -52,17 +49,14 @@ public class TransferServiceTest implements Extension {
     public void getAllTransfers() {
         BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
         List<Transfer> transfers = new ArrayList<>();
-        
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
             transfers.add(new Transfer("przelew", bd100, bankIn, "74 1050 1416 1000 0092 0379 3907", TransferType.INCOMING));
-        }
+
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
         assertNotNull(transferService.getAllTransfers());
 
         transferService.getAllTransfers().forEach(System.out::println);
-
-        transfers.stream().map(Transfer::getId).forEach(transferService::deleteTransfer);
     }
 
     @Test
@@ -87,22 +81,5 @@ public class TransferServiceTest implements Extension {
 
         assertEquals(5, transferService.getTransfersByStatus(TransferStatus.REALIZED).size());
         assertEquals(10, transferService.getTransfersByStatus(TransferStatus.PENDING).size());
-    }
-
-    @Test
-    public void deleteTransfer() {
-        BankAccount bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
-
-
-        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
-
-        bankAccountService.addBankAccount(bankAccount);
-        transferService.addTransfer(transfer);
-
-        assertNotNull(bankAccountService.getBankAccountById(bankAccount.getId()));
-        assertNotNull(transferService.getTransferById(transfer.getId()));
-
-        transferService.deleteTransfer(transfer.getId());
-        assertNull(transferService.getTransferById(transfer.getId()));
     }
 }
