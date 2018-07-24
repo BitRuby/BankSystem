@@ -2,6 +2,7 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
+import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.utils.TransferType;
@@ -26,9 +27,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class BankAccountServiceTest implements Extension {
 
-    static final BigDecimal bd1000 = new BigDecimal(1000);
-    static final BigDecimal bd100 = new BigDecimal(100);
-    static final BigDecimal bd0 = new BigDecimal(0);
+    public static final BigDecimal bd1000 = new BigDecimal(1000);
+    public static final BigDecimal bd100 = new BigDecimal(100);
+    public static final BigDecimal bd0 = new BigDecimal(0);
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -49,7 +50,7 @@ public class BankAccountServiceTest implements Extension {
     }
 
     @Test
-    public void getAllBankAccounts() {
+    public void getAllBankAccountsTest() {
         List<BankAccount> bankAccounts = new ArrayList<>() {{
             add(new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0));
             add(new BankAccount("74 1050 1416 1000 0092 0379 3907", "Jan", "Kowalski", bd1000, bd0));
@@ -59,7 +60,7 @@ public class BankAccountServiceTest implements Extension {
     }
 
     @Test
-    public void getTransfers() {
+    public void getTransfersTest() {
         BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
         BankAccount bankOut = new BankAccount("74 1050 1416 1000 0092 0379 3907", "Jan", "Kowalski", bd1000, bd0);
         bankAccountService.addBankAccount(bankIn);
@@ -75,7 +76,7 @@ public class BankAccountServiceTest implements Extension {
     }
 
     @Test
-    public void getBankAccountById() {
+    public void getBankAccountByIdTest() {
         BankAccount bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
 
         bankAccountService.addBankAccount(bankAccount);
@@ -83,7 +84,7 @@ public class BankAccountServiceTest implements Extension {
     }
 
     @Test
-    public void isValid() {
+    public void isValidTest() {
         assertTrue(BankService.isValid("29 1160 2202 0000 0003 1193 5598"));
         assertTrue(BankService.isValid("74 1050 1416 1000 0092 0379 3907"));
         assertFalse(BankService.isValid("29 1160 2202 0000 0003 1193 5596"));

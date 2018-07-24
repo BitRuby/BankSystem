@@ -30,11 +30,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = {DataIntegrityViolationException.class})
     protected ResponseEntity<String> handleDataIntegrityViolation(Exception e) {
-        return new ResponseEntity<>(gson.toJson("account no is already taken"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(gson.toJson("account no is already taken"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {NotValidField.class})
     protected ResponseEntity<String> handleFailedValidation(Exception e) {
-        return new ResponseEntity<>(gson.toJson(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(gson.toJson(e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

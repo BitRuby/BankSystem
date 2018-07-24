@@ -1,10 +1,12 @@
 package com.onwelo.practice.bts.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.glassfish.jersey.internal.util.collection.Views;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;

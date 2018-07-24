@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RestController
-@RequestMapping("/transfers")
+@RequestMapping(value = "/transfers", produces = "application/json")
 public class TransferController {
 
     @Autowired
@@ -26,12 +24,12 @@ public class TransferController {
     }
 
     @PostMapping
-    public Transfer create(@Valid @RequestBody Transfer transfer) {
+    public Transfer create(@RequestBody Transfer transfer) {
         return transferService.addTransfer(transfer);
     }
 
     @PutMapping(path = "/{id}")
-    public Transfer update(@PathVariable("id") Long id, @Valid @RequestBody Transfer transfer) {
+    public Transfer update(@PathVariable("id") Long id, @RequestBody Transfer transfer) {
         transfer.setId(id);
         return transferService.updateTransfer(transfer);
     }
