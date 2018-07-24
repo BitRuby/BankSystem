@@ -3,6 +3,8 @@ package com.onwelo.practice.bts.service;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.onwelo.practice.bts.entity.Transfer;
+import com.onwelo.practice.bts.utils.TransferType;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +13,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 @Service
 public class PdfService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
 
-    public Document createPdf(String filepathPdf, ArrayList<String> transferDetails) {
+    public Document createPdf(String filepathPdf, Transfer transfer) {
         Document document = prepareDocument();
         PdfWriter writer = createWriter(document, filepathPdf);
         document.open();
-        document = parseXHtml(document, writer, prepareContent(transferDetails));
+        document = parseXHtml(document, writer, prepareContent(transfer));
         document.close();
         return document;
     }
@@ -32,7 +33,7 @@ public class PdfService {
         return document;
     }
 
-    private String prepareContent(ArrayList<String> transferDetails) {
+    private String prepareContent(Transfer transfer) {
         Path path = Paths.get("src/main/resources/pdf/pdfTheme.html");
         byte[] themeContent = null;
 
@@ -44,12 +45,21 @@ public class PdfService {
 
         assert themeContent != null;
         String pdfContent = new String(themeContent);
+        
+        if (transfer.getTransferType().equals(TransferType.INCOMING)) {
+            pdfContent = pdfContent.replace("${date}", transfer.getBookingDate().toString());
+            pdfContent = pdfContent.replace("${accountNoOwner}", transfer.getAccountNo());
+            pdfContent = pdfContent.replace("${accountNoTarget}", transfer.getAccountId().getAccountNo());
+        }
 
-        pdfContent = pdfContent.replace("${date}", transferDetails.get(0));
-        pdfContent = pdfContent.replace("${accountNoOwner}", transferDetails.get(1));
-        pdfContent = pdfContent.replace("${accountNoTarget}", transferDetails.get(2));
-        pdfContent = pdfContent.replace("${title}", transferDetails.get(3));
-        pdfContent = pdfContent.replace("${value}", transferDetails.get(4));
+        if (transfer.getTransferType().equals(TransferType.OUTGOING)) {
+            pdfContent = pdfContent.replace("${date}", transfer.getCreateTime().toString());
+            pdfContent = pdfContent.replace("${accountNoOwner}", transfer.getAccountId().getAccountNo());
+            pdfContent = pdfContent.replace("${accountNoTarget}", transfer.getAccountNo());
+        }
+
+        pdfContent = pdfContent.replace("${title}", transfer.getTitle());
+        pdfContent = pdfContent.replace("${value}", transfer.getValue().toString());
 
         return pdfContent;
     }

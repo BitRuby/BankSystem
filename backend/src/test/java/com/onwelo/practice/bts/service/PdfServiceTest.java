@@ -1,6 +1,9 @@
 package com.onwelo.practice.bts.service;
 
 import com.itextpdf.text.Document;
+import com.onwelo.practice.bts.entity.BankAccount;
+import com.onwelo.practice.bts.entity.Transfer;
+import com.onwelo.practice.bts.utils.TransferType;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
@@ -12,9 +15,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -26,21 +29,30 @@ class PdfServiceTest implements Extension {
 
     @AfterEach
     void deleteFiles() throws Exception {
-        File filePdf = new File("generatedPdf.pdf");
-        if (!filePdf.delete()) {
+        File pdfOutgoing = new File("pdfOutgoing.pdf");
+        File pdfIncoming = new File("pdfIncoming.pdf");
+        if (!pdfOutgoing.delete() && !pdfIncoming.delete()) {
             throw new Exception("failed deletion test files");
         }
     }
 
     @Test
-    void getPdf() {
-        ArrayList<String> transferDetails = new ArrayList<>();
-        transferDetails.add(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-        transferDetails.add("123456");
-        transferDetails.add("654321");
-        transferDetails.add("Testowy tytuł przelewu");
-        transferDetails.add("pięćset pieniędzy");
-        Document document = pdfService.createPdf("generatedPdf.pdf", transferDetails);
+    void getPdfOutgoing() {
+        Transfer transfer = new Transfer("testowy tytuł przelewu wychodzącego", BigDecimal.valueOf(500),
+                new BankAccount("123456", "Jan", "Kowalski", BigDecimal.valueOf(2000), BigDecimal.valueOf(0)),
+                "987654321", TransferType.OUTGOING);
+        transfer.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        Document document = pdfService.createPdf("pdfOutgoing.pdf", transfer);
+        assertNotNull(document);
+    }
+
+    @Test
+    void getPdfIncoming() {
+        Transfer transfer = new Transfer("testowy tytuł przelewu przychodzącego", BigDecimal.valueOf(500),
+                new BankAccount("123456", "Jan", "Kowalski", BigDecimal.valueOf(2000), BigDecimal.valueOf(0)),
+                "987654321", TransferType.INCOMING);
+        transfer.setBookingDate(LocalDate.now());
+        Document document = pdfService.createPdf("pdfIncoming.pdf", transfer);
         assertNotNull(document);
     }
 }
