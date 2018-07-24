@@ -33,7 +33,7 @@ public class PdfService {
     }
 
     private String prepareContent(ArrayList<String> transferDetails) {
-        Path path = Paths.get("utilities/pdfTheme.html");
+        Path path = Paths.get("src/main/resources/pdf/pdfTheme.html");
         byte[] themeContent = null;
 
         try {
