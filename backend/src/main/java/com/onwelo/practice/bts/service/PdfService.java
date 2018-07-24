@@ -18,13 +18,13 @@ import java.nio.file.Paths;
 public class PdfService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
 
-    public Document createPdf(String filepathPdf, Transfer transfer) {
+    public File createPdf(String filepathPdf, Transfer transfer) {
         Document document = prepareDocument();
         PdfWriter writer = createWriter(document, filepathPdf);
         document.open();
         document = parseXHtml(document, writer, prepareContent(transfer));
         document.close();
-        return document;
+        return new File(filepathPdf);
     }
 
     private Document prepareDocument() {
