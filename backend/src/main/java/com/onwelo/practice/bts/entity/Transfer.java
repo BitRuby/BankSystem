@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
@@ -13,8 +15,9 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@ToString(exclude = "sourceAcc")
+@ToString(exclude = "accountId")
 @Table(name = "transfer")
+@Where(clause = "is_active=1")
 public class Transfer {
     @Id
     @Column(name = "id")
@@ -25,21 +28,21 @@ public class Transfer {
     private String title;
 
     @Column(name = "value")
-    private Float value;
+    private BigDecimal value;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
     @JsonBackReference
     private BankAccount accountId;
 
-    @Column(name = "account_no")
+    @Column(name = "account_no", length = 26)
     private String accountNo;
 
-    @Column(name = "status")
+    @Column(name = "status", length = 8)
     @Enumerated(EnumType.STRING)
     private TransferStatus status;
 
-    @Column(name = "transfer_type")
+    @Column(name = "transfer_type", length = 8)
     @Enumerated(EnumType.STRING)
     private TransferType transferType;
 
@@ -49,16 +52,25 @@ public class Transfer {
     @Column(name = "booking_date")
     private LocalDate bookingDate;
 
+    @Column(name = "is_active")
+    private Boolean active = true;
+
     @PrePersist
     protected void onCreate() {
-        createTime = new Timestamp(System.currentTimeMillis());
+        if (createTime == null) {
+            createTime = new Timestamp(System.currentTimeMillis());
+        }
     }
 
-    public Transfer(String title, Float value, BankAccount accountId, String accountNo, TransferType transferType) {
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferType transferType) {
         this.title = title;
         this.value = value;
         this.accountId = accountId;
-        this.accountNo = accountNo;
+        this.accountNo = accountNo.replace(" ", "");
         this.transferType = transferType;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo.replace(" ", "");
     }
 }
