@@ -28,8 +28,8 @@
 <header class="header hd-custom">
   <div class="container">
     <div class="d-flex flex-row">
-      <div class="pl-0 py-3 pr-3"><b>Account ID:</b> 20010</div>
-      <div class="p-3"><b>Balance:</b> $1250</div>
+      <div class="pl-0 py-3 pr-3"><b>Account ID:</b> {{user?.id}}</div>
+      <div class="p-3"><b>Balance:</b> {{user?.moneyAmount | currency:'PLN'}}</div>
     </div>
   </div>
 </header>
