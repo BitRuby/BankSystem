@@ -1,9 +1,7 @@
 package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.Transfer;
-import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,7 @@ public class CsvService {
     }
 
     public ArrayList<Transfer> getTransfersFromCsv(File file) {
-        // get file from sftp
+        // geting file from sftp
         return parseFromCsv(readFile(file));
     }
 
@@ -72,7 +70,7 @@ public class CsvService {
         ArrayList<Transfer> transfers = new ArrayList<>();
 
         for (String[] string : transferLines) {
-            transfers.add(new Transfer(string[1], Float.valueOf(string[2]), bankAccountService.getBankAccountByNumber(string[3]), string[2], TransferType.INCOMING));
+            transfers.add(new Transfer(string[1], BigDecimal.valueOf(Double.valueOf(string[2])), bankAccountService.getBankAccountByNumber(string[3]), string[4], TransferType.INCOMING));
         }
 
         return transfers;

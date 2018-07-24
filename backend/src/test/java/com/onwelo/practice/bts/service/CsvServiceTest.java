@@ -13,13 +13,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 
 @ExtendWith(SpringExtension.class)
+@TestPropertySource(locations = "classpath:application-test.properties")
 @SpringBootTest
 public class CsvServiceTest {
     @Autowired
@@ -39,26 +41,17 @@ public class CsvServiceTest {
 
     @BeforeEach
     void createTempTransfers() {
-        List<BankAccount> accounts  = new ArrayList<>();
-        List<Transfer> transfers = new ArrayList<>();
+        BankAccount account1 = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", BigDecimal.valueOf(500), BigDecimal.valueOf(0));
+        BankAccount account2 = new BankAccount("74 1050 1416 1000 0092 0379 3907", "NieJan", "NieKowalski", BigDecimal.valueOf(500), BigDecimal.valueOf(0));
+        bankAccountService.addBankAccount(account1);
+        bankAccountService.addBankAccount(account2);
 
-        for (int i = 1; i < 11; i++) {
-            accounts.add(new BankAccount(String.valueOf((123456 * i)), "Jan " + i, "Kowalski " + i, 100.0f * i, 0.0f));
-        }
-
-        for (BankAccount bankAccount : accounts) {
-            bankAccountService.addBankAccount(bankAccount);
-        }
-
-        for (int i = 1; i < 10; i++) {
-            transfers.add(new Transfer("przelew o tytule " + i, 100.0f * i, accounts.get(i - 1), accounts.get(i).getAccountNo(), TransferType.OUTGOING));
-        }
-
-        for (Transfer transfer : transfers) {
-            transfer.setStatus(TransferStatus.PENDING);
-        }
-
-        transferRepository.saveAll(transfers);
+        Transfer transfer1 = new Transfer("Przelew numer jeden", BigDecimal.valueOf(100), account1, account2.getAccountNo(), TransferType.OUTGOING);
+        transfer1.setStatus(TransferStatus.PENDING);
+        Transfer transfer2 = new Transfer("Przelew numer dwa", BigDecimal.valueOf(200), account2, account1.getAccountNo(), TransferType.OUTGOING);
+        transfer2.setStatus(TransferStatus.PENDING);
+        transferService.addTransfer(transfer1);
+        transferService.addTransfer(transfer2);
     }
 
     @AfterEach
@@ -68,7 +61,7 @@ public class CsvServiceTest {
 
         File file = new File("tmp.csv");
         if (!file.delete()) {
-            throw new Exception("unable to delete file");
+           throw new Exception("unable to delete file");
         }
     }
 
@@ -83,7 +76,6 @@ public class CsvServiceTest {
     void readTransfersFromCsv() {
         ArrayList<Transfer> tmpTransfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
         File file = csvService.getCsvFromTransfers(tmpTransfers, "tmp.csv");
-
         ArrayList<Transfer> transfers = csvService.getTransfersFromCsv(file);
         Assertions.assertNotNull(transfers);
     }
