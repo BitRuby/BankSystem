@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.exceptions.MissingFieldException;
+import com.onwelo.practice.bts.exceptions.NotValidField;
 import com.onwelo.practice.bts.exceptions.UniqueFieldException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -30,5 +31,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = {DataIntegrityViolationException.class})
     protected ResponseEntity<String> handleDataIntegrityViolation(Exception e) {
         return new ResponseEntity<>(gson.toJson("account no is already taken"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {NotValidField.class})
+    protected ResponseEntity<String> handleFailedValidation(Exception e) {
+        return new ResponseEntity<>(gson.toJson(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
