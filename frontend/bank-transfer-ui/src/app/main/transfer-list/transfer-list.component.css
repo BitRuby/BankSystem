@@ -1,7 +1,9 @@
+hr {
+  margin-bottom: 30px;
+}
 .table-custom {
   background: rgb(57, 63, 77);
 }
-
 .table-dark td, .table-dark th, .table-dark thead th {
   border-color: #5f6061;
 }
