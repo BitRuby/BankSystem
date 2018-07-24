@@ -10,11 +10,12 @@
   font-style: normal;
 }
 
-body {
-
+html, body {
+  height: 100% !important;
 }
-.content {
-  padding: 20px 0;
+.wrapper {
+  flex: 1;
+  display: flex;
 }
 #main {
   min-height: 100vh !important;
@@ -23,6 +24,7 @@ body {
 }
 #main > :nth-child(3) {
   flex: 1;
+  display: flex;
 }
 @media (min-width: 576px) and (max-width: 991px) {
   .container {
