@@ -25,8 +25,9 @@ class PdfServiceTest implements Extension {
     @AfterEach
     void deleteFiles() throws Exception {
         File filePdf = new File("generatedPdf.pdf");
-        if (!filePdf.delete())
+        if (!filePdf.delete()) {
             throw new Exception("failed deletion test files");
+        }
     }
 
     @Test

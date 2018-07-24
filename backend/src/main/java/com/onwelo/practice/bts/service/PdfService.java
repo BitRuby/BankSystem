@@ -3,58 +3,55 @@ package com.onwelo.practice.bts.service;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 @Service
 public class PdfService {
-    private String pdfContent;
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
 
     public Document createPdf(String filepathPdf, ArrayList<String> transferDetails) {
-        Document document = prepareDocuments(transferDetails);
+        Document document = prepareDocument();
         PdfWriter writer = createWriter(document, filepathPdf);
         document.open();
-        document = parseXHtml(document, writer);
+        document = parseXHtml(document, writer, prepareContent(transferDetails));
         document.close();
         return document;
     }
 
-    private Document prepareDocuments(ArrayList<String> transferDetails) {
+    private Document prepareDocument() {
         Document document = new Document();
         document.setPageSize(PageSize.A4);
-
-        pdfContent = "<html>\n" +
-                "    <style>\n" +
-                "       body { \n" +
-                "            padding: 24px; \n" +
-                "            color: #262626;\n" +
-                "            font-family: 'Times New Roman', Times, serif;}\n" +
-                "        p.normal-description {font-size: 16px}\n" +
-                "        p.small-description {font-size: 10px}\n" +
-                "        hr.line {border-top: 1px solid #ccc}\n" +
-                "    </style>\n" +
-                "    <head>\n" +
-                "        <meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=UTF-8\"></meta>" +
-                "    </head>\n" +
-                "    <body>\n" +
-                "        <h1>BankUI - twój najgorszy bank</h1>\n" +
-                "        <p class=\"description\" style=\"margin-top: -20px\">Bankujesz - tracisz</p>\n" +
-                "        <hr class=\"line\"></hr>\n" +
-                "        <h2>Potwierdzenie płatności</h2>\n" +
-                "        <p class=\"normal-description\">Data wysłania przelewu: <b>" + transferDetails.get(0) + "</b></p>\n" +
-                "        <hr class=\"line\" align=\"left\" width=\"10%\"></hr>\n" +
-                "        <p class=\"normal-description\">Rachunek źródłowy: <b>" + transferDetails.get(1) + "</b></p>\n" +
-                "        <p class=\"normal-description\">Rachunek docelowy: <b>" + transferDetails.get(2) + "</b></p>\n" +
-                "        <hr class=\"line\" align=\"left\" width=\"10%\"></hr>\n" +
-                "        <p class=\"normal-description\">Tytuł: <b>" + transferDetails.get(3) + "</b></p>\n" +
-                "        <p class=\"normal-description\">Kwota: <b>" + transferDetails.get(4) + " zł</b></p>\n" +
-                "    </body>\n" +
-                "</html>";
-
         return document;
+    }
+
+    private String prepareContent(ArrayList<String> transferDetails) {
+        Path path = Paths.get("utilities/pdfTheme.html");
+        byte[] themeContent = null;
+
+        try {
+            themeContent = Files.readAllBytes(path);
+        } catch (IOException e) {
+            Logger.debug(e.getMessage());
+        }
+
+        assert themeContent != null;
+        String pdfContent = new String(themeContent);
+
+        pdfContent = pdfContent.replace("${date}", transferDetails.get(0));
+        pdfContent = pdfContent.replace("${accountNoOwner}", transferDetails.get(1));
+        pdfContent = pdfContent.replace("${accountNoTarget}", transferDetails.get(2));
+        pdfContent = pdfContent.replace("${title}", transferDetails.get(3));
+        pdfContent = pdfContent.replace("${value}", transferDetails.get(4));
+
+        return pdfContent;
     }
 
     private PdfWriter createWriter(Document document, String filepathPdf) {
@@ -63,19 +60,19 @@ public class PdfService {
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(filepathPdf));
         } catch (DocumentException | FileNotFoundException e) {
-            e.printStackTrace();
+            Logger.debug(e.getMessage());
         }
 
         return writer;
     }
 
-    private Document parseXHtml(Document document, PdfWriter writer) {
+    private Document parseXHtml(Document document, PdfWriter writer, String pdfContent) {
         try {
             XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
             InputStream inputStream = new ByteArrayInputStream(pdfContent.getBytes(StandardCharsets.UTF_8));
             worker.parseXHtml(writer, document, inputStream, null, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.debug(e.getMessage());
         }
 
         return document;
