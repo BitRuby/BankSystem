@@ -1,0 +1,11 @@
+.footer{
+  width: 100%;
+  color: rgb(255, 255, 255);
+  background: rgb(57, 63, 77);
+  border-top: 1px solid rgba(190, 190, 190, .3);
+}
+@media (max-width: 480px) {
+  .footer {
+    height: 100px;
+  }
+}
