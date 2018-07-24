@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @ExtendWith(SpringExtension.class)
+@TestPropertySource(locations = "classpath:application-test.properties")
 @SpringBootTest
 class PdfServiceTest implements Extension {
     @SuppressWarnings("SpringJavaAutowiredMembersInspection")
