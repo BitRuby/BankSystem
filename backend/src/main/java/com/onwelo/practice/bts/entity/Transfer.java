@@ -1,9 +1,8 @@
 package com.onwelo.practice.bts.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.onwelo.practice.bts.utils.MoneySerializer;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
 import lombok.Getter;
@@ -34,6 +33,7 @@ public class Transfer {
     private String title;
 
     @Column(name = "value")
+    @JsonSerialize(using = MoneySerializer.class)
     private BigDecimal value;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)

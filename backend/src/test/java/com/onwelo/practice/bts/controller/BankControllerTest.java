@@ -17,16 +17,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -62,20 +58,17 @@ class BankControllerTest {
 
     @Test
     void getBankNameTest() throws Exception {
-        mockMvc.perform(
-                get("/banks/find-by-account-no/{accountNo}", "29 1160 2202 0000 0003 1193 5598"))
+        mockMvc.perform(get("/banks/find-by-account-no/{accountNo}", "29 1160 2202 0000 0003 1193 5598"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.bank", is(banks.get(0).getName() + " - " + banks.get(0).getDepartment())));
 
-        mockMvc.perform(
-                get("/banks/find-by-account-no/{accountNo}", "74 1050 1416 1000 0092 0379 3907"))
+        mockMvc.perform(get("/banks/find-by-account-no/{accountNo}", "74 1050 1416 1000 0092 0379 3907"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.bank", is(banks.get(1).getName() + " - " + banks.get(1).getDepartment())));
 
-        mockMvc.perform(
-                get("/banks/find-by-account-no/{accountNo}", "74 1050 1416 1000 0092 0379"))
+        mockMvc.perform(get("/banks/find-by-account-no/{accountNo}", "74 1050 1416 1000 0092 0379"))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }

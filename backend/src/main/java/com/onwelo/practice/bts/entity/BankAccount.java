@@ -1,12 +1,12 @@
 package com.onwelo.practice.bts.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.onwelo.practice.bts.utils.MoneySerializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.glassfish.jersey.internal.util.collection.Views;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -36,9 +36,11 @@ public class BankAccount {
     private String lastName;
 
     @Column(name = "money_amount")
+    @JsonSerialize(using = MoneySerializer.class)
     private BigDecimal moneyAmount;
 
     @Column(name = "money_blocked")
+    @JsonSerialize(using = MoneySerializer.class)
     private BigDecimal moneyBlocked;
 
     @OneToMany(mappedBy = "accountId", cascade = CascadeType.ALL)

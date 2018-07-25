@@ -9,9 +9,11 @@ import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.service.BankAccountService;
 import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.TransferType;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,7 +24,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.onwelo.practice.bts.service.BankAccountServiceTest.*;
-import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
 @SpringBootTest
+@TestInstance(Lifecycle.PER_CLASS)
 public class TransferControllerTest {
 
     private BankAccount bankAccount;
@@ -52,13 +54,13 @@ public class TransferControllerTest {
     @Autowired
     private TransferRepository transferRepository;
 
-    @BeforeEach
+    @BeforeAll
     public void initDB() {
         bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
         bankAccountService.addBankAccount(bankAccount);
     }
 
-    @AfterEach
+    @AfterAll
     public void cleanUp() {
         transferRepository.deleteAll();
         bankAccountRepository.deleteAll();
@@ -88,12 +90,12 @@ public class TransferControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id", is(transfer.getId().intValue())))
                 .andExpect(jsonPath("$.title", is("przelew")))
-                .andExpect(jsonPath("$.value", comparesEqualTo(100.0)))
+                .andExpect(jsonPath("$.value", is(transfer.getValue().doubleValue())))
                 .andExpect(jsonPath("$.accountId", is(bankAccount.getId().intValue())))
                 .andExpect(jsonPath("$.accountNo", is("74105014161000009203793907")))
                 .andExpect(jsonPath("$.transferType", is(TransferType.OUTGOING.name())));
 
-        mockMvc.perform(get("/transfers/" + transfer.getId() + 1))
+        mockMvc.perform(get("/transfers/{id}", 10000000))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
@@ -109,7 +111,7 @@ public class TransferControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.title", is("przelew")))
-                .andExpect(jsonPath("$.value", comparesEqualTo(100)))
+                .andExpect(jsonPath("$.value", is(transfer.getValue().doubleValue())))
                 .andExpect(jsonPath("$.accountId", is(bankAccount.getId().intValue())))
                 .andExpect(jsonPath("$.accountNo", is("74105014161000009203793907")))
                 .andExpect(jsonPath("$.transferType", is(TransferType.OUTGOING.name())));
@@ -139,7 +141,7 @@ public class TransferControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id", is(transfer.getId().intValue())))
                 .andExpect(jsonPath("$.title", is("przelew 2")))
-                .andExpect(jsonPath("$.value", comparesEqualTo(100)))
+                .andExpect(jsonPath("$.value", is(transfer.getValue().doubleValue())))
                 .andExpect(jsonPath("$.accountId", is(bankAccount.getId().intValue())))
                 .andExpect(jsonPath("$.accountNo", is("74105014161000009203793907")))
                 .andExpect(jsonPath("$.transferType", is(TransferType.OUTGOING.name())));
@@ -158,7 +160,7 @@ public class TransferControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id", is(transfer.getId().intValue())))
                 .andExpect(jsonPath("$.title", is("przelew")))
-                .andExpect(jsonPath("$.value", comparesEqualTo(100.0)))
+                .andExpect(jsonPath("$.value", is(transfer.getValue().doubleValue())))
                 .andExpect(jsonPath("$.accountId", is(bankAccount.getId().intValue())))
                 .andExpect(jsonPath("$.accountNo", is("74105014161000009203793907")))
                 .andExpect(jsonPath("$.transferType", is(TransferType.OUTGOING.name())));
