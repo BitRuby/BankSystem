@@ -12,6 +12,8 @@ import {FooterComponent} from './footer/footer.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import localePl from '@angular/common/locales/pl';
 import {AppGroupByPipe} from '../app-groupBy.pipe';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+
 
 registerLocaleData(localePl);
 @NgModule({
@@ -29,7 +31,8 @@ registerLocaleData(localePl);
   imports: [
     CommonModule,
     MainRoutingModule,
-    NgbModule
+    NgbModule,
+    InfiniteScrollModule
   ],
   providers: []
 })

@@ -11,22 +11,23 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class TransferListComponent implements OnInit {
   @Input() transfer: Transfer[];
+  @Input() batch: number;
   closeResult: string;
-
   constructor(private transferService: TransferService, private route: ActivatedRoute, private modalService: NgbModal) {
   }
 
   ngOnInit() {
+    this.batch = 10;
     this.getTransfers();
   }
 
-  getTransfers(): void {
+  private getTransfers(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.transferService.getTransfers(id)
+    this.transferService.getTransfers(id, this.batch)
       .subscribe(transfer => this.transfer = transfer['content']);
   }
 
-  open(content) {
+  private open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -42,6 +43,12 @@ export class TransferListComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  private onScroll() {
+    console.log('Scroll!');
+    this.batch += 10;
+    this.getTransfers();
   }
 
 }

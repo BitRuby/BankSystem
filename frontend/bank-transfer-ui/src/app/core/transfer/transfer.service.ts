@@ -12,8 +12,8 @@ export class TransferService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getTransfers(id: number): Observable<Transfer[]> {
-    const url = `${environment.apiUrl}/transfers/user/${id}`;
+  getTransfers(id: number, batch: number): Observable<Transfer[]> {
+    const url = `${environment.apiUrl}/transfers/user/${id}?size=${batch}`;
     return this.httpClient.get<Transfer[]>(url);
   }
 }

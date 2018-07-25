@@ -21,10 +21,16 @@
         </ul>
       </div>
 
+      <div class="search-results"
+           infiniteScroll
+           [infiniteScrollDistance]="85"
+           [infiniteScrollThrottle]="1300"
+           (scrolled)="onScroll()">
+      </div>
+
     </div>
   </div>
 </div>
-
 
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
