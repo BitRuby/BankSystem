@@ -42,7 +42,7 @@ class PdfServiceTest implements Extension {
                 new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", BigDecimal.valueOf(2000), BigDecimal.valueOf(0)),
                 "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
         transfer.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        Resource resource = pdfService.createPdfAsResource("pdfOutgoing.pdf", transfer, false);
+        byte[] resource = pdfService.createPDF(transfer, false);
         assertNotNull(resource);
     }
 
@@ -52,7 +52,7 @@ class PdfServiceTest implements Extension {
                 new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", BigDecimal.valueOf(2000), BigDecimal.valueOf(0)),
                 "74 1050 1416 1000 0092 0379 3907", TransferType.INCOMING);
         transfer.setBookingDate(LocalDate.now());
-        Resource resource = pdfService.createPdfAsResource("pdfIncoming.pdf", transfer, false);
+        byte[] resource = pdfService.createPDF(transfer, false);
         assertNotNull(resource);
     }
 }

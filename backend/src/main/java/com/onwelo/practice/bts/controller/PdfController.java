@@ -1,14 +1,24 @@
 package com.onwelo.practice.bts.controller;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.service.PdfService;
 import com.onwelo.practice.bts.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/pdf")
@@ -20,16 +30,13 @@ public class PdfController {
     private TransferService transferService;
 
     @GetMapping("/download/{transferId}")
-    public ResponseEntity<Resource> downloadPdf(@PathVariable("transferId") Long transferId, @RequestParam(value = "isRest", required = false, defaultValue = "true") Boolean isRest) {
-        Resource resource = pdfService.createPdfAsResource("transfer" + transferId + ".pdf", transferService.getTransferById(transferId), isRest);
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable("transferId") Long transferId, @RequestParam(value = "isRest", required = false, defaultValue = "true") Boolean isRest) {
+        byte[] pdf = pdfService.createPDF(transferService.getTransferById(transferId), isRest);
 
-        if (resource != null) {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-        } else {
-            throw new NotFoundException("Transaction confirmation file not found");
-        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdf.length)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; attachment; filename=transfer" + transferId + ".pdf")
+                .body(pdf);
     }
 }
