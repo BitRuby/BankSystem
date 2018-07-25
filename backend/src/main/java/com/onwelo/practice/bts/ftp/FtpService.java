@@ -7,7 +7,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,7 +41,7 @@ public class FtpService implements FtpBaseInterface {
         try {
             ftpClient.connect(ftpConfig.getHost(), ftpConfig.getPort());
             loggedIn = ftpClient.login(ftpConfig.getUser(), ftpConfig.getPassphrase());
-            if (this.ftpConfig.getTimeout() > 0){
+            if (this.ftpConfig.getTimeout() > 0) {
                 ftpClient.setControlKeepAliveTimeout(ftpConfig.getTimeout());
             }
         } catch (Exception e) {
@@ -105,7 +104,7 @@ public class FtpService implements FtpBaseInterface {
     @Override
     public boolean addFileFromLocalDir(String sourcePath, String outboundPath) {
 
-        try(InputStream inputStream = new ClassPathResource(sourcePath).getInputStream()) {
+        try (InputStream inputStream = new ClassPathResource(sourcePath).getInputStream()) {
             return this.addFile(inputStream, outboundPath);
         } catch (IOException e) {
             Logger.error(e.getMessage(), e);
