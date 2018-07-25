@@ -21,32 +21,29 @@ import java.nio.file.Paths;
 public class PdfService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
 
-    public File createPdfAsFile(String filepathPdf, Transfer transfer, String htmlAdditionalPath) {
-        Document document = prepareDocument();
-        PdfWriter writer = createWriter(document, filepathPdf);
-        document.open();
-        document = parseXHtml(document, writer, prepareContent(transfer, htmlAdditionalPath));
-        document.close();
-        return new File(filepathPdf);
-    }
+    public Resource createPdfAsResource(String filepathPdf, Transfer transfer, Boolean isRest) {
+        if (transfer != null) {
+            Document document = prepareDocument();
+            PdfWriter writer = createWriter(document, filepathPdf);
+            document.open();
+            document = parseXHtml(document, writer, prepareContent(transfer, isRest));
+            document.close();
 
-    public Resource createPdfAsResource(String filepathPdf, Transfer transfer) {
-        Document document = prepareDocument();
-        PdfWriter writer = createWriter(document, filepathPdf);
-        document.open();
-        document = parseXHtml(document, writer, prepareContent(transfer, ""));
-        document.close();
+            Path path = Paths.get(filepathPdf);
+            Resource resource = null;
 
-        Path path = Paths.get(filepathPdf);
-        Resource resource = null;
+            try {
+                resource = new UrlResource(path.toUri());
+            } catch (MalformedURLException e) {
+                Logger.debug(e.getMessage());
+            }
 
-        try {
-            resource = new UrlResource(path.toUri());
-        } catch (MalformedURLException e) {
-            Logger.debug(e.getMessage());
+            return resource;
         }
 
-        return resource;
+        else {
+            return null;
+        }
     }
 
     private Document prepareDocument() {
@@ -55,8 +52,13 @@ public class PdfService {
         return document;
     }
 
-    private String prepareContent(Transfer transfer, String htmlAdditionalPath) {
-        Path path = Paths.get(htmlAdditionalPath + "backend/src/main/resources/pdf/pdfTheme.html");
+    private String prepareContent(Transfer transfer, Boolean isRest) {
+        Path path = Paths.get("src/main/resources/pdf/pdfTheme.html");
+
+        if (isRest) {
+            path = Paths.get("backend/src/main/resources/pdf/pdfTheme.html");
+        }
+
         byte[] themeContent = null;
 
         try {
