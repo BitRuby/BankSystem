@@ -53,10 +53,14 @@ public class PdfService {
     }
 
     private String prepareContent(Transfer transfer, Boolean isRest) {
-        Path path = Paths.get("src/main/resources/pdf/pdfTheme.html");
+        Path path;
 
         if (isRest) {
             path = Paths.get("backend/src/main/resources/pdf/pdfTheme.html");
+        }
+
+        else {
+            path = Paths.get("src/main/resources/pdf/pdfTheme.html");
         }
 
         byte[] themeContent = null;

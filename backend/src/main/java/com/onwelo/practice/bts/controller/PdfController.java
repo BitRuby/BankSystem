@@ -3,7 +3,6 @@ package com.onwelo.practice.bts.controller;
 import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.service.PdfService;
 import com.onwelo.practice.bts.service.TransferService;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/pdf")
 public class PdfController {
-    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
-
     @Autowired
     private PdfService pdfService;
 
