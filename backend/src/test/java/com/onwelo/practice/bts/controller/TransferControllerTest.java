@@ -15,6 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +26,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.stream.Stream;
 
 import static com.onwelo.practice.bts.service.BankAccountServiceTest.*;
 import static org.hamcrest.Matchers.is;
@@ -78,6 +84,8 @@ public class TransferControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(10)))
                 .andExpect(jsonPath("$[0].title", is("przelew")));
+
+        transferRepository.deleteAll();
     }
 
     @Test
@@ -98,6 +106,21 @@ public class TransferControllerTest {
         mockMvc.perform(get("/transfers/{id}", 10000000))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(ints = {10, 20, 50})
+    void transferByUser(int pageSize) throws Exception {
+        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
+        for (int i = 0; i < 100; i++) {
+            transferService.addTransfer(transfer);
+        }
+
+        mockMvc.perform(get("/transfers/user/{id}?page=1&size={size}", bankAccount.getId().intValue(), pageSize))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.content", hasSize(pageSize)));
     }
 
     @Test
