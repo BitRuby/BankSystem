@@ -60,4 +60,8 @@ public class TransferService {
         transfer.setActive(false);
         return transferRepository.save(transfer);
     }
+
+    public List<Transfer> getTransferByAccountId(Long id) {
+        return transferRepository.findAllByAccountId_Id(id);
+    }
 }

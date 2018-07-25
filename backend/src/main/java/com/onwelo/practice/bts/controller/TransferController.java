@@ -23,6 +23,11 @@ public class TransferController {
         return transferService.getTransferById(id);
     }
 
+    @GetMapping(path = "/user/{id}")
+    public ResponseEntity transferByUser(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(transferService.getTransferByAccountId(id));
+    }
+
     @PostMapping
     public Transfer create(@RequestBody Transfer transfer) {
         return transferService.addTransfer(transfer);
