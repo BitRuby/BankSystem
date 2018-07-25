@@ -6,9 +6,12 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.TransferType;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,13 +21,27 @@ import java.nio.file.Paths;
 public class PdfService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
 
-    public Document createPdf(String filepathPdf, Transfer transfer) {
-        Document document = prepareDocument();
-        PdfWriter writer = createWriter(document, filepathPdf);
-        document.open();
-        document = parseXHtml(document, writer, prepareContent(transfer));
-        document.close();
-        return document;
+    public Resource createPdfAsResource(String filepathPdf, Transfer transfer, Boolean isRest) {
+        if (transfer != null) {
+            Document document = prepareDocument();
+            PdfWriter writer = createWriter(document, filepathPdf);
+            document.open();
+            document = parseXHtml(document, writer, prepareContent(transfer, isRest));
+            document.close();
+
+            Path path = Paths.get(filepathPdf);
+            Resource resource = null;
+
+            try {
+                resource = new UrlResource(path.toUri());
+            } catch (MalformedURLException e) {
+                Logger.debug(e.getMessage());
+            }
+
+            return resource;
+        } else {
+            return null;
+        }
     }
 
     private Document prepareDocument() {
@@ -33,8 +50,15 @@ public class PdfService {
         return document;
     }
 
-    private String prepareContent(Transfer transfer) {
-        Path path = Paths.get("src/main/resources/pdf/pdfTheme.html");
+    private String prepareContent(Transfer transfer, Boolean isRest) {
+        Path path;
+
+        if (isRest) {
+            path = Paths.get("backend/src/main/resources/pdf/pdfTheme.html");
+        } else {
+            path = Paths.get("src/main/resources/pdf/pdfTheme.html");
+        }
+
         byte[] themeContent = null;
 
         try {
@@ -45,7 +69,7 @@ public class PdfService {
 
         assert themeContent != null;
         String pdfContent = new String(themeContent);
-        
+
         if (transfer.getTransferType().equals(TransferType.INCOMING)) {
             pdfContent = pdfContent.replace("${date}", transfer.getBookingDate().toString());
             pdfContent = pdfContent.replace("${accountNoOwner}", transfer.getAccountNo());
