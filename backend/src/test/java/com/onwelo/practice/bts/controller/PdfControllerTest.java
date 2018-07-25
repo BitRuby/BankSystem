@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
 @SpringBootTest
-@ComponentScan(basePackages = "com.onwelo.practice.bts")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PdfControllerTest {
     @Autowired
@@ -47,12 +46,13 @@ public class PdfControllerTest {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    private Transfer transfer;
     @BeforeEach
     void prepareTransfer() {
         BankAccount bankAccount = new BankAccount("29116022020000000311935598", "Jan", "Kowalski", BigDecimal.valueOf(2000), BigDecimal.valueOf(0));
         bankAccountService.addBankAccount(bankAccount);
 
-        Transfer transfer = new Transfer("testowy tytuł przelewu wychodzącego", BigDecimal.valueOf(500), bankAccount, "74105014161000009203793907", TransferType.OUTGOING);
+        transfer = new Transfer("testowy tytuł przelewu wychodzącego", BigDecimal.valueOf(500), bankAccount, "74105014161000009203793907", TransferType.OUTGOING);
         transfer.setCreateTime(new Timestamp(System.currentTimeMillis()));
         transferService.addTransfer(transfer);
     }
@@ -65,7 +65,7 @@ public class PdfControllerTest {
 
     @Test
     void downloadPdf() throws Exception {
-        mockMvc.perform(get("/pdf/download/1")
+        mockMvc.perform(get("/pdf/download/{id}", transfer.getId().intValue())
         .param("isRest", "false"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_PDF));
