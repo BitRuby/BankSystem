@@ -47,6 +47,7 @@ public class PdfControllerTest {
     private BankAccountRepository bankAccountRepository;
 
     private Transfer transfer;
+
     @BeforeEach
     void prepareTransfer() {
         BankAccount bankAccount = new BankAccount("29116022020000000311935598", "Jan", "Kowalski", BigDecimal.valueOf(2000), BigDecimal.valueOf(0));
@@ -66,7 +67,7 @@ public class PdfControllerTest {
     @Test
     void downloadPdf() throws Exception {
         mockMvc.perform(get("/pdf/download/{id}", transfer.getId().intValue())
-        .param("isRest", "false"))
+                .param("isRest", "false"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_PDF));
     }

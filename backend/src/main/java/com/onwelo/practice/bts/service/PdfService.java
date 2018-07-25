@@ -39,9 +39,7 @@ public class PdfService {
             }
 
             return resource;
-        }
-
-        else {
+        } else {
             return null;
         }
     }
@@ -57,9 +55,7 @@ public class PdfService {
 
         if (isRest) {
             path = Paths.get("backend/src/main/resources/pdf/pdfTheme.html");
-        }
-
-        else {
+        } else {
             path = Paths.get("src/main/resources/pdf/pdfTheme.html");
         }
 
@@ -73,7 +69,7 @@ public class PdfService {
 
         assert themeContent != null;
         String pdfContent = new String(themeContent);
-        
+
         if (transfer.getTransferType().equals(TransferType.INCOMING)) {
             pdfContent = pdfContent.replace("${date}", transfer.getBookingDate().toString());
             pdfContent = pdfContent.replace("${accountNoOwner}", transfer.getAccountNo());

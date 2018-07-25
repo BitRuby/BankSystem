@@ -28,9 +28,7 @@ public class PdfController {
                     .contentType(MediaType.APPLICATION_PDF)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; attachment; filename=\"" + resource.getFilename() + "\"")
                     .body(resource);
-        }
-
-        else {
+        } else {
             throw new NotFoundException("Transaction confirmation file not found");
         }
     }
