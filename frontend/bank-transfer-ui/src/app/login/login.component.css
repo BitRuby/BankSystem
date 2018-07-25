@@ -1,0 +1,47 @@
+.card {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 100px; right: 0;
+  width: 95%;
+  height: 425px;
+}
+.bg-custom {
+  background: rgb(57, 63, 77);
+}
+.card-body {
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px 0;
+}
+.logo {
+  font-family: pt_sansbold, sans-serif;
+  color: rgb(255, 255, 255);
+  padding-bottom: 20px;
+  font-size: 3rem;
+}
+.brand-color {
+  color: rgb(113, 200, 55);
+}
+.btn-custom {
+  background: rgb(113, 200, 55);
+  color: rgb(255, 255, 255);
+  width: 100%;
+  border-radius: 0;
+  border: 2px solid rgb(255, 255, 255);
+  padding: 10px;
+}
+.form-custom {
+  border-radius: 0;
+  border: 2px solid rgb(255, 255, 255);
+  background: rgb(242, 242, 242);
+  padding: 10px;
+}
+@media (min-width: 500px) {
+  .card {
+    width: 450px;
+  }
+  .card-body {
+    width: 300px;
+  }
+}
