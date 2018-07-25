@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 
 import java.io.ByteArrayOutputStream;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -28,8 +27,7 @@ public class FtpServiceTest {
 
         FileSystem fileSystem = new WindowsFakeFileSystem();
         fileSystem.add(new DirectoryEntry("c:\\data"));
-        fileSystem.add(new FileEntry("c:\\data\\file1.txt", FILE_CONTENT));
-        fileSystem.add(new FileEntry("c:\\data\\run.exe"));
+        fileSystem.add(new FileEntry("c:\\data\\test_ftp_file.txt", FILE_CONTENT));
         fakeFtpServer.setFileSystem(fileSystem);
         fakeFtpServer.setServerControlPort(2121);
 
@@ -47,28 +45,40 @@ public class FtpServiceTest {
     }
 
     @AfterEach
-    void cleanFtpConfigAndService(){
+    void cleanFtpConfigAndService() {
+        ftpService.closeConnection();
         ftpConfig = null;
         ftpService = null;
     }
 
     @Test
-    void open() {
-        ftpService = new FtpService(ftpConfig);
-        assertTrue(ftpService.openConnection());
-    }
-
-   @Test
-   void openWithKeepAliveTimout() {
-
-
-        ftpConfig.setTimeout((short)5);
+    void openConnection() {
         ftpService = new FtpService(ftpConfig);
         assertTrue(ftpService.openConnection());
     }
 
     @Test
-    void openWrongCredentialsShouldReturnFalse() {
+    void checkIsConnectedAfterOpenFtpConnection() {
+        ftpService = new FtpService(ftpConfig);
+        ftpService.openConnection();
+        assertTrue(ftpService.isConnected());
+    }
+
+    @Test
+    void checkIsNotConnectedAfterCloseFtpConnection() {
+        ftpService = new FtpService(ftpConfig);
+        assertFalse(ftpService.isConnected());
+    }
+
+    @Test
+    void openWithTimeout() {
+        ftpConfig.setTimeout((short) 5);
+        ftpService = new FtpService(ftpConfig);
+        assertTrue(ftpService.openConnection());
+    }
+
+    @Test
+    void openConnectionWithWrongPassword() {
 
         ftpConfig.setPassphrase("wrongpassword");
         ftpService = new FtpService(ftpConfig);
@@ -76,18 +86,79 @@ public class FtpServiceTest {
     }
 
     @Test
-    void close() {
+    void openConnectionWithWrongPort() {
+        ftpConfig.setPort(21);
+        ftpService = new FtpService(ftpConfig);
+        assertFalse(ftpService.openConnection());
+    }
+
+    @Test
+    void closeConnection() {
         ftpService = new FtpService(ftpConfig);
         ftpService.openConnection();
         ftpService.closeConnection();
     }
 
-  @Test
-   void closeWhenNotOpen() {
-      ftpService = new FtpService(ftpConfig);
-      ftpService.openConnection();
-      ftpService.closeConnection();
-      ftpService.closeConnection();
+    @Test
+    void closeWhenNotOpenConnection() {
+        ftpService = new FtpService(ftpConfig);
+        ftpService.openConnection();
+        ftpService.closeConnection();
+        ftpService.closeConnection();
+    }
+
+    @Test
+    void getFileFromFtpDoesExist() {
+        ftpService = new FtpService(ftpConfig);
+        ftpService.openConnection();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        boolean success = ftpService.getFileByRemoteFilePath(outputStream, "test_ftp_file.txt");
+        assertTrue(success);
+        assertEquals(outputStream.toString(), FILE_CONTENT);
+    }
+
+    @Test
+    void getFileFromFtpDoesNotExist() {
+        ftpService = new FtpService(ftpConfig);
+        ftpService.openConnection();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        boolean success = ftpService.getFileByRemoteFilePath(outputStream, "file_not_exist.txt");
+        assertFalse(success);
+    }
+
+    @Test
+    void getFileFromFtpWithWrongConnectionCreditals() {
+        ftpConfig.setPort(8523);
+        ftpService = new FtpService(ftpConfig);
+        assertFalse(ftpService.openConnection());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        boolean success = ftpService.getFileByRemoteFilePath(outputStream, "file_not_exist.txt");
+        assertFalse(success);
+    }
+
+    @Test
+    void getFileFromFtpWhenNotConnected() {
+        ftpService = new FtpService(ftpConfig);
+        assertThrows(NullPointerException.class, ()-> {ftpService.getFileByRemoteFilePath(new ByteArrayOutputStream(), "file_not_exist.txt");});
+    }
+
+    @Test
+    void saveFileShouldStoreCorrectly() {
+        ftpService = new FtpService(ftpConfig);
+        ftpService.openConnection();
+        boolean success = ftpService.addFileFromLocalDir("test.txt", "test.txt");
+        FileSystem fileSystem = fakeFtpServer.getFileSystem();
+        FileSystemEntry entry = fileSystem.getEntry("c:\\data\\test.txt");
+        assertTrue(success);
+        assertNotNull(entry);
+    }
+
+    @Test
+    void tryStoreFileDoesNotExist() {
+        ftpService = new FtpService(ftpConfig);
+        ftpService.openConnection();
+        boolean success = ftpService.addFileFromLocalDir("test1.txt", "test1.txt");
+        assertFalse(success);
     }
 
     @Test
@@ -96,8 +167,8 @@ public class FtpServiceTest {
         ftpService.openConnection();
         ftpService.addFileFromLocalDir("test_ftp_file.txt", "test_ftp_file.txt");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ftpService.getFileByRemoteFilePath(outputStream,"test_ftp_file.txt");
-        assertEquals(outputStream.toString(),FILE_CONTENT);
+        ftpService.getFileByRemoteFilePath(outputStream, "test_ftp_file.txt");
+        assertEquals(outputStream.toString(), FILE_CONTENT);
     }
 
 

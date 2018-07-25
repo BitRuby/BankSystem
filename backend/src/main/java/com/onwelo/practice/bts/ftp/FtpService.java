@@ -74,7 +74,15 @@ public class FtpService implements FtpBaseInterface {
 
     @Override
     public boolean getFileFromBankRemoteDir(OutputStream outputStream) {
-        return false;
+        try {
+            //TODO - Add to properties bank info to set base bank remote directory
+            String remotePath = "bank";
+            Logger.debug("Trying to retrieve a file from remote path " + remotePath);
+            return ftpClient.retrieveFile(remotePath, outputStream);
+        } catch (IOException e) {
+            Logger.error(e.getMessage(), e);
+            return false;
+        }
     }
 
     @Override
