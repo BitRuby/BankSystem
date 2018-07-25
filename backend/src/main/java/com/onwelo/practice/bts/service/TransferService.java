@@ -7,6 +7,8 @@ import com.onwelo.practice.bts.exceptions.NotValidField;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class TransferService {
         return transferRepository.save(transfer);
     }
 
-    public List<Transfer> getTransferByAccountId(Long id) {
-        return transferRepository.findAllByAccountId_Id(id);
+    public Page<Transfer> getTransferByAccountId(Long id, Pageable pageable) {
+        return transferRepository.findAllByAccountId_IdOrderByCreateTimeDesc(id, pageable);
     }
 }

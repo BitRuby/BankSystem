@@ -3,6 +3,7 @@ package com.onwelo.practice.bts.controller;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,8 @@ public class TransferController {
     }
 
     @GetMapping(path = "/user/{id}")
-    public ResponseEntity transferByUser(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(transferService.getTransferByAccountId(id));
+    public ResponseEntity transferByUser(@PathVariable("id") Long id, Pageable pageable) {
+        return ResponseEntity.ok(transferService.getTransferByAccountId(id, pageable));
     }
 
     @PostMapping
