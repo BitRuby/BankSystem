@@ -1,5 +1,5 @@
 package com.onwelo.practice.bts.utils;
 
 public enum TransferStatus {
-    PENDING, REALIZED
+    PENDING, REALIZED, CANCELED, APPROVED
 }

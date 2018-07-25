@@ -3,7 +3,7 @@ package com.onwelo.practice.bts.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND)
+@ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
 public class NotValidField extends RuntimeException {
     public NotValidField() {
         super();
