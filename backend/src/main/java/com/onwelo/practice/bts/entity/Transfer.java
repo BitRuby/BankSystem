@@ -2,6 +2,7 @@ package com.onwelo.practice.bts.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.onwelo.practice.bts.utils.Currency;
 import com.onwelo.practice.bts.utils.MoneySerializer;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
@@ -58,6 +59,10 @@ public class Transfer {
 
     @Column(name = "booking_date")
     private LocalDate bookingDate;
+
+    @Column(name = "currency", length = 3)
+    @Enumerated(EnumType.STRING)
+    private Currency currency = Currency.PLN;
 
     @Column(name = "is_active")
     private Boolean active = true;
