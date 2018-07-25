@@ -7,6 +7,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,6 +18,7 @@ public class FtpService implements FtpBaseInterface {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(FtpService.class);
     private FtpConfig ftpConfig;
     private FTPClient ftpClient;
+
 
     @Autowired
     public FtpService(@Autowired FtpConfig ftpConfig) {
@@ -40,8 +42,9 @@ public class FtpService implements FtpBaseInterface {
         try {
             ftpClient.connect(ftpConfig.getHost(), ftpConfig.getPort());
             loggedIn = ftpClient.login(ftpConfig.getUser(), ftpConfig.getPassphrase());
-            if (this.ftpConfig.getTimeout() > 0)
+            if (this.ftpConfig.getTimeout() > 0){
                 ftpClient.setControlKeepAliveTimeout(ftpConfig.getTimeout());
+            }
         } catch (Exception e) {
             Logger.error(e.getMessage(), e);
         }
@@ -49,16 +52,18 @@ public class FtpService implements FtpBaseInterface {
     }
 
     @Override
-    public void closeConnection() {
+    public boolean closeConnection() {
         if (ftpClient != null) {
+            boolean loggedOut = false;
             try {
-                ftpClient.logout();
+                loggedOut = ftpClient.logout();
                 ftpClient.disconnect();
             } catch (IOException e) {
                 Logger.error(e.getMessage(), e);
             }
+            return loggedOut;
         }
-
+        return false;
     }
 
     @Override
@@ -89,7 +94,7 @@ public class FtpService implements FtpBaseInterface {
     public boolean addFile(InputStream inputStream, String outboundPath) {
         try {
             Logger.debug("Trying to store a file to destination path " + outboundPath);
-                return ftpClient.storeFile(outboundPath, inputStream);
+            return ftpClient.storeFile(outboundPath, inputStream);
         } catch (IOException e) {
             Logger.error(e.getMessage(), e);
             return false;
@@ -99,14 +104,13 @@ public class FtpService implements FtpBaseInterface {
 
     @Override
     public boolean addFileFromLocalDir(String sourcePath, String outboundPath) {
-        InputStream inputStream;
-        try {
-            inputStream = new ClassPathResource(sourcePath).getInputStream();
+
+        try(InputStream inputStream = new ClassPathResource(sourcePath).getInputStream()) {
+            return this.addFile(inputStream, outboundPath);
         } catch (IOException e) {
             Logger.error(e.getMessage(), e);
             return false;
         }
-        return this.addFile(inputStream, outboundPath);
     }
 
     @Override

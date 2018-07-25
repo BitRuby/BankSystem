@@ -30,6 +30,7 @@
         <lombok.version>1.18.0</lombok.version>
         <commons-net.version>3.6</commons-net.version>
         <mockftpserver.version>2.7.1</mockftpserver.version>
+        <resources.path>${project.basedir}/src/main/resources</resources.path>
     </properties>
 
     <dependencies>
@@ -86,6 +87,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit5.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-migrationsupport</artifactId>
             <version>${junit5.jupiter.version}</version>
             <scope>test</scope>
         </dependency>

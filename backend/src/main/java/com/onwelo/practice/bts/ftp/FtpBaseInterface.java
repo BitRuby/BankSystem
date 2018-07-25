@@ -15,8 +15,9 @@ public interface FtpBaseInterface {
 
     /**
      * Logouts the active user and disconnects from the server.
+     * @return boolean true if successful, false otherwise.
      */
-    void closeConnection();
+    boolean closeConnection();
 
     /**
      * Retrieve a file from the ftp server.
