@@ -38,6 +38,19 @@ html, body {
   flex: 1;
   display: flex;
 }
+
+.modal-open {
+  overflow: auto !important;
+}
+
+.modal-header {
+  background: rgb(57, 63, 77);
+  color: rgb(255, 255, 255);
+}
+
+.modal-content {
+  border-radius: .4rem !important;
+}
 @media (min-width: 576px) and (max-width: 991px) {
   .container {
     padding-left: 0 !important;

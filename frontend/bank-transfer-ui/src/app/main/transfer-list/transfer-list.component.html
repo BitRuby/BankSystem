@@ -5,7 +5,7 @@
       <h3 class="display-4 mb-3">Transfer history</h3>
       <hr class="mb-3">
       <div class="my-3">
-        <button type="button" class="btn btn-secondary btn-lg">Table filter</button>
+        <button type="button" class="btn btn-secondary btn-lg" (click)="open(content)">Table filter</button>
       </div>
       <div *ngFor="let tran of transfer | groupBy:'createTime'">
         <p class="mb-1 mt-4">{{tran?.key | date:'fullDate'}}</p>
@@ -13,8 +13,8 @@
           <li class="list-group-item list-group-item-dark list-group-item-custom" *ngFor="let list of tran.value">
             <div class="row">
               <div class="col-md-2 col-sm-3">{{list?.status}}</div>
-              <div class="col-md-2 col-sm-3">{{list?.title}}</div>
-              <div class="col-md-5 col-sm-auto">{{list?.accountNo}}</div>
+              <div class="col-md-3 col-sm-3">{{list?.title}}</div>
+              <div class="col-md-4 col-sm-auto">{{list?.accountNo}}</div>
               <div class="col-md-2 col-sm-auto">{{list?.value | currency:'PLN':'code':'1.2-2':'pl'}}</div>
             </div>
           </li>
@@ -24,3 +24,32 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Table filter</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="dateOfBirth">Date of birth</label>
+        <div class="input-group">
+          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
+                 #dp="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
+              <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
+  </div>
+</ng-template>
