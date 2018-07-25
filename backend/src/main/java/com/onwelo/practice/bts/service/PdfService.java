@@ -6,9 +6,12 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.TransferType;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,13 +21,32 @@ import java.nio.file.Paths;
 public class PdfService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
 
-    public File createPdf(String filepathPdf, Transfer transfer) {
+    public File createPdfAsFile(String filepathPdf, Transfer transfer, String htmlAdditionalPath) {
         Document document = prepareDocument();
         PdfWriter writer = createWriter(document, filepathPdf);
         document.open();
-        document = parseXHtml(document, writer, prepareContent(transfer));
+        document = parseXHtml(document, writer, prepareContent(transfer, htmlAdditionalPath));
         document.close();
         return new File(filepathPdf);
+    }
+
+    public Resource createPdfAsResource(String filepathPdf, Transfer transfer) {
+        Document document = prepareDocument();
+        PdfWriter writer = createWriter(document, filepathPdf);
+        document.open();
+        document = parseXHtml(document, writer, prepareContent(transfer, ""));
+        document.close();
+
+        Path path = Paths.get(filepathPdf);
+        Resource resource = null;
+
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            Logger.debug(e.getMessage());
+        }
+
+        return resource;
     }
 
     private Document prepareDocument() {
@@ -33,8 +55,8 @@ public class PdfService {
         return document;
     }
 
-    private String prepareContent(Transfer transfer) {
-        Path path = Paths.get("src/main/resources/pdf/pdfTheme.html");
+    private String prepareContent(Transfer transfer, String htmlAdditionalPath) {
+        Path path = Paths.get(htmlAdditionalPath + "backend/src/main/resources/pdf/pdfTheme.html");
         byte[] themeContent = null;
 
         try {
