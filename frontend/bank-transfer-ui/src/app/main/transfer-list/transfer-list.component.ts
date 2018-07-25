@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {TransferService} from '../../core/transfer/transfer.service';
+import {Transfer} from '../../core/transfer/transfer.model';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-transfer-list',
@@ -6,10 +9,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./transfer-list.component.css']
 })
 export class TransferListComponent implements OnInit {
+  @Input() transfer: Transfer[];
 
-  constructor() { }
+  constructor(private transferService: TransferService, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
+    this.getTransfers();
+  }
+
+  getTransfers(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.transferService.getTransfers(id)
+      .subscribe(transfer => this.transfer = transfer);
   }
 
 }

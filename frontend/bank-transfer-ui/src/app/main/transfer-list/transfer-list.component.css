@@ -1,9 +1,5 @@
-hr {
-  margin-bottom: 30px;
-}
-.table-custom {
+.list-group-item-custom {
   background: rgb(57, 63, 77);
-}
-.table-dark td, .table-dark th, .table-dark thead th {
-  border-color: #5f6061;
+  color: rgb(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }

@@ -2,38 +2,25 @@
   <div class="container">
     <div class="content">
 
-      <h3>Transfer history</h3>
-      <hr>
-      <table class="table table-dark table-custom">
-        <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        </tbody>
-      </table>
+      <h3 class="display-4 mb-3">Transfer history</h3>
+      <hr class="mb-3">
+      <div class="my-3">
+        <button type="button" class="btn btn-secondary btn-lg">Table filter</button>
+      </div>
+      <div *ngFor="let tran of transfer | groupBy:'createTime'">
+        <p class="mb-1 mt-4">{{tran?.key | date:'fullDate'}}</p>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-dark list-group-item-custom" *ngFor="let list of tran.value">
+            <div class="row">
+              <div class="col-md-2 col-sm-3">{{list?.status}}</div>
+              <div class="col-md-2 col-sm-3">{{list?.title}}</div>
+              <div class="col-md-5 col-sm-auto">{{list?.accountNo}}</div>
+              <div class="col-md-2 col-sm-auto">{{list?.value | currency:'PLN':'code':'1.2-2':'pl'}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </div>

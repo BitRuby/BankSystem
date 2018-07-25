@@ -20,7 +20,7 @@ export class NavigationComponent implements OnInit {
   }
 
   getUser(): void {
-    const id = +1;
+    const id = +2;
     this.userService.getUser(id)
       .subscribe(user => this.user = user);
   }

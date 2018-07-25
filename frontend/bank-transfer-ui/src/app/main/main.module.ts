@@ -11,6 +11,7 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {FooterComponent} from './footer/footer.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import localePl from '@angular/common/locales/pl';
+import {AppGroupByPipe} from '../app-groupBy.pipe';
 
 registerLocaleData(localePl);
 @NgModule({
@@ -23,6 +24,7 @@ registerLocaleData(localePl);
     TransferListComponent,
     FooterComponent,
     NavigationComponent,
+    AppGroupByPipe
   ],
   imports: [
     CommonModule,
