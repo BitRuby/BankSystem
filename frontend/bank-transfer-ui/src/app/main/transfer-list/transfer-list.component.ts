@@ -3,6 +3,7 @@ import {TransferService} from '../../core/transfer/transfer.service';
 import {Transfer} from '../../core/transfer/transfer.model';
 import {ActivatedRoute} from '@angular/router';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-transfer-list',
@@ -11,19 +12,23 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class TransferListComponent implements OnInit {
   @Input() transfer: Transfer[];
-  @Input() batch: number;
+  batch: number;
   closeResult: string;
+  spinner: boolean;
   constructor(private transferService: TransferService, private route: ActivatedRoute, private modalService: NgbModal) {
   }
 
   ngOnInit() {
     this.batch = 10;
+    this.spinner = true;
     this.getTransfers();
   }
 
   private getTransfers(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.transferService.getTransfers(id, this.batch)
+    this.transferService.getTransfers(id, this.batch).pipe(finalize(() => {
+      this.spinner = true;
+    }))
       .subscribe(transfer => this.transfer = transfer['content']);
   }
 

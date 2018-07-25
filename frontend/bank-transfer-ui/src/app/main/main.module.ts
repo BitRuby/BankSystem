@@ -13,6 +13,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import localePl from '@angular/common/locales/pl';
 import {AppGroupByPipe} from '../app-groupBy.pipe';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.component';
 
 
 registerLocaleData(localePl);
@@ -26,7 +27,8 @@ registerLocaleData(localePl);
     TransferListComponent,
     FooterComponent,
     NavigationComponent,
-    AppGroupByPipe
+    AppGroupByPipe,
+    LoadingSpinnerComponent
   ],
   imports: [
     CommonModule,

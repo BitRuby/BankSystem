@@ -5,7 +5,8 @@
       <h3 class="display-4 mb-3">Transfer history</h3>
       <hr class="mb-3">
       <div class="my-3">
-        <button type="button" class="btn btn-secondary btn-lg" (click)="open(content)">Table filter</button>
+        <button type="button" class="btn btn-secondary btn-custom btn-lg" (click)="open(content)">Filter options
+        </button>
       </div>
       <div *ngFor="let tran of transfer | groupBy:'createTime'">
         <p class="mb-1 mt-4">{{tran?.key | date:'fullDate'}}</p>
@@ -27,33 +28,37 @@
            [infiniteScrollThrottle]="1300"
            (scrolled)="onScroll()">
       </div>
-
+      <app-loading-spinner *ngIf="spinner"></app-loading-spinner>
     </div>
   </div>
 </div>
 
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Table filter</h4>
+    <h4 class="modal-title" id="modal-basic-title">Filter options</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label for="dateOfBirth">Date of birth</label>
-        <div class="input-group">
-          <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
-                 #dp="ngbDatepicker">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="dp.toggle()" type="button">
-              <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-            </button>
-          </div>
-        </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Order type</label>
       </div>
-    </form>
+      <select class="custom-select" id="inputGroupSelect01">
+        <option value="1" selected>ASC</option>
+        <option value="2">DESC</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlSelect2">Order by (Hold Ctrl button to select more)</label>
+      <select multiple class="form-control" id="exampleFormControlSelect2">
+        <option value="1" selected>Title</option>
+        <option value="2">Status</option>
+        <option value="3">Account Number</option>
+        <option value="4">Value</option>
+      </select>
+    </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
