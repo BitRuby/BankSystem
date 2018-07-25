@@ -46,12 +46,12 @@ public class TransferServiceTest implements Extension {
     }
 
     @Test
-    public void getAllTransfers() {
+    public void getAllTransfersTest() {
         BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
         List<Transfer> transfers = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++) {
             transfers.add(new Transfer("przelew", bd100, bankIn, "74 1050 1416 1000 0092 0379 3907", TransferType.INCOMING));
-
+        }
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
         assertNotNull(transferService.getAllTransfers());
@@ -60,7 +60,7 @@ public class TransferServiceTest implements Extension {
     }
 
     @Test
-    public void getTransfersByStatus() {
+    public void getTransfersByStatusTest() {
         BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
         List<Transfer> transfers = new ArrayList<>();
 

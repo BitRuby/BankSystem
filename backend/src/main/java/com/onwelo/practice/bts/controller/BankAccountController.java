@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping(value = "/accounts", produces = "application/json")
 public class BankAccountController {
 
     @Autowired

@@ -33,7 +33,7 @@ class BankServiceTest {
     }
 
     @Test
-    void addAll() {
+    void addAllTest() {
         List<Bank> banks = new ArrayList<>() {{
             add(new Bank("Bank Millennium SA", "Millennium - Centrum Rozliczeniowe", "80-887", "Gdańsk", "ul. Wały Jagiellońskie 10/16", "11602202"));
             add(new Bank("ING Bank Śląski SA", "Oddział w Kielcach ul.Silniczna 26", "25-515", "Kielce", "ul. Silniczna 26", "10501416"));
@@ -44,7 +44,7 @@ class BankServiceTest {
     }
 
     @Test
-    public void getBank() {
+    public void getBankTest() {
         List<Bank> banks = new ArrayList<>() {{
             add(new Bank("Bank Millennium SA", "Millennium - Centrum Rozliczeniowe", "80-887", "Gdańsk", "ul. Wały Jagiellońskie 10/16", "11602202"));
             add(new Bank("ING Bank Śląski SA", "Oddział w Kielcach ul.Silniczna 26", "25-515", "Kielce", "ul. Silniczna 26", "10501416"));
@@ -62,7 +62,6 @@ class BankServiceTest {
         assertEquals("ING Bank Śląski SA", bankService.getBank(ING).getName());
         assertThrows(NotValidField.class, () -> bankService.getBank(""));
         assertThrows(NotValidField.class, () -> bankService.getBank("74 1050 1416 1000 0092 0379"));
-
         bankRepository.deleteAll();
     }
 }

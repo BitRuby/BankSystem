@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public interface TransferRepository extends JpaRepository<Transfer, Long> {
     ArrayList<Transfer> findAllByStatus(TransferStatus status);
 
-    void deleteAll();
+    ArrayList<Transfer> findAllByAccountId_Id(Long id);
 }
