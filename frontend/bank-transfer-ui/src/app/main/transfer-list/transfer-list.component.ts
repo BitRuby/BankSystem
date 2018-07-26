@@ -77,6 +77,8 @@ export class TransferListComponent implements OnInit {
     this.order = '';
     if (this.dateCheckbox) {
       this.order += '&sort=createTime,' + this.dateSelect;
+    } else {
+      this.order += '&sort=createTime,desc';
     }
     if (this.titleCheckbox) {
       this.order += '&sort=title,' + this.titleSelect;
