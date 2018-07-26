@@ -28,7 +28,13 @@
            [infiniteScrollThrottle]="1300"
            (scrolled)="onScroll()">
       </div>
-      <app-loading-spinner *ngIf="spinner"></app-loading-spinner>
+      <ngx-spinner
+        bdColor="transparent"
+        size="medium"
+        color="rgb(113, 200, 55)"
+        loadingText=""
+        type="ball-clip-rotate">
+      </ngx-spinner>
     </div>
   </div>
 </div>

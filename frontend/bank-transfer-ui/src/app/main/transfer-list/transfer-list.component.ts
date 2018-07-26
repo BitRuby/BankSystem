@@ -3,7 +3,8 @@ import {TransferService} from '../../core/transfer/transfer.service';
 import {Transfer} from '../../core/transfer/transfer.model';
 import {ActivatedRoute} from '@angular/router';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {finalize} from 'rxjs/operators';
+import {NgxSpinnerService} from 'ngx-spinner';
+
 
 @Component({
   selector: 'app-transfer-list',
@@ -14,22 +15,25 @@ export class TransferListComponent implements OnInit {
   @Input() transfer: Transfer[];
   batch: number;
   closeResult: string;
-  spinner: boolean;
-  constructor(private transferService: TransferService, private route: ActivatedRoute, private modalService: NgbModal) {
+
+  constructor(private transferService: TransferService, private route: ActivatedRoute, private modalService: NgbModal, private spinner: NgxSpinnerService) {
   }
 
   ngOnInit() {
     this.batch = 10;
-    this.spinner = true;
     this.getTransfers();
   }
 
   private getTransfers(): void {
+    this.spinner.show();
     const id = +this.route.snapshot.paramMap.get('id');
-    this.transferService.getTransfers(id, this.batch).pipe(finalize(() => {
-      this.spinner = true;
-    }))
-      .subscribe(transfer => this.transfer = transfer['content']);
+    this.transferService.getTransfers(id, this.batch)
+      .subscribe(transfer => {
+        this.transfer = transfer['content'];
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 1000);
+      });
   }
 
   private open(content) {
@@ -51,7 +55,6 @@ export class TransferListComponent implements OnInit {
   }
 
   private onScroll() {
-    console.log('Scroll!');
     this.batch += 10;
     this.getTransfers();
   }
