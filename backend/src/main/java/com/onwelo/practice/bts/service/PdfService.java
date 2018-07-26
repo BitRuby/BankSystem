@@ -42,7 +42,7 @@ public class PdfService {
 
                 pdf = baos.toByteArray();
             } catch (IOException | DocumentException e) {
-                e.printStackTrace();
+                Logger.debug(e.getMessage(), e);
             }
         }
 

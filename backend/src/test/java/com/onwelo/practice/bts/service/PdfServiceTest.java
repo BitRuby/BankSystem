@@ -26,15 +26,6 @@ class PdfServiceTest implements Extension {
     @Autowired
     private PdfService pdfService;
 
-    @AfterEach
-    void deleteFiles() throws Exception {
-        File pdfOutgoing = new File("pdfOutgoing.pdf");
-        File pdfIncoming = new File("pdfIncoming.pdf");
-        if (!pdfOutgoing.delete() && !pdfIncoming.delete()) {
-            throw new Exception("failed deletion test files");
-        }
-    }
-
     @Test
     void getPdfOutgoing() {
         Transfer transfer = new Transfer("testowy tytuł przelewu wychodzącego", BigDecimal.valueOf(500),
