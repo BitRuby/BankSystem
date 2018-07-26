@@ -31,7 +31,7 @@ public class SessionOutgoing {
     @Autowired
     private FtpService ftpService;
 
-    @Scheduled(cron = "0 6,12,18 * * *") // everyday at 6:00, 12:00 and 18:00
+    @Scheduled(cron = "0 0 12 * * *") // everyday at 12:00
     public void someMainMethod() {
         transfers = getTransfers();
         if (!Objects.requireNonNull(transfers).isEmpty()) {
@@ -53,7 +53,7 @@ public class SessionOutgoing {
 
     private InputStream getFileInputStream() {
         try {
-            return new FileInputStream(csvService.getCsvFromTransfers(transfers, "outgoingTransfers.csv"));
+            return new FileInputStream(csvService.getCsvFromTransfers(transfers, "/" + "iban" + "/transfers.csv"));
         } catch (FileNotFoundException e) {
             Logger.debug(e.getMessage(), e);
         }
