@@ -8,6 +8,7 @@ import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
@@ -30,8 +31,8 @@ public class SessionOutgoing {
     @Autowired
     private FtpService ftpService;
 
-    // scheduled method
-    void someMainMethod() {
+    @Scheduled(cron = "0 6,12,18 * * *") // everyday at 6:00, 12:00 and 18:00
+    public void someMainMethod() {
         transfers = getTransfers();
         if (!Objects.requireNonNull(transfers).isEmpty()) {
             if (sendTransfers(getFileInputStream())) {
@@ -51,14 +52,10 @@ public class SessionOutgoing {
     }
 
     private InputStream getFileInputStream() {
-        if (transfers != null) {
-            try {
-                return new FileInputStream(csvService.getCsvFromTransfers(transfers, "outgoingTransfers.csv"));
-            } catch (FileNotFoundException e) {
-                Logger.debug(e.getMessage(), e);
-            }
-        } else {
-            return null;
+        try {
+            return new FileInputStream(csvService.getCsvFromTransfers(transfers, "outgoingTransfers.csv"));
+        } catch (FileNotFoundException e) {
+            Logger.debug(e.getMessage(), e);
         }
 
         return null;
