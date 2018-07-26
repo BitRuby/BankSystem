@@ -18,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.onwelo.practice.bts.service.CsvService.formatter;
+
 @Service
 public class PdfService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
@@ -68,13 +70,13 @@ public class PdfService {
         String pdfContent = new String(themeContent);
 
         if (transfer.getTransferType().equals(TransferType.INCOMING)) {
-            pdfContent = pdfContent.replace("${date}", transfer.getBookingDate().toString());
+            pdfContent = pdfContent.replace("${date}", transfer.getBookingDate().format(formatter));
             pdfContent = pdfContent.replace("${accountNoOwner}", transfer.getAccountNo());
             pdfContent = pdfContent.replace("${accountNoTarget}", transfer.getAccountId().getAccountNo());
         }
 
         if (transfer.getTransferType().equals(TransferType.OUTGOING)) {
-            pdfContent = pdfContent.replace("${date}", transfer.getCreateTime().toString());
+            pdfContent = pdfContent.replace("${date}", transfer.getCreateTime().format(formatter));
             pdfContent = pdfContent.replace("${accountNoOwner}", transfer.getAccountId().getAccountNo());
             pdfContent = pdfContent.replace("${accountNoTarget}", transfer.getAccountNo());
         }

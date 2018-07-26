@@ -10,14 +10,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Service
 public class CsvService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(CsvService.class);
     private static final String SplitSign = ";";
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -33,9 +34,8 @@ public class CsvService {
 
     private ArrayList<String> parseToCsv(ArrayList<Transfer> transfers) {
         ArrayList<String> lines = new ArrayList<>();
-
         for (Transfer transfer : transfers) {
-            lines.add(transfer.getCreateTime().toString() + SplitSign +
+            lines.add(transfer.getCreateTime().format(formatter) + SplitSign +
                     transfer.getTitle() + SplitSign +
                     transfer.getValue() + SplitSign +
                     transfer.getAccountId().getAccountNo() + SplitSign + // owner
@@ -81,8 +81,8 @@ public class CsvService {
                     string[4], // accountNo
                     TransferStatus.APPROVED, // status
                     TransferType.INCOMING, // type
-                    Timestamp.valueOf(string[0]), // createTime
-                    LocalDate.now(), // bookingDate
+                    LocalDateTime.parse(string[0], formatter), // createTime
+                    LocalDateTime.now(), // bookingDate
                     getCurrency(string[5]))); // currency
         }
 

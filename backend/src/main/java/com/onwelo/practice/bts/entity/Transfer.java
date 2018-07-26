@@ -85,6 +85,17 @@ public class Transfer {
         this.transferType = transferType;
     }
 
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferStatus status, TransferType transferType, LocalDateTime bookingDate, Currency currency) {
+        this.title = title;
+        this.value = value;
+        this.accountId = accountId;
+        this.accountNo = accountNo;
+        this.status = status;
+        this.transferType = transferType;
+        this.bookingDate = bookingDate;
+        this.currency = currency;
+    }
+
     public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferStatus status, TransferType transferType, LocalDateTime createTime, LocalDateTime bookingDate, Currency currency) {
         this.title = title;
         this.value = value;
