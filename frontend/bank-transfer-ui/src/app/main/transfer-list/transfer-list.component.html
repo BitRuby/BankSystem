@@ -56,7 +56,7 @@
           Date
         </label>
       </div>
-      <select class="custom-select" [(ngModel)]="dateSelect" id="inputGroupSelect01">
+      <select class="custom-select" [(ngModel)]="dateSelect" id="inputGroupSelect01" [disabled]="!dateCheckbox">
         <option value="asc">ASC</option>
         <option value="desc">DESC</option>
       </select>
@@ -70,7 +70,7 @@
           Title
         </label>
       </div>
-      <select class="custom-select" [(ngModel)]="titleSelect" id="inputGroupSelect02">
+      <select class="custom-select" [(ngModel)]="titleSelect" id="inputGroupSelect02" [disabled]="!titleCheckbox">
         <option value="asc">ASC</option>
         <option value="desc">DESC</option>
       </select>
@@ -84,7 +84,7 @@
           Value
         </label>
       </div>
-      <select class="custom-select" [(ngModel)]="valueSelect" id="inputGroupSelect03">
+      <select class="custom-select" [(ngModel)]="valueSelect" id="inputGroupSelect03" [disabled]="!valueCheckbox">
         <option value="asc">ASC</option>
         <option value="desc">DESC</option>
       </select>
