@@ -107,8 +107,8 @@ public class TransferService {
                 senderAccNo,
                 TransferStatus.REALIZED,
                 TransferType.INCOMING,
-                now, transfer.getCurrency());
-        incoming.setCreateTime(now);
+                now, now,
+                transfer.getCurrency());
 
         transfer.setStatus(TransferStatus.REALIZED);
 

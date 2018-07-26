@@ -1,5 +1,6 @@
 package com.onwelo.practice.bts.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -18,6 +19,8 @@ import org.jvnet.hk2.annotations.Optional;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import static com.onwelo.practice.bts.service.CsvService.formatter;
 
 @Getter
 @Setter
@@ -51,15 +54,17 @@ public class Transfer {
 
     @Column(name = "status", length = 8)
     @Enumerated(EnumType.STRING)
-    private TransferStatus status;
+    private TransferStatus status = TransferStatus.PENDING;
 
     @Column(name = "transfer_type", length = 8)
     @Enumerated(EnumType.STRING)
     private TransferType transferType;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
     private LocalDateTime createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "booking_date")
     private LocalDateTime bookingDate;
 

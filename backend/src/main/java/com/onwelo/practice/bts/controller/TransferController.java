@@ -36,12 +36,6 @@ public class TransferController {
         return transferService.addTransfer(transfer);
     }
 
-    @PutMapping(path = "/{id}")
-    public Transfer update(@PathVariable("id") Long id, @RequestBody Transfer transfer) {
-        transfer.setId(id);
-        return transferService.updateTransfer(transfer);
-    }
-
     @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         return ResponseEntity.ok(transferService.deactivateTransfer(id));
