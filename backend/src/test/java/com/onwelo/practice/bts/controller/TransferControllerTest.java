@@ -9,15 +9,10 @@ import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.service.BankAccountService;
 import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.TransferType;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +22,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.stream.Stream;
+import java.math.BigDecimal;
 
 import static com.onwelo.practice.bts.service.BankAccountServiceTest.*;
 import static org.hamcrest.Matchers.is;
@@ -62,7 +57,7 @@ public class TransferControllerTest {
 
     @BeforeAll
     public void initDB() {
-        bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
+        bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", BigDecimal.valueOf(10000000), bd0);
         bankAccountService.addBankAccount(bankAccount);
     }
 
@@ -74,10 +69,12 @@ public class TransferControllerTest {
 
     @Test
     void indexTest() throws Exception {
-        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
         for (int i = 0; i < 10; i++) {
-            transferService.addTransfer(transfer);
+            transferService.addTransfer(new Transfer("przelew", bd100, bankAccount,
+                    "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING));
         }
+
+        System.out.println(transferService.getAllTransfers().size());
 
         mockMvc.perform(get("/transfers"))
                 .andExpect(status().isOk())
@@ -112,15 +109,19 @@ public class TransferControllerTest {
     @ParameterizedTest
     @ValueSource(ints = {10, 20, 50})
     void transferByUser(int pageSize) throws Exception {
-        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
+        transferRepository.deleteAll();
+    
         for (int i = 0; i < 100; i++) {
-            transferService.addTransfer(transfer);
+            transferService.addTransfer(new Transfer("przelew", bd100, bankAccount, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING));
         }
 
         mockMvc.perform(get("/transfers/user/{id}?page=1&size={size}", bankAccount.getId().intValue(), pageSize))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.content", hasSize(pageSize)));
+                .andExpect(jsonPath("$.content", hasSize(pageSize)))
+                .andExpect(jsonPath("$.totalPages", is(100 / pageSize)));
+
+        transferRepository.deleteAll();
     }
 
     @Test
@@ -146,28 +147,6 @@ public class TransferControllerTest {
                         .content(asJsonString(transfer))
                         .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isUnprocessableEntity());
-    }
-
-    @Test
-    void updateTest() throws Exception {
-        Transfer transfer = new Transfer("przelew", bd100, bankAccount, "74 1050 1416 1000 0092 0379 3907", TransferType.OUTGOING);
-        transfer = transferService.addTransfer(transfer);
-
-        transfer.setTitle("przelew 2");
-        transfer.setAccountId(bankAccount);
-
-        mockMvc.perform(
-                put("/transfers/{id}", transfer.getId().intValue())
-                        .content(asJsonString(transfer))
-                        .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id", is(transfer.getId().intValue())))
-                .andExpect(jsonPath("$.title", is("przelew 2")))
-                .andExpect(jsonPath("$.value", is(transfer.getValue().doubleValue())))
-                .andExpect(jsonPath("$.accountId", is(bankAccount.getId().intValue())))
-                .andExpect(jsonPath("$.accountNo", is("74105014161000009203793907")))
-                .andExpect(jsonPath("$.transferType", is(TransferType.OUTGOING.name())));
     }
 
     //    @Test

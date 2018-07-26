@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,13 +56,11 @@ public class TransferServiceTest implements Extension {
         bankAccountService.addBankAccount(bankIn);
         transfers.forEach(transferService::addTransfer);
         assertNotNull(transferService.getAllTransfers());
-
-        transferService.getAllTransfers().forEach(System.out::println);
     }
 
     @Test
     public void getTransfersByStatusTest() {
-        BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
+        BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", BigDecimal.valueOf(100000), bd0);
         List<Transfer> transfers = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
