@@ -1,10 +1,72 @@
-
-<div class="content">
-
+<div class="wrapper">
   <div class="container">
+    <div class="content">
 
-    <h1>Sample text</h1>
+      <h3 class="display-4 mb-3">New transfer</h3>
+      <hr class="mb-3">
 
+      <div class="row">
+        <div class="col-md-8 col-sm-12">
+          <div class="form-group">
+            <label for="InputName">Name</label>
+            <input type="email" class="form-control" id="InputName" aria-describedby="nameHelp" placeholder="Enter name"
+                   [(ngModel)]="name">
+            <small id="nameHelp" class="form-text text-muted">Transfer will be labeled with this name.</small>
+          </div>
+        </div>
+        <div class="col-md-8 col-sm-12">
+          <div class="form-row">
+            <div class="form-group col-md-3 col-sm-4 mb-0">
+              <label for="inputCurrency">Currency</label>
+              <select id="inputCurrency" class="form-control" [(ngModel)]="currency">
+                <option value="PLN" selected>PLN</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4 col-sm-8 mb-0 mt-custom">
+              <label for="InputValue">Value</label>
+              <input type="number" class="form-control" id="InputValue" aria-describedby="valueHelp"
+                     [(ngModel)]="value">
+            </div>
+          </div>
+          <small id="valueHelp" class="form-text text-muted">Please enter currency and value.</small>
+        </div>
+        <div class="col-md-8 col-sm-12 mt-3">
+          <div class="form-group">
+            <label for="InputAccountNo">Account number</label>
+            <input type="text" class="form-control" id="InputAccountNo" aria-describedby="nameAccount"
+                   placeholder="Enter account number" [(ngModel)]="accountNo">
+            <small id="nameAccount" class="form-text text-muted">Fill field with account number where transfer will be
+              proceed.
+            </small>
+          </div>
+        </div>
+        <div class="col-md-8 col-sm-12 mt-3">
+          <button class="btn btn-dark btn-custom" (click)="open(transfer)">Proceed</button>
+        </div>
+      </div>
+
+    </div>
   </div>
-
 </div>
+
+
+<ng-template #transfer let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New transfer summary</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body my-3">
+    <label class="mb-0">Name</label>
+    <h3 class="mt-0 mb-3">{{name}}</h3>
+    <label class="mb-0">Value</label>
+    <h3 class="mt-0 mb-3">{{value | currency:currency:'code':'1.2-2':'pl'}}</h3>
+    <label class="mb-0">Account number</label>
+    <h3 class="mt-0 mb-3">{{accountNo}}</h3>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Save click');">Accept</button>
+  </div>
+</ng-template>
