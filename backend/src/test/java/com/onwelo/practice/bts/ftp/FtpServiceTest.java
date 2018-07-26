@@ -5,12 +5,21 @@ import org.junit.jupiter.api.*;
 import org.junit.rules.TemporaryFolder;
 import org.mockftpserver.fake.FakeFtpServer;
 import org.mockftpserver.fake.UserAccount;
-import org.mockftpserver.fake.filesystem.*;
-import java.io.*;
+import org.mockftpserver.fake.filesystem.DirectoryEntry;
+import org.mockftpserver.fake.filesystem.FileEntry;
+import org.mockftpserver.fake.filesystem.FileSystem;
+import org.mockftpserver.fake.filesystem.WindowsFakeFileSystem;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@SpringBootConfiguration
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FtpServiceTest {
     private static final String FILE_CONTENT = "test onwelo practice bts";
@@ -20,6 +29,7 @@ public class FtpServiceTest {
     private FtpService ftpService;
     private FtpConfig ftpConfig;
     private File f;
+
 
     @BeforeAll
     static void setupFakeFtpServer() {
@@ -178,12 +188,22 @@ public class FtpServiceTest {
     @Test
     @Disabled
     void checkFIleIsCorrectlyStoreOnFtpWithStandardCreditals() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
         ftpService = new FtpService(getStandardTestFtpConfig());
         ftpService.openConnection();
-        ftpService.addFileFromLocalDir("test.txt", "test_y.txt");
+        ftpService.addFileFromLocalDir("testxyz.txt", "/jafka/test_w" + LocalDateTime.now().format(formatter) + ".txt");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ftpService.getFileByRemoteFilePath(outputStream, "test_y.txt");
-        assertEquals(outputStream.toString(), "dddddddd");
+        ftpService.getFileByRemoteFilePath(outputStream, "/jafka/test_w" + LocalDateTime.now().format(formatter) + ".txt");
+        assertEquals(outputStream.toString(), "Test directory");
+    }
+
+    @Test
+    @Disabled
+    void tryDeleteAllFilesAtGivenPath() throws IOException {
+        ftpService = new FtpService(getStandardTestFtpConfig());
+        ftpService.openConnection();
+        ftpService.createDirectory("/jafka");
+        assertTrue(ftpService.deleteAllFiles("/"));
     }
 
 
@@ -199,7 +219,7 @@ public class FtpServiceTest {
 
     private FtpConfig getStandardTestFtpConfig() {
         FtpConfig ftpConfig = new FtpConfig();
-        ftpConfig.setHost("127.0.0.1");
+        ftpConfig.setHost("192.168.1.84");
         ftpConfig.setUser("uibank");
         ftpConfig.setPassphrase("passub");
         ftpConfig.setPort(21599);

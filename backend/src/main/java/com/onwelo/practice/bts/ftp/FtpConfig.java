@@ -16,11 +16,11 @@ public class FtpConfig {
     private String host;
     @Value("${ftp.user}")
     private String user;
-    @Value("${ftp.passphrase")
+    @Value("${ftp.passphrase}")
     private String passphrase;
     @Value("${ftp.port}")
     private int port;
-    @Value("${ftp.directory}")
+    @Value("${bank.iban}")
     private String ftpDirectory;
     @Value("${ftp.autostart}")
     private boolean isAutostart;
