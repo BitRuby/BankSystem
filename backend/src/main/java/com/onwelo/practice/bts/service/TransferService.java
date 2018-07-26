@@ -73,9 +73,7 @@ public class TransferService {
 
         bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
         bankAccountService.updateBankAccount(bankAccount);
-        transfer = transferRepository.save(transfer);
-        System.out.println(transfer);
-        return transfer;
+        return transferRepository.save(transfer);
     }
 
     public Transfer updateTransfer(Transfer transfer) {
