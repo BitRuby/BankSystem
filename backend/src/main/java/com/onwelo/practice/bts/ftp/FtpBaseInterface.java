@@ -1,8 +1,10 @@
 package com.onwelo.practice.bts.ftp;
 
-import java.io.File;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 public interface FtpBaseInterface {
 
@@ -64,4 +66,28 @@ public interface FtpBaseInterface {
      */
 
     boolean isConnected();
+
+    /**
+     * Create directory on ftp server.
+     *
+     * @return boolean true if connected, false otherwise.
+     */
+
+    boolean createDirectory(String outboundPath);
+
+    /**
+     * Delete all files from directory on ftp server
+     *
+     * @return boolean true if connected, false otherwise.
+     */
+
+    boolean deleteAllFiles(String deletePath) throws IOException;
+
+    /**
+     * Get list of all files from directory on ftp server
+     *
+     * @return list of files name
+     */
+
+    List<String> getFilesListFromDirectory(String deletePath) throws IOException;
 }
