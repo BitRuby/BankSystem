@@ -10,9 +10,49 @@
   font-style: normal;
 }
 
-body {
-  min-height: 100vh !important;
+html, body {
+  height: 100% !important;
 }
+.wrapper {
+  flex: 1;
+  display: flex;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .content {
-  padding: 20px 0;
+  flex: 1;
+  padding: 50px 0 100px 0;
+  background: rgb(255, 255, 255);
+}
+#main {
+  min-height: 100vh !important;
+  display: flex;
+  flex-direction: column;
+}
+#main > :nth-child(3) {
+  flex: 1;
+  display: flex;
+}
+
+.modal-open {
+  overflow: auto !important;
+}
+
+.modal-header {
+  background: rgb(57, 63, 77);
+  color: rgb(255, 255, 255);
+}
+
+.modal-content {
+  border-radius: .4rem !important;
+}
+@media (min-width: 576px) and (max-width: 991px) {
+  .container {
+    padding-left: 0 !important;
+  }
 }
