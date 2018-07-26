@@ -147,7 +147,7 @@ public class FtpService implements FtpBaseInterface {
             try {
                 ftpClient.deleteFile(s);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.debug("Problem with  delete file from ftp");
             }
 
         });
