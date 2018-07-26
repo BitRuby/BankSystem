@@ -1,17 +1,18 @@
 package com.onwelo.practice.bts.service;
 
-import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.TransferType;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,33 +22,29 @@ import java.nio.file.Paths;
 public class PdfService {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(PdfService.class);
 
-    public Resource createPdfAsResource(String filepathPdf, Transfer transfer, Boolean isRest) {
+    public byte[] createPDF(Transfer transfer, Boolean isRest) {
+        byte[] pdf = null;
+
         if (transfer != null) {
-            Document document = prepareDocument();
-            PdfWriter writer = createWriter(document, filepathPdf);
-            document.open();
-            document = parseXHtml(document, writer, prepareContent(transfer, isRest));
-            document.close();
+            byte[] content = prepareContent(transfer, isRest).getBytes(StandardCharsets.UTF_8);
 
-            Path path = Paths.get(filepathPdf);
-            Resource resource = null;
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                 ByteArrayInputStream is = new ByteArrayInputStream(content)) {
 
-            try {
-                resource = new UrlResource(path.toUri());
-            } catch (MalformedURLException e) {
-                Logger.debug(e.getMessage());
+                Document document = new Document(PageSize.A4);
+                PdfWriter writer = PdfWriter.getInstance(document, baos);
+
+                document.open();
+                XMLWorkerHelper.getInstance().parseXHtml(writer, document, is, StandardCharsets.UTF_8);
+                document.close();
+
+                pdf = baos.toByteArray();
+            } catch (IOException | DocumentException e) {
+                Logger.debug(e.getMessage(), e);
             }
-
-            return resource;
-        } else {
-            return null;
         }
-    }
 
-    private Document prepareDocument() {
-        Document document = new Document();
-        document.setPageSize(PageSize.A4);
-        return document;
+        return pdf;
     }
 
     private String prepareContent(Transfer transfer, Boolean isRest) {
@@ -86,29 +83,5 @@ public class PdfService {
         pdfContent = pdfContent.replace("${value}", transfer.getValue().toString());
 
         return pdfContent;
-    }
-
-    private PdfWriter createWriter(Document document, String filepathPdf) {
-        PdfWriter writer = null;
-
-        try {
-            writer = PdfWriter.getInstance(document, new FileOutputStream(filepathPdf));
-        } catch (DocumentException | FileNotFoundException e) {
-            Logger.debug(e.getMessage());
-        }
-
-        return writer;
-    }
-
-    private Document parseXHtml(Document document, PdfWriter writer, String pdfContent) {
-        try {
-            XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-            InputStream inputStream = new ByteArrayInputStream(pdfContent.getBytes(StandardCharsets.UTF_8));
-            worker.parseXHtml(writer, document, inputStream, null, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            Logger.debug(e.getMessage());
-        }
-
-        return document;
     }
 }
