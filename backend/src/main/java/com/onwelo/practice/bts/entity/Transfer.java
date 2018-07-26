@@ -82,6 +82,18 @@ public class Transfer {
         this.transferType = transferType;
     }
 
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferStatus status, TransferType transferType, Timestamp createTime, LocalDate bookingDate, Currency currency) {
+        this.title = title;
+        this.value = value;
+        this.accountId = accountId;
+        this.accountNo = accountNo;
+        this.status = status;
+        this.transferType = transferType;
+        this.createTime = createTime;
+        this.bookingDate = bookingDate;
+        this.currency = currency;
+    }
+
     public void setAccountNo(String accountNo) {
         this.accountNo = accountNo.replace(" ", "");
     }
