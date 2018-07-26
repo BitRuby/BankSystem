@@ -2,10 +2,7 @@ package com.onwelo.practice.bts.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.onwelo.practice.bts.exceptions.NotFoundException;
-import com.onwelo.practice.bts.exceptions.MissingFieldException;
-import com.onwelo.practice.bts.exceptions.NotValidField;
-import com.onwelo.practice.bts.exceptions.UniqueFieldException;
+import com.onwelo.practice.bts.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +35,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = {NotValidField.class})
     protected ResponseEntity<String> handleFailedValidation(Exception e) {
         return new ResponseEntity<>(stringToJson("error", e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(value = {ForbiddenException.class})
+    protected ResponseEntity<String> handleForbiddenException(Exception e) {
+        return new ResponseEntity<>(stringToJson("error", e.getMessage()), HttpStatus.FORBIDDEN);
     }
 }

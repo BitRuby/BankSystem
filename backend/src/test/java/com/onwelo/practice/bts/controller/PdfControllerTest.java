@@ -7,21 +7,21 @@ import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.service.BankAccountService;
 import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.TransferType;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.File;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -56,7 +56,7 @@ public class PdfControllerTest {
         bankAccountService.addBankAccount(bankAccount);
 
         transfer = new Transfer("testowy tytuł przelewu wychodzącego", BigDecimal.valueOf(500), bankAccount, "74105014161000009203793907", TransferType.OUTGOING);
-        transfer.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        transfer.setCreateTime(LocalDateTime.now());
         transferService.addTransfer(transfer);
     }
 

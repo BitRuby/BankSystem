@@ -1,6 +1,8 @@
 package com.onwelo.practice.bts.entity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.onwelo.practice.bts.utils.Currency;
 import com.onwelo.practice.bts.utils.MoneySerializer;
@@ -11,11 +13,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Where;
+import org.jvnet.hk2.annotations.Optional;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 @Where(clause = "is_active=1")
 public class Transfer {
     @Id
+    @Optional
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,10 +58,10 @@ public class Transfer {
     private TransferType transferType;
 
     @Column(name = "create_time")
-    private java.sql.Timestamp createTime;
+    private LocalDateTime createTime;
 
     @Column(name = "booking_date")
-    private LocalDate bookingDate;
+    private LocalDateTime bookingDate;
 
     @Column(name = "currency", length = 3)
     @Enumerated(EnumType.STRING)
@@ -70,7 +73,7 @@ public class Transfer {
     @PrePersist
     protected void onCreate() {
         if (createTime == null) {
-            createTime = new Timestamp(System.currentTimeMillis());
+            createTime = LocalDateTime.now();
         }
     }
 
@@ -80,6 +83,17 @@ public class Transfer {
         this.accountId = accountId;
         this.accountNo = accountNo.replace(" ", "");
         this.transferType = transferType;
+    }
+
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferStatus status, TransferType transferType, LocalDateTime bookingDate, Currency currency) {
+        this.title = title;
+        this.value = value;
+        this.accountId = accountId;
+        this.accountNo = accountNo;
+        this.status = status;
+        this.transferType = transferType;
+        this.bookingDate = bookingDate;
+        this.currency = currency;
     }
 
     public void setAccountNo(String accountNo) {

@@ -3,8 +3,10 @@ package com.onwelo.practice.bts.controller;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,5 +45,10 @@ public class TransferController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         return ResponseEntity.ok(transferService.deactivateTransfer(id));
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 }

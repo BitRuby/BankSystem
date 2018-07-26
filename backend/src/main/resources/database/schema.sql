@@ -28,7 +28,7 @@ create table transfer
 (
   id            bigint     auto_increment primary key,
   account_no    varchar(26)    null,
-  booking_date  timestamp,
+  booking_date  datetime       null,
   create_time   datetime       null,
   status        varchar(8)     null,
   title         varchar(255)   null,

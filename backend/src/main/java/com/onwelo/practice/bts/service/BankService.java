@@ -44,4 +44,12 @@ public class BankService {
         BigInteger value = new BigInteger(accountNo);
         return value.mod(new BigInteger("97")).intValue() == 1;
     }
+
+    public static String getBankID(String accountNo) {
+        if (accountNo == null || accountNo.length() != 26) {
+            return null;
+        }
+
+        return accountNo.substring(2, 6);
+    }
 }

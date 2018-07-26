@@ -1,6 +1,7 @@
 INSERT INTO bank.bank_account (id, account_no, is_active, first_name, last_name, money_amount, money_blocked) VALUES
   (1, '29116022020000000311935598', true, 'Norbert', 'Wychowski', 10000.00, 0.00),
-  (2, '74105014161000009203793907', true, 'Tomasz', 'Woźniak', 10000.00, 0.00);
+  (2, '74105014161000009203793907', true, 'Tomasz', 'Woźniak', 10000.00, 0.00),
+  (3, '22116000068836465485413240', true, 'Jan', 'Nowak', 10000.00, 0.00);
 
 INSERT INTO bank.transfer (id, account_no, booking_date, create_time, status, title, transfer_type, value, currency, account_id) VALUES
   (1, '29116022020000000311935598', null, '2018-07-16 09:42:12', 'PENDING', 'przelew do Norberta 1', 'OUTGOING', 100.00, 'PLN', 2),
