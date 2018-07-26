@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TransferService} from '../../core/transfer/transfer.service';
 import {Transfer} from '../../core/transfer/transfer.model';
 import {ActivatedRoute} from '@angular/router';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NgxSpinnerService} from 'ngx-spinner';
-
 
 @Component({
   selector: 'app-transfer-list',
@@ -12,22 +11,37 @@ import {NgxSpinnerService} from 'ngx-spinner';
   styleUrls: ['./transfer-list.component.css']
 })
 export class TransferListComponent implements OnInit {
-  @Input() transfer: Transfer[];
+  transfer: Transfer[];
   batch: number;
   closeResult: string;
+  order: string;
+  dateCheckbox: boolean;
+  dateSelect: string;
+  titleCheckbox: boolean;
+  titleSelect: string;
+  valueCheckbox: boolean;
+  valueSelect: string;
 
-  constructor(private transferService: TransferService, private route: ActivatedRoute, private modalService: NgbModal, private spinner: NgxSpinnerService) {
+  constructor(private transferService: TransferService, private route: ActivatedRoute,
+              private modalService: NgbModal, private spinner: NgxSpinnerService) {
+    this.dateSelect = 'asc';
+    this.titleSelect = 'asc';
+    this.valueSelect = 'asc';
+    this.dateCheckbox = false;
+    this.titleCheckbox = false;
+    this.valueCheckbox = false;
+    this.order = '&sort=createTime,desc';
+    this.batch = 10;
   }
 
   ngOnInit() {
-    this.batch = 10;
     this.getTransfers();
   }
 
   private getTransfers(): void {
     this.spinner.show();
     const id = +this.route.snapshot.paramMap.get('id');
-    this.transferService.getTransfers(id, this.batch)
+    this.transferService.getTransfers(id, this.batch, this.order)
       .subscribe(transfer => {
         this.transfer = transfer['content'];
         setTimeout(() => {
@@ -56,6 +70,21 @@ export class TransferListComponent implements OnInit {
 
   private onScroll() {
     this.batch += 10;
+    this.getTransfers();
+  }
+
+  private close() {
+    this.order = '';
+    if (this.dateCheckbox) {
+      this.order += '&sort=createTime,' + this.dateSelect;
+    }
+    if (this.titleCheckbox) {
+      this.order += '&sort=title,' + this.titleSelect;
+    }
+    if (this.valueCheckbox) {
+      this.order += '&sort=value,' + this.valueSelect;
+    }
+    console.log(this.order);
     this.getTransfers();
   }
 

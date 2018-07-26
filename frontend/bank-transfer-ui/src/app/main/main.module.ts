@@ -14,6 +14,7 @@ import localePl from '@angular/common/locales/pl';
 import {AppGroupByPipe} from '../app-groupBy.pipe';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import {FormsModule} from '@angular/forms';
 
 
 registerLocaleData(localePl);
@@ -34,7 +35,8 @@ registerLocaleData(localePl);
     MainRoutingModule,
     NgbModule,
     InfiniteScrollModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    FormsModule
   ],
   providers: []
 })

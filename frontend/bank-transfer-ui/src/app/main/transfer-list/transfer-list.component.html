@@ -46,27 +46,51 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
-    <div class="input-group mb-3">
+  <div class="modal-body my-3">
+    <div class="input-group">
       <div class="input-group-prepend">
-        <label class="input-group-text" for="inputGroupSelect01">Order type</label>
+        <div class="input-group-text">
+          <input [(ngModel)]="dateCheckbox" type="checkbox">
+        </div>
+        <label for="inputGroupSelect01" class="input-group-text">
+          Date
+        </label>
       </div>
-      <select class="custom-select" id="inputGroupSelect01">
-        <option value="1" selected>ASC</option>
-        <option value="2">DESC</option>
+      <select class="custom-select" [(ngModel)]="dateSelect" id="inputGroupSelect01">
+        <option value="asc">ASC</option>
+        <option value="desc">DESC</option>
       </select>
     </div>
-    <div class="form-group">
-      <label for="exampleFormControlSelect2">Order by (Hold Ctrl button to select more)</label>
-      <select multiple class="form-control" id="exampleFormControlSelect2">
-        <option value="1" selected>Title</option>
-        <option value="2">Status</option>
-        <option value="3">Account Number</option>
-        <option value="4">Value</option>
+    <div class="input-group my-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input [(ngModel)]="titleCheckbox" type="checkbox">
+        </div>
+        <label for="inputGroupSelect02" class="input-group-text">
+          Title
+        </label>
+      </div>
+      <select class="custom-select" [(ngModel)]="titleSelect" id="inputGroupSelect02">
+        <option value="asc">ASC</option>
+        <option value="desc">DESC</option>
+      </select>
+    </div>
+    <div class="input-group my-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input [(ngModel)]="valueCheckbox" type="checkbox">
+        </div>
+        <label for="inputGroupSelect03" class="input-group-text">
+          Value
+        </label>
+      </div>
+      <select class="custom-select" [(ngModel)]="valueSelect" id="inputGroupSelect03">
+        <option value="asc">ASC</option>
+        <option value="desc">DESC</option>
       </select>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Save click');close();">Save</button>
   </div>
 </ng-template>
