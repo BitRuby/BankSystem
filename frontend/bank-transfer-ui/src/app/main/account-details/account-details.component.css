@@ -1,0 +1,34 @@
+.wrapper {
+  background: rgb(255, 255, 255);
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.content {
+  flex: 1;
+  padding: 40px 0;
+  background: rgb(255, 255, 255);
+}
+hr {
+  margin-bottom: 30px;
+}
+.cards {
+  display: flex;
+}
+.cards .card:nth-child(1){
+  flex: .25;
+}
+h5, p {
+  margin: 0;
+}
+h5 {
+  margin-bottom: 10px;
+}
+p {
+  color: rgb(190, 190, 190);
+}
+.bg-custom {
+  background: rgb(57, 63, 77)
+}
