@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {TransferService} from '../../core/transfer/transfer.service';
 import {Transfer} from '../../core/transfer/transfer.model';
+import {TransferService} from '../../core/transfer/transfer.service';
 import {ActivatedRoute} from '@angular/router';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NgxSpinnerService} from 'ngx-spinner';
