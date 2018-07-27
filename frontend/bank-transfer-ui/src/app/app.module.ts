@@ -15,7 +15,6 @@ import {HttpClientModule} from '@angular/common/http';
     NgbModule.forRoot(),
     HttpClientModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

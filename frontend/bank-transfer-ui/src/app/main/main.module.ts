@@ -37,7 +37,6 @@ registerLocaleData(localePl);
     InfiniteScrollModule,
     NgxSpinnerModule,
     FormsModule
-  ],
-  providers: []
+  ]
 })
 export class MainModule { }

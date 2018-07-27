@@ -14,7 +14,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     LoginRoutingModule,
     NgbModule
-  ],
-  providers: []
+  ]
 })
 export class LoginModule { }
