@@ -1,0 +1,19 @@
+09:50:16.837 1672 [main] INFO  c.o.p.bts.service.CsvServiceTest - Starting CsvServiceTest on DESKTOP-IVIJ0HD with PID 13296 (started by Indiano in C:\Users\Indiano\IdeaProjects\BankSystem\backend)
+09:50:16.842 1677 [main] DEBUG c.o.p.bts.service.CsvServiceTest - Running with Spring Boot v2.0.3.RELEASE, Spring v5.0.7.RELEASE
+09:50:16.845 1680 [main] INFO  c.o.p.bts.service.CsvServiceTest - The following profiles are active: dev
+09:50:26.166 11001 [main] DEBUG c.o.practice.bts.ftp.FtpService - Autostart connection to FTP server.
+09:50:26.166 11001 [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+09:50:30.109 14944 [main] INFO  c.o.p.bts.service.CsvServiceTest - Started CsvServiceTest in 13.871 seconds (JVM running for 17.904)
+10:28:40.750 897  [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+10:29:44.395 927  [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+10:32:02.405 1048 [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+10:51:23.262 1635 [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+10:51:23.340 1713 [main] DEBUG c.o.practice.bts.ftp.FtpService - getFilesListFromDirectory(bankDirectoryPath)->[/1140/transfer.csv]
+10:56:15.512 1088 [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+10:56:15.575 1151 [main] DEBUG c.o.practice.bts.ftp.FtpService - getFilesListFromDirectory(bankDirectoryPath)->[/1140/transfer.csv]
+10:57:28.061 1128 [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+10:57:28.144 1211 [main] DEBUG c.o.practice.bts.ftp.FtpService - getFilesListFromDirectory(bankDirectoryPath)->[/1140/transfer.csv, /1140/transfer1.csv, /1140/transfer2.csv]
+11:02:49.930 1108 [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+11:02:49.986 1164 [main] DEBUG c.o.practice.bts.ftp.FtpService - getFilesListFromDirectory(bankDirectoryPath)->[/1140/transfer.csv, /1140/transfer1.csv, /1140/transfer2.csv]
+11:03:32.372 1128 [main] DEBUG c.o.practice.bts.ftp.FtpService - Connecting to FTP server.
+11:03:32.456 1212 [main] DEBUG c.o.practice.bts.ftp.FtpService - getFilesListFromDirectory(bankDirectoryPath)->[/1140/transfer.csv]

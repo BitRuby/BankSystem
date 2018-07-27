@@ -13,9 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @Component
-public class SessionIngoing {
+public class SessionIncoming {
 
-    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionIngoing.class);
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionIncoming.class);
     @Value("${bank.iban}")
     private static String bankDirectory;
     private ArrayList<Transfer> transferArrayList;
@@ -24,8 +24,7 @@ public class SessionIngoing {
     @Autowired
     private FtpService ftpService;
 
-    @Scheduled(cron = "0 0 3,9,15 * * *")
-        // everyday at 03:00,09:00,15:00
+    @Scheduled(cron = "0 5 11 * * *")
     void startSessionIngoing() {
         if (ftpService.isConnected()) {
             retriveAllTransferFile();
@@ -41,9 +40,10 @@ public class SessionIngoing {
     }
 
     private boolean retriveAllTransferFile() {
-
         try {
             transferArrayList = ftpService.retriveAllFiles("/"+bankDirectory);
+            Logger.debug("bankDirectory->" + bankDirectory);
+            Logger.debug("transferArrayList.isEmpty()->" +transferArrayList.isEmpty());
             if (transferArrayList.isEmpty()) {
                 return true;
             } else {
@@ -58,6 +58,7 @@ public class SessionIngoing {
 
     private void addAllTransfers() {
         transferArrayList.forEach(transfer -> transferService.addTransfer(transfer));
+        transferArrayList.forEach( transfer ->  Logger.debug("bankDirectory->" + transfer));
     }
 
 }

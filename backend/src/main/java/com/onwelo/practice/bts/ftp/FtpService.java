@@ -22,6 +22,7 @@ public class FtpService implements FtpBaseInterface {
     private FTPClient ftpClient;
     @Autowired
     private CsvService csvService;
+    private ArrayList<Transfer> transferArrayList = new ArrayList<>();
 
 
     @Autowired
@@ -155,20 +156,27 @@ public class FtpService implements FtpBaseInterface {
     }
 
     @Override
-    public List<String> getFilesListFromDirectory(String deletePath) throws IOException {
-        return Arrays.asList(ftpClient.listNames(deletePath));
+    public List<String> getFilesListFromDirectory(String path) throws IOException {
+        return Arrays.asList(ftpClient.listNames(path));
     }
 
     @Override
     public ArrayList<Transfer> retriveAllFiles(String bankDirectoryPath) throws IOException {
-        ArrayList<Transfer> transferArrayList = new ArrayList<>();
+        Logger.debug("getFilesListFromDirectory(bankDirectoryPath)->"+ getFilesListFromDirectory(bankDirectoryPath));
         getFilesListFromDirectory(bankDirectoryPath).stream().forEach(s -> {
-            File f = new File(bankDirectoryPath);
-            try (FileOutputStream fileOutputStream = new FileOutputStream(f)) {
-                getFileFromBankRemoteDir(fileOutputStream, bankDirectoryPath);
-                transferArrayList.addAll(csvService.getTransfersFromCsv(f));
+            File f = new File("tmp.csv");
+            try {
+                if(f.createNewFile()) {
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(f)) {
+                        getFileFromBankRemoteDir(fileOutputStream, s);
+                        transferArrayList.addAll(csvService.getTransfersFromCsv(f));
+                        f.delete();
+                    } catch (IOException e) {
+                        Logger.debug("Problem with retrive file from ftp");
+                    }
+                }
             } catch (IOException e) {
-                Logger.debug("Problem with delete file from ftp");
+                Logger.debug("File not open" + e);
             }
         });
         return transferArrayList;

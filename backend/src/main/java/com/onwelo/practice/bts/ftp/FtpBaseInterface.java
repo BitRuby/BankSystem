@@ -94,7 +94,7 @@ public interface FtpBaseInterface {
      * @return list of files name
      */
 
-    List<String> getFilesListFromDirectory(String deletePath) throws IOException;
+    List<String> getFilesListFromDirectory(String path) throws IOException;
 
     /**
      * Get all files from directory on ftp server
