@@ -59,34 +59,33 @@ export class TransferListComponent implements OnInit {
   }
 
   private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
+    switch (reason) {
+      case ModalDismissReasons.ESC:
+        return 'by pressing ESC';
+      case ModalDismissReasons.BACKDROP_CLICK:
+        return 'by clicking on a backdrop';
+      default:
+        return `with: ${reason}`;
     }
   }
 
   private onScroll() {
-    this.batch += 10;
+    const number = 10;
+    this.batch += number;
     this.getTransfers();
   }
 
   private close() {
     this.order = '';
     if (this.dateCheckbox) {
-      this.order += '&sort=createTime,' + this.dateSelect;
-    } else {
-      this.order += '&sort=createTime,desc';
+      this.order += `&sort=createTime,${this.dateSelect || 'desc'}`;
     }
     if (this.titleCheckbox) {
-      this.order += '&sort=title,' + this.titleSelect;
+      this.order += `&sort=title,${this.titleSelect}`;
     }
     if (this.valueCheckbox) {
-      this.order += '&sort=value,' + this.valueSelect;
+      this.order += `&sort=value,${this.valueSelect}`;
     }
-    console.log(this.order);
     this.getTransfers();
   }
 

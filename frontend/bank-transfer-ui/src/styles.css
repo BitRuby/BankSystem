@@ -26,6 +26,9 @@ html, body {
   background: rgb(255, 255, 255);
 }
 
+.modal-body {
+  margin: 3em 0;
+}
 .main {
   min-height: 100vh !important;
   display: flex;
@@ -53,6 +56,6 @@ html, body {
 }
 @media (min-width: 576px) and (max-width: 991px) {
   .container {
-    padding-left: 0 !important;
+    padding: 0 !important;
   }
 }
