@@ -1,4 +1,4 @@
-.login-custom-bg {
+.bg {
   background: url("../../assets/images/background.jpg");
   height: calc(100% - 0px);
   background-position: right top;
@@ -14,7 +14,8 @@
   width: 95%;
   height: 460px;
 }
-.bg-custom {
+
+.bg-card {
   background: rgb(57, 63, 77);
   border: 1px solid rgba(190,190,190,.3);
 }

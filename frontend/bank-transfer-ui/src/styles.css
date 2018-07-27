@@ -13,17 +13,13 @@
 html, body {
   height: 100% !important;
 }
-.wrapper {
-  flex: 1;
-  display: flex;
-}
 
 .container {
   display: flex;
+  flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
 }
-
 .content {
   flex: 1;
   padding: 50px 0 100px 0;
@@ -38,7 +34,6 @@ html, body {
   flex: 1;
   display: flex;
 }
-
 .modal-open {
   overflow: auto !important;
 }
@@ -47,9 +42,12 @@ html, body {
   background: rgb(57, 63, 77);
   color: rgb(255, 255, 255);
 }
-
 .modal-content {
   border-radius: .4rem !important;
+}
+
+.bg-custom {
+  background: rgb(57, 63, 77) !important;
 }
 @media (min-width: 576px) and (max-width: 991px) {
   .container {
