@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../core/user/user.model';
 import {UserService} from '../../core/user/user.service';
 import {ActivatedRoute} from '@angular/router';
@@ -9,9 +9,9 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  @Input() user: User;
+  user: User;
 
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private userService: UserService) {
 
   }
 

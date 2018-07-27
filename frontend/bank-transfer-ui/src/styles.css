@@ -25,12 +25,14 @@ html, body {
   padding: 50px 0 100px 0;
   background: rgb(255, 255, 255);
 }
-#main {
+
+.main {
   min-height: 100vh !important;
   display: flex;
   flex-direction: column;
 }
-#main > :nth-child(3) {
+
+.main > :nth-child(3) {
   flex: 1;
   display: flex;
 }

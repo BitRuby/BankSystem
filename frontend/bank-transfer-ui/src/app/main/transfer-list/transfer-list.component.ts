@@ -22,8 +22,8 @@ export class TransferListComponent implements OnInit {
   valueCheckbox: boolean;
   valueSelect: string;
 
-  constructor(private transferService: TransferService, private route: ActivatedRoute,
-              private modalService: NgbModal, private spinner: NgxSpinnerService) {
+  constructor(private route: ActivatedRoute,
+              private modalService: NgbModal, private spinner: NgxSpinnerService, private transferService: TransferService) {
     this.dateSelect = 'asc';
     this.titleSelect = 'asc';
     this.valueSelect = 'asc';
