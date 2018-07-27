@@ -2,6 +2,7 @@ package com.onwelo.practice.bts.service;
 
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
+import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.utils.TransferType;
@@ -12,16 +13,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
+@TestPropertySource(locations = "classpath:application-test.properties")
 @SpringBootTest
 public class BankAccountServiceTest implements Extension {
+
+    public static final BigDecimal bd1000 = new BigDecimal(1000);
+    public static final BigDecimal bd100 = new BigDecimal(100);
+    public static final BigDecimal bd0 = new BigDecimal(0);
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -42,47 +50,44 @@ public class BankAccountServiceTest implements Extension {
     }
 
     @Test
-    public void getAllBankAccounts() {
-        List<BankAccount> bankAccounts = new ArrayList<BankAccount>() {{
-            add(new BankAccount("140159260076545510730339",
-                    "Jan", "Kowalski", 1000.0f, 0.0f));
-            add(new BankAccount("330006100519786457841326",
-                    "Jan", "Kowalski", 1000.0f, 0.0f));
+    public void getAllBankAccountsTest() {
+        List<BankAccount> bankAccounts = new ArrayList<>() {{
+            add(new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0));
+            add(new BankAccount("74 1050 1416 1000 0092 0379 3907", "Jan", "Kowalski", bd1000, bd0));
         }};
         bankAccounts.forEach(bankAccountService::addBankAccount);
         assertNotNull(bankAccountService.getAllBankAccounts());
     }
 
     @Test
-    public void getTransfers() {
-        BankAccount bankIn = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
-        BankAccount bankOut = new BankAccount("330006100519786457841326",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
+    public void getTransfersTest() {
+        BankAccount bankIn = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
+        BankAccount bankOut = new BankAccount("74 1050 1416 1000 0092 0379 3907", "Jan", "Kowalski", bd1000, bd0);
         bankAccountService.addBankAccount(bankIn);
         bankAccountService.addBankAccount(bankOut);
 
-        Transfer transfer1 = new Transfer("przelew", 100.0f, bankIn, bankOut.getAccountNo(), TransferType.INCOMING);
-        Transfer transfer2 = new Transfer("przelew", 100.0f, bankOut, bankIn.getAccountNo(), TransferType.OUTGOING);
+        Transfer transfer1 = new Transfer("przelew", bd100, bankIn, bankOut.getAccountNo(), TransferType.INCOMING);
+        Transfer transfer2 = new Transfer("przelew", bd100, bankOut, bankIn.getAccountNo(), TransferType.OUTGOING);
         transferService.addTransfer(transfer1);
         transferService.addTransfer(transfer2);
 
         assertNotNull(bankAccountService.getTransfers(bankIn.getId()));
         assertNotNull(bankAccountService.getTransfers(bankOut.getId()));
-
-        transferService.deleteTransfer(transfer1.getId());
-        transferService.deleteTransfer(transfer2.getId());
-
-        assertNull(transferService.getTransferById(transfer1.getId()));
-        assertNull(transferService.getTransferById(transfer2.getId()));
     }
 
     @Test
-    public void getBankAccountById() {
-        BankAccount bankAccount = new BankAccount("140159260076545510730339",
-                "Jan", "Kowalski", 1000.0f, 0.0f);
+    public void getBankAccountByIdTest() {
+        BankAccount bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", bd1000, bd0);
 
         bankAccountService.addBankAccount(bankAccount);
         Assertions.assertDoesNotThrow(() -> bankAccountService.getBankAccountById(bankAccount.getId()));
+    }
+
+    @Test
+    public void isValidTest() {
+        assertTrue(BankService.isValid("29 1160 2202 0000 0003 1193 5598"));
+        assertTrue(BankService.isValid("74 1050 1416 1000 0092 0379 3907"));
+        assertFalse(BankService.isValid("29 1160 2202 0000 0003 1193 5596"));
+        assertFalse(BankService.isValid("29 1160 2202 0000 0003 1193"));
     }
 }

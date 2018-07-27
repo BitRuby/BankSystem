@@ -1,22 +1,37 @@
 package com.onwelo.practice.bts.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.onwelo.practice.bts.utils.Currency;
+import com.onwelo.practice.bts.utils.MoneySerializer;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.Where;
+import org.jvnet.hk2.annotations.Optional;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import static com.onwelo.practice.bts.service.CsvService.formatter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@ToString(exclude = "sourceAcc")
+@ToString(exclude = "accountId")
 @Table(name = "transfer")
+@Where(clause = "is_active=1")
 public class Transfer {
     @Id
+    @Optional
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,40 +40,80 @@ public class Transfer {
     private String title;
 
     @Column(name = "value")
-    private Float value;
+    @JsonSerialize(using = MoneySerializer.class)
+    private BigDecimal value;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id")
-    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private BankAccount accountId;
 
-    @Column(name = "account_no")
+    @Column(name = "account_no", length = 26)
     private String accountNo;
 
-    @Column(name = "status")
+    @Column(name = "status", length = 8)
     @Enumerated(EnumType.STRING)
-    private TransferStatus status;
+    private TransferStatus status = TransferStatus.PENDING;
 
-    @Column(name = "transfer_type")
+    @Column(name = "transfer_type", length = 8)
     @Enumerated(EnumType.STRING)
     private TransferType transferType;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
-    private java.sql.Timestamp createTime;
+    private LocalDateTime createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "booking_date")
-    private LocalDate bookingDate;
+    private LocalDateTime bookingDate;
+
+    @Column(name = "currency", length = 3)
+    @Enumerated(EnumType.STRING)
+    private Currency currency = Currency.PLN;
+
+    @Column(name = "is_active")
+    private Boolean active = true;
 
     @PrePersist
     protected void onCreate() {
-        createTime = new Timestamp(System.currentTimeMillis());
+        if (createTime == null) {
+            createTime = LocalDateTime.now();
+        }
     }
 
-    public Transfer(String title, Float value, BankAccount accountId, String accountNo, TransferType transferType) {
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferType transferType) {
+        this.title = title;
+        this.value = value;
+        this.accountId = accountId;
+        this.accountNo = accountNo.replace(" ", "");
+        this.transferType = transferType;
+    }
+
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferStatus status, TransferType transferType, LocalDateTime bookingDate, Currency currency) {
         this.title = title;
         this.value = value;
         this.accountId = accountId;
         this.accountNo = accountNo;
+        this.status = status;
         this.transferType = transferType;
+        this.bookingDate = bookingDate;
+        this.currency = currency;
+    }
+
+    public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferStatus status, TransferType transferType, LocalDateTime createTime, LocalDateTime bookingDate, Currency currency) {
+        this.title = title;
+        this.value = value;
+        this.accountId = accountId;
+        this.accountNo = accountNo;
+        this.status = status;
+        this.transferType = transferType;
+        this.createTime = createTime;
+        this.bookingDate = bookingDate;
+        this.currency = currency;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo.replace(" ", "");
     }
 }

@@ -3,15 +3,16 @@ package com.onwelo.practice.bts.controller;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
-@RepositoryRestController
-@RequestMapping("/transfers")
+@RestController
+@RequestMapping(value = "/transfers", produces = "application/json")
 public class TransferController {
+
     @Autowired
     private TransferService transferService;
 
@@ -25,22 +26,23 @@ public class TransferController {
         return transferService.getTransferById(id);
     }
 
-    @PostMapping
-    public ResponseEntity create(@Valid @RequestBody Transfer transfer) {
-        transferService.addTransfer(transfer);
-        return ResponseEntity.ok(transfer);
+    @GetMapping(path = "/user/{id}")
+    public ResponseEntity transferByUser(@PathVariable("id") Long id, Pageable pageable) {
+        return ResponseEntity.ok(transferService.getTransferByAccountId(id, pageable));
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @Valid @RequestBody Transfer transfer) {
-        transfer.setId(id);
-        transferService.updateTransfer(transfer);
-        return ResponseEntity.ok(transfer);
+    @PostMapping
+    public Transfer create(@RequestBody Transfer transfer) {
+        return transferService.addTransfer(transfer);
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        transferService.deleteTransfer(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(transferService.deactivateTransfer(id));
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 }
