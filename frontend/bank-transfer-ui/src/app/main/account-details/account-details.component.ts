@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UserService} from '../../core/user/user.service';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../core/user/user.model';
+import {UserService} from '../../core/user/user.service';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -9,8 +9,9 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./account-details.component.css']
 })
 export class AccountDetailsComponent implements OnInit {
-  @Input() user: User;
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  user: User;
+
+  constructor(private route: ActivatedRoute, private userService: UserService) {
 
   }
 

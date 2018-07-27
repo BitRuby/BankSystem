@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {UserService} from '../../core/user/user.service';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../core/user/user.model';
+import {UserService} from '../../core/user/user.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -9,9 +9,9 @@ import {User} from '../../core/user/user.model';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  @Input() user: User;
+  user: User;
 
-  constructor(private userService: UserService, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private userService: UserService) {
 
   }
 
@@ -20,7 +20,7 @@ export class NavigationComponent implements OnInit {
   }
 
   getUser(): void {
-    const id = +2;
+    const id = 2;
     this.userService.getUser(id)
       .subscribe(user => this.user = user);
   }
