@@ -20,8 +20,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import static com.onwelo.practice.bts.service.CsvService.formatter;
-
 @Getter
 @Setter
 @NoArgsConstructor

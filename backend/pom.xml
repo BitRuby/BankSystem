@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.onwelo.practice</groupId>
-    <artifactId>bts</artifactId>
+    <artifactId>bts-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>bts</name>
+    <name>bts-demo</name>
     <description>Bank Transfer System - Onwelo practice</description>
 
     <parent>
@@ -19,6 +19,7 @@
     </parent>
 
     <properties>
+        <start-class>com.onwelo.practice.bts.BtsApplication</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -38,6 +39,7 @@
         <commons-net.version>3.6</commons-net.version>
         <mockftpserver.version>2.7.1</mockftpserver.version>
         <resources.path>${project.basedir}/src/main/resources</resources.path>
+        <spring.boot.maven.version>2.0.3.RELEASE</spring.boot.maven.version>
     </properties>
 
     <dependencies>
@@ -72,7 +74,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -192,15 +194,16 @@
             <artifactId>poi-scratchpad</artifactId>
             <version>${poi-scratchpad.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>2.0.3.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>bts-demo</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
@@ -216,7 +219,6 @@
                         <version>${junit5.jupiter.version}</version>
                     </dependency>
                 </dependencies>
-
                 <configuration>
                     <includes>
                         <!-- Nie uruchamiamy suit zeby nie uruchamiac testow podwojnie -->
@@ -225,6 +227,7 @@
                     <forkCount>1</forkCount>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -232,6 +235,12 @@
                     <source>10</source>
                     <target>10</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.maven.version}</version>
             </plugin>
         </plugins>
     </build>
