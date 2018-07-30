@@ -3,8 +3,10 @@ import {MainComponent} from './main.component';
 import {AccountDetailsComponent} from './account-details/account-details.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {NewTransferComponent} from './new-transfer/new-transfer.component';
+import {NewTransferModalComponent} from './new-transfer-modal/new-transfer-modal.component';
 import {TransferDetailsComponent} from './transfer-details/transfer-details.component';
 import {TransferListComponent} from './transfer-list/transfer-list.component';
+import {TransferListModalComponent} from "./transfer-list-modal/transfer-list-modal.component";
 import {FooterComponent} from './footer/footer.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {AppGroupByPipe} from '../app-groupBy.pipe';
@@ -16,7 +18,6 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {FormsModule} from '@angular/forms';
 import localePl from '@angular/common/locales/pl';
 
-
 registerLocaleData(localePl);
 @NgModule({
   declarations: [
@@ -24,11 +25,16 @@ registerLocaleData(localePl);
     AccountDetailsComponent,
     DashboardComponent,
     NewTransferComponent,
+    NewTransferModalComponent,
     TransferDetailsComponent,
     TransferListComponent,
+    TransferListModalComponent,
     FooterComponent,
     NavigationComponent,
     AppGroupByPipe
+  ],
+  entryComponents: [
+    TransferListModalComponent
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,6 @@
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Component, OnInit} from '@angular/core';
+import {NewTransferModalComponent} from "../new-transfer-modal/new-transfer-modal.component";
 
 @Component({
   selector: 'app-new-transfer',
@@ -7,7 +8,6 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./new-transfer.component.css']
 })
 export class NewTransferComponent implements OnInit {
-  closeResult: string;
   name: string;
   currency: string;
   value: number;
@@ -20,21 +20,15 @@ export class NewTransferComponent implements OnInit {
   ngOnInit() {
   }
 
-  private open(transfer) {
-    this.modalService.open(transfer, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  private open() {
+    const modalRef = this.modalService.open(NewTransferModalComponent);
+    modalRef.componentInstance.name = this.name;
+    modalRef.componentInstance.currency = this.currency;
+    modalRef.componentInstance.value = this.value;
+    modalRef.componentInstance.accountNo = this.accountNo;
+    modalRef.result.then((result) => {
+      console.log(result);
+    })
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 }
