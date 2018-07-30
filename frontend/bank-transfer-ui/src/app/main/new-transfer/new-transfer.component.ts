@@ -1,7 +1,7 @@
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Component, OnInit} from '@angular/core';
-import {NewTransferModalComponent} from "../new-transfer-modal/new-transfer-modal.component";
-import {TransferFormModel} from "../../core/transfer/transfer.form.model";
+import {NewTransferModalComponent} from '../new-transfer-modal/new-transfer-modal.component';
+import {TransferFormModel} from '../../core/transfer/transfer.form.model';
 
 @Component({
   selector: 'app-new-transfer',
@@ -27,7 +27,7 @@ export class NewTransferComponent implements OnInit {
     modalRef.componentInstance.newTransferForm.accountNo = this.transfer.accountNo;
     modalRef.result.then((result) => {
     }, () => {
-    })
+    });
   }
 
 }

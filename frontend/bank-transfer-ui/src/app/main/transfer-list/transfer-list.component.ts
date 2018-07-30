@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Transfer} from '../../core/transfer/transfer.model';
 import {TransferFormModel} from '../../core/transfer/transfer.form.model';
 import {ActivatedRoute} from '@angular/router';
-import {NgxSpinnerService} from 'ngx-spinner';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TransferService} from '../../core/transfer/transfer.service';
 import {TransferListModalComponent} from '../transfer-list-modal/transfer-list-modal.component';
@@ -17,8 +16,7 @@ export class TransferListComponent implements OnInit {
   transfer: Transfer[];
   transferProp: TransferFormModel;
 
-  constructor(private route: ActivatedRoute, private spinner: NgxSpinnerService,
-              private modalService: NgbModal, private transferService: TransferService) {
+  constructor(private route: ActivatedRoute, private modalService: NgbModal, private transferService: TransferService) {
     this.transferProp = {};
     this.transferProp.order = '&sort=createTime,desc';
     this.transferProp.batch = 10;
@@ -29,14 +27,10 @@ export class TransferListComponent implements OnInit {
   }
 
   private getTransfers(): void {
-    /*this.spinner.show();*/
     const id = +this.route.snapshot.paramMap.get('id');
     this.transferService.getTransfers(id, this.transferProp.batch, this.transferProp.order)
       .subscribe(transfer => {
         this.transfer = transfer['content'];
-        /*setTimeout(() => {
-          this.spinner.hide();
-        }, 1000);*/
       });
   }
 
