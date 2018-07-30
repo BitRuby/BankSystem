@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql/mysql-server:8.0.11
+    ports:
+    - 3336:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  backend:
+    image: backend
+    ports:
+    - 8088:8080
+    links:
+    - "mysql"
+
+  frontend:
+    image: frontend
+    build: '.'
+    ports:
+    - 4207:4200
+    links:
+    - "backend"
