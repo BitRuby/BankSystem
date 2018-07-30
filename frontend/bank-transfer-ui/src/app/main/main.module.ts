@@ -34,7 +34,8 @@ registerLocaleData(localePl);
     AppGroupByPipe
   ],
   entryComponents: [
-    TransferListModalComponent
+    TransferListModalComponent,
+    NewTransferModalComponent
   ],
   imports: [
     CommonModule,

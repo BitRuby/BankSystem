@@ -10,7 +10,7 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class NavigationComponent implements OnInit {
   user: User;
-
+  isNavbarCollapsed: boolean;
   constructor(private route: ActivatedRoute, private userService: UserService) {
 
   }

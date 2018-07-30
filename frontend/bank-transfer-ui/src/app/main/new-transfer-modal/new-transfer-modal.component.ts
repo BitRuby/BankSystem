@@ -12,6 +12,7 @@ export class NewTransferModalComponent implements OnInit {
   newTransferForm: TransferFormModel;
 
   constructor(public activeModal: NgbActiveModal) {
+    this.newTransferForm = {};
   }
 
   ngOnInit() {

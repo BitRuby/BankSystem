@@ -48,6 +48,7 @@ export class TransferListComponent implements OnInit {
     const modalRef = this.modalService.open(TransferListModalComponent);
     modalRef.result.then((result) => {
       this.close(result);
+    }, () => {
     })
   }
 
