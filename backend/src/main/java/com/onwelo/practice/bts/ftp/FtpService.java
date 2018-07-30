@@ -161,24 +161,17 @@ public class FtpService implements FtpBaseInterface {
     }
 
     @Override
-    public ArrayList<Transfer> retriveAllFiles(String bankDirectoryPath) throws IOException {
-        Logger.debug("getFilesListFromDirectory(bankDirectoryPath)->"+ getFilesListFromDirectory(bankDirectoryPath));
-        getFilesListFromDirectory(bankDirectoryPath).stream().forEach(s -> {
-            File f = new File("tmp.csv");
-            try {
-                if(f.createNewFile()) {
-                    try (FileOutputStream fileOutputStream = new FileOutputStream(f)) {
-                        getFileFromBankRemoteDir(fileOutputStream, s);
-                        transferArrayList.addAll(csvService.getTransfersFromCsv(f));
-                        f.delete();
-                    } catch (IOException e) {
-                        Logger.debug("Problem with retrive file from ftp");
-                    }
-                }
-            } catch (IOException e) {
-                Logger.debug("File not open" + e);
-            }
-        });
+    public ArrayList<Transfer> retriveAllFile(String bankDirectoryPath) {
+        transferArrayList = new ArrayList<>();
+        File f = new File("tmp.csv");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(f)) {
+            getFileFromBankRemoteDir(fileOutputStream, bankDirectoryPath);
+            transferArrayList.addAll(csvService.getTransfersFromCsv(f));
+            ftpClient.changeToParentDirectory();
+            f.delete();
+        } catch (IOException e) {
+            Logger.debug("Problem with retrive file from ftp");
+        }
         return transferArrayList;
     }
 

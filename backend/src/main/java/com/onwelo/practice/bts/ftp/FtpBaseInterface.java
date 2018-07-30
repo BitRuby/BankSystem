@@ -102,5 +102,5 @@ public interface FtpBaseInterface {
      * @return list of files name
      */
 
-    ArrayList<Transfer> retriveAllFiles(String bankDirectoryPath) throws IOException;
+    ArrayList<Transfer> retriveAllFile(String bankDirectoryPath);
 }
