@@ -1,6 +1,5 @@
 package com.onwelo.practice.bts.session;
 
-import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.ftp.FtpService;
 import com.onwelo.practice.bts.service.BankAccountService;
@@ -8,7 +7,6 @@ import com.onwelo.practice.bts.service.BankService;
 import com.onwelo.practice.bts.service.CsvService;
 import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.TransferStatus;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -47,9 +45,9 @@ public class SessionOutgoing {
         getTransfers();
         if (!Objects.requireNonNull(transfers).isEmpty()) {
             hashTransfers();
+            sendTransfers();
             // updateBankAccounts();
             // updateTransfers();
-            deleteTemporaryFile();
         }
 
         Logger.info("** Outgoing session ending **");
@@ -96,20 +94,14 @@ public class SessionOutgoing {
     }
 
     private InputStream getFileInputStream(ArrayList<Transfer> transfers) {
-        try {
-            return new FileInputStream(csvService.getCsvFromTransfers(transfers, "tmpTransfers.csv"));
-        } catch (FileNotFoundException e) {
-            Logger.debug(e.getMessage(), e);
-        }
-
-        return null;
+        return new ByteArrayInputStream(csvService.getCsvFromTransfers(transfers).toString().getBytes());
     }
 
     private void sendTransfers() {
         for (Map.Entry<String, ArrayList<Transfer>> map : hashedTransfers.entrySet()) {
             InputStream inputStream = getFileInputStream(map.getValue());
             if (!ftpService.addFile(inputStream,
-                    "/" + map.getKey() + "/transfers_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-MM-SS")) + ".csv")) {
+                    "/" + map.getKey() + "/transfers_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".csv")) {
                 Logger.info("Outgoing session: successful upload csv to ftp");
             } else {
                 Logger.debug("Outgoing session: failed upload csv to ftp");
@@ -135,20 +127,5 @@ public class SessionOutgoing {
             transfer.setStatus(TransferStatus.REALIZED);
             transferService.updateTransfer(transfer);
         });
-    }
-
-    private void deleteTemporaryFile() {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            Logger.debug(e.getMessage(), e);
-        }
-
-        try {
-            FileUtils.forceDelete(new File("tmpTransfers.csv"));
-            Logger.info("Outgoing session: deleting temporary files");
-        } catch (IOException e) {
-            Logger.debug(e.getMessage(), e);
-        }
     }
 }

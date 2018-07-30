@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.File;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -68,14 +68,31 @@ public class CsvServiceTest {
     @Test
     void createCsvFromDatabase() {
         ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
-        File file = csvService.getCsvFromTransfers(transfers, "tmp.csv");
+        StringWriter stringWriter = csvService.getCsvFromTransfers(transfers);
+
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("tmp.csv"))) {
+            bufferedWriter.write(stringWriter.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File file = new File("tmp.csv");
         Assertions.assertNotNull(file);
     }
 
     @Test
     void readTransfersFromCsv() {
         ArrayList<Transfer> tmpTransfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
-        File file = csvService.getCsvFromTransfers(tmpTransfers, "tmp.csv");
+        StringWriter stringWriter = csvService.getCsvFromTransfers(tmpTransfers);
+
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("tmp.csv"))) {
+            bufferedWriter.write(stringWriter.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File file = new File("tmp.csv");
+
         ArrayList<Transfer> transfers = csvService.getTransfersFromCsv(file);
         Assertions.assertNotNull(transfers);
     }

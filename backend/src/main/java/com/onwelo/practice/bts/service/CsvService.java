@@ -23,8 +23,8 @@ public class CsvService {
     @Autowired
     private BankAccountService bankAccountService;
 
-    public File getCsvFromTransfers(ArrayList<Transfer> transfers, String filename) {
-        return createFile(new File(filename), parseToCsv(transfers));
+    public StringWriter getCsvFromTransfers(ArrayList<Transfer> transfers) {
+        return createStringWriter(parseToCsv(transfers));
     }
 
     public ArrayList<Transfer> getTransfersFromCsv(File file) {
@@ -46,14 +46,13 @@ public class CsvService {
         return lines;
     }
 
-    private File createFile(File file, ArrayList<String> lines) {
-        try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
+    private StringWriter createStringWriter(ArrayList<String> lines) {
+        StringWriter stringWriter = new StringWriter();
+        try (PrintWriter writer = new PrintWriter(stringWriter)) {
             lines.forEach(writer::append);
-        } catch (FileNotFoundException e) {
-            Logger.debug(e.getMessage());
         }
 
-        return file;
+        return stringWriter;
     }
 
     private ArrayList<String[]> readFile(File file) {
