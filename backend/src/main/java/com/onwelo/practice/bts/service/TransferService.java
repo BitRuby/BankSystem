@@ -22,14 +22,11 @@ import java.util.List;
 @Service
 public class TransferService {
 
+    private final String bankIBAN;
     @Autowired
     private TransferRepository transferRepository;
-
     @Autowired
     private BankAccountService bankAccountService;
-
-
-    private final String bankIBAN;
 
     @Autowired
     public TransferService(@Value("${bank.iban}") String bankIBAN) {
@@ -63,15 +60,27 @@ public class TransferService {
             throw new ForbiddenException("not enough money to finalize transfer");
         }
 
-        transfer.setTransferType(TransferType.OUTGOING);
-        transfer.setCreateTime(now);
         transfer.setBookingDate(now);
 
         if (BankService.getBankID(transfer.getAccountNo()).equals(bankIBAN)) {
             innerTransfer(bankAccount.getAccountNo(), transfer);
         }
 
-        bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+        switch (transfer.getTransferType()) {
+            case OUTGOING:
+                transfer.setCreateTime(now);
+                bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+                break;
+            case INCOMING:
+                bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().add(transfer.getValue()));
+                break;
+            default:
+                transfer.setTransferType(TransferType.OUTGOING);
+                transfer.setCreateTime(now);
+                bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+                break;
+        }
+
         bankAccountService.updateBankAccount(bankAccount);
         return transferRepository.save(transfer);
     }
