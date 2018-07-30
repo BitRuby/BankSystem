@@ -1,5 +1,6 @@
 package com.onwelo.practice.bts.session;
 
+import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.ftp.FtpService;
 import com.onwelo.practice.bts.service.BankAccountService;
@@ -46,8 +47,8 @@ public class SessionOutgoing {
         if (!Objects.requireNonNull(transfers).isEmpty()) {
             hashTransfers();
             sendTransfers();
-            // updateBankAccounts();
-            // updateTransfers();
+            updateBankAccounts();
+            updateTransfers();
         }
 
         Logger.info("** Outgoing session ending **");
@@ -99,8 +100,11 @@ public class SessionOutgoing {
 
     private void sendTransfers() {
         for (Map.Entry<String, ArrayList<Transfer>> map : hashedTransfers.entrySet()) {
+
             InputStream inputStream = getFileInputStream(map.getValue());
-            if (!ftpService.addFile(inputStream,
+            ftpService.createDirectory(map.getKey());
+
+            if (ftpService.addFile(inputStream,
                     "/" + map.getKey() + "/transfers_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".csv")) {
                 Logger.info("Outgoing session: successful upload csv to ftp");
             } else {
@@ -109,19 +113,17 @@ public class SessionOutgoing {
         }
     }
 
-    /*
     private void updateBankAccounts() {
-        Logger.info("Outgoing session: updating bank accounts");
+        Logger.info("Outgoing session: updating accounts");
         transfers.forEach(transfer -> {
             BankAccount bankAccount = transfer.getAccountId();
-            bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+            bankAccount.setMoneyBlocked(bankAccount.getMoneyBlocked().subtract(transfer.getValue()));
             bankAccountService.updateBankAccount(bankAccount);
         });
     }
-    */
 
     private void updateTransfers() {
-        Logger.info("Outgoing session: updating transfer statuses");
+        Logger.info("Outgoing session: updating transfers");
 
         transfers.forEach(transfer -> {
             transfer.setStatus(TransferStatus.REALIZED);
