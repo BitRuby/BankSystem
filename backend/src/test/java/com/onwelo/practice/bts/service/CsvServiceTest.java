@@ -4,6 +4,7 @@ import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
+import com.onwelo.practice.bts.session.SessionIncoming;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @SpringBootTest
 public class CsvServiceTest {
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionIncoming.class);
+
     @Autowired
     private CsvService csvService;
 
@@ -73,7 +77,7 @@ public class CsvServiceTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("tmp.csv"))) {
             bufferedWriter.write(stringWriter.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.debug(e.getMessage(), e);
         }
 
         File file = new File("tmp.csv");
@@ -88,7 +92,7 @@ public class CsvServiceTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("tmp.csv"))) {
             bufferedWriter.write(stringWriter.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.debug(e.getMessage(), e);
         }
 
         File file = new File("tmp.csv");
