@@ -12,8 +12,26 @@
 
 html, body {
   height: 100% !important;
+  min-height: 100vh !important;
 }
 
+app-root {
+  min-height: 100vh !important;
+  display: flex;
+  flex-direction: column;
+}
+
+app-main {
+  flex: 1;
+}
+
+app-login {
+  flex: 1;
+}
+
+app-footer {
+  z-index: 10;
+}
 .container {
   display: flex;
   flex: 1;
@@ -29,16 +47,7 @@ html, body {
 .modal-body {
   margin: 3em 0;
 }
-.main {
-  min-height: 100vh !important;
-  display: flex;
-  flex-direction: column;
-}
 
-.main > :nth-child(4) {
-  flex: 1;
-  display: flex;
-}
 .modal-open {
   overflow: auto !important;
 }

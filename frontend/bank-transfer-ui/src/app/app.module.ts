@@ -1,4 +1,5 @@
 import {AppComponent} from './app.component';
+import {FooterComponent} from './footer/footer.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {NgModule} from '@angular/core';
@@ -10,7 +11,8 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

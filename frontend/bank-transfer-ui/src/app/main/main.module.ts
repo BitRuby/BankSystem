@@ -6,8 +6,7 @@ import {NewTransferComponent} from './new-transfer/new-transfer.component';
 import {NewTransferModalComponent} from './new-transfer-modal/new-transfer-modal.component';
 import {TransferDetailsComponent} from './transfer-details/transfer-details.component';
 import {TransferListComponent} from './transfer-list/transfer-list.component';
-import {TransferListModalComponent} from "./transfer-list-modal/transfer-list-modal.component";
-import {FooterComponent} from './footer/footer.component';
+import {TransferListModalComponent} from './transfer-list-modal/transfer-list-modal.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {AppGroupByPipe} from '../app-groupBy.pipe';
 import {CommonModule, registerLocaleData} from '@angular/common';
@@ -29,7 +28,6 @@ registerLocaleData(localePl);
     TransferDetailsComponent,
     TransferListComponent,
     TransferListModalComponent,
-    FooterComponent,
     NavigationComponent,
     AppGroupByPipe,
     HeaderComponent
