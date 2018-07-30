@@ -39,7 +39,7 @@ public class SessionOutgoing {
     @Autowired
     private FtpService ftpService;
 
-    @Scheduled(cron = "0 * * * * *") // everyday at 12:00
+    @Scheduled(cron = "0 0 6,12,18 * * *") // everyday at 6:00, 12:00, 18:00
     public void someMainMethod() {
         Logger.info("** Outgoing session starting **");
 

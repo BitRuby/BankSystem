@@ -24,7 +24,7 @@ public class SessionIncoming {
     @Autowired
     private FtpService ftpService;
 
-    @Scheduled(cron = "0 23 9 * * *")
+    @Scheduled(cron = "0 0 3,9,15 * * *") // everyday at 3:00, 9:00, 15:00
     void startSessionIngoing() throws IOException {
         if (ftpService.isConnected()) {
             retriveAllTransferFile();
