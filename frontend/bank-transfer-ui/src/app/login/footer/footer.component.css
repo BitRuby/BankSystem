@@ -1,13 +1,10 @@
-.footer{
+footer {
   position: absolute;
   bottom: 0;
-  height: 70px;
   width: 100%;
-}
-@media (min-width: 576px) and (max-width: 991px) {
-  .container {
-    padding-left: 0;
-  }
+  color: rgb(255, 255, 255);
+  background: rgb(57, 63, 77);
+  border-top: 1px solid rgba(190, 190, 190, .3);
 }
 @media (max-width: 480px) {
   .footer {
