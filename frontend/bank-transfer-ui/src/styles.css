@@ -35,7 +35,7 @@ html, body {
   flex-direction: column;
 }
 
-.main > :nth-child(3) {
+.main > :nth-child(4) {
   flex: 1;
   display: flex;
 }

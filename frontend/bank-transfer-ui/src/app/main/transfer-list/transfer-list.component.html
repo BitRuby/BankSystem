@@ -1,92 +1,26 @@
-
-  <div class="container">
-    <div class="content">
-
-      <h3 class="display-4 mb-3">Transfer history</h3>
-      <hr class="mb-3">
-      <div>
-        <button type="button" class="btn btn-secondary btn-custom btn-lg" (click)="open(content)">Filter options
-        </button>
-      </div>
-      <div *ngFor="let tran of transfer | groupBy:'createTime'">
-        <p class="mb-1 mt-4">{{tran?.key | date:'fullDate'}}</p>
-        <ul class="list-group">
-          <li class="list-group-item list-group-item-dark list-group-item-custom" *ngFor="let list of tran.value">
-            <div class="row">
-              <div class="col-md-2 col-sm-3">{{list?.status}}</div>
-              <div class="col-md-3 col-sm-3">{{list?.title}}</div>
-              <div class="col-md-4 col-sm-auto">{{list?.accountNo}}</div>
-              <div class="col-md-2 col-sm-auto">{{list?.value | currency:'PLN':'code':'1.2-2':'pl'}}</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="search-results" infiniteScroll [infiniteScrollDistance]="85" [infiniteScrollThrottle]="1300"
-           (scrolled)="onScroll()">
-      </div>
-      <ngx-spinner bdColor="transparent" size="medium" color="rgb(113, 200, 55)" loadingText="" type="ball-clip-rotate">
-      </ngx-spinner>
+<div class="container">
+  <div class="content">
+    <h3 class="display-4 mb-3">Transfer history</h3>
+    <hr class="mb-3">
+    <div>
+      <button type="button" class="btn btn-secondary btn-custom btn-lg" (click)="open()">Filter options
+      </button>
+    </div>
+    <div *ngFor="let tran of transfer | groupBy:'createTime'">
+      <p class="mb-1 mt-4">{{tran?.key | date:'fullDate'}}</p>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-dark list-group-item-custom" *ngFor="let list of tran.value">
+          <div class="row">
+            <div class="col-md-2 col-sm-3">{{list?.status}}</div>
+            <div class="col-md-3 col-sm-3">{{list?.title}}</div>
+            <div class="col-md-4 col-sm-auto">{{list?.accountNo}}</div>
+            <div class="col-md-2 col-sm-auto">{{list?.value | currency:'PLN':'code':'1.2-2':'pl'}}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="search-results" infiniteScroll [infiniteScrollDistance]="85" [infiniteScrollThrottle]="1300"
+         (scrolled)="onScroll()">
     </div>
   </div>
-
-
-  <ng-template #content let-clos="close" let-dismiss="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Filter options</h4>
-    <button type="button" class="close" aria-label="Close" (click)="dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-    <div class="modal-body">
-
-      <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input [(ngModel)]="dateCheckbox" type="checkbox">
-        </div>
-        <label class="input-group-text">
-          Date
-        </label>
-      </div>
-        <select class="custom-select" [(ngModel)]="dateSelect" [disabled]="!dateCheckbox">
-        <option value="asc">ASC</option>
-        <option value="desc">DESC</option>
-      </select>
-    </div>
-
-    <div class="input-group my-3">
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input [(ngModel)]="titleCheckbox" type="checkbox">
-        </div>
-        <label class="input-group-text">
-          Title
-        </label>
-      </div>
-      <select class="custom-select" [(ngModel)]="titleSelect" [disabled]="!titleCheckbox">
-        <option value="asc">ASC</option>
-        <option value="desc">DESC</option>
-      </select>
-    </div>
-
-    <div class="input-group my-3">
-      <div class="input-group-prepend">
-        <div class="input-group-text">
-          <input [(ngModel)]="valueCheckbox" type="checkbox">
-        </div>
-        <label class="input-group-text">
-          Value
-        </label>
-      </div>
-      <select class="custom-select" [(ngModel)]="valueSelect" [disabled]="!valueCheckbox">
-        <option value="asc">ASC</option>
-        <option value="desc">DESC</option>
-      </select>
-    </div>
-
-    </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="clos('Save click');close();">Save</button>
-  </div>
-</ng-template>
+</div>
