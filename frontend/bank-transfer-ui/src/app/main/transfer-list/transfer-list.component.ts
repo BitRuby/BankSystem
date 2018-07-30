@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Transfer} from '../../core/transfer/transfer.model';
-import {TransferService} from '../../core/transfer/transfer.service';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {TransferFormModel} from '../../core/transfer/transfer.form.model';
 import {ActivatedRoute} from '@angular/router';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {TransferListModalComponent} from "../transfer-list-modal/transfer-list-modal.component";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TransferService} from '../../core/transfer/transfer.service';
+import {TransferListModalComponent} from '../transfer-list-modal/transfer-list-modal.component';
+
 
 @Component({
   selector: 'app-transfer-list',
@@ -13,13 +15,13 @@ import {TransferListModalComponent} from "../transfer-list-modal/transfer-list-m
 })
 export class TransferListComponent implements OnInit {
   transfer: Transfer[];
-  batch: number;
-  order: string;
+  transferProp: TransferFormModel;
 
   constructor(private route: ActivatedRoute, private spinner: NgxSpinnerService,
-              private transferService: TransferService, private modalService: NgbModal) {
-    this.order = '&sort=createTime,desc';
-    this.batch = 10;
+              private modalService: NgbModal, private transferService: TransferService) {
+    this.transferProp = {};
+    this.transferProp.order = '&sort=createTime,desc';
+    this.transferProp.batch = 10;
   }
 
   ngOnInit() {
@@ -29,7 +31,7 @@ export class TransferListComponent implements OnInit {
   private getTransfers(): void {
     /*this.spinner.show();*/
     const id = +this.route.snapshot.paramMap.get('id');
-    this.transferService.getTransfers(id, this.batch, this.order)
+    this.transferService.getTransfers(id, this.transferProp.batch, this.transferProp.order)
       .subscribe(transfer => {
         this.transfer = transfer['content'];
         /*setTimeout(() => {
@@ -40,7 +42,7 @@ export class TransferListComponent implements OnInit {
 
   private onScroll() {
     const number = 10;
-    this.batch += number;
+    this.transferProp.batch += number;
     this.getTransfers();
   }
 
@@ -53,15 +55,15 @@ export class TransferListComponent implements OnInit {
   }
 
   private close(modalData) {
-    this.order = '';
+    this.transferProp.order = '';
     if (modalData.dateCheckbox) {
-      this.order += `&sort=createTime,${modalData.dateSelect || 'desc'}`;
+      this.transferProp.order += `&sort=createTime,${modalData.dateSelect || 'desc'}`;
     }
     if (modalData.titleCheckbox) {
-      this.order += `&sort=title,${modalData.titleSelect}`;
+      this.transferProp.order += `&sort=title,${modalData.titleSelect}`;
     }
     if (modalData.valueCheckbox) {
-      this.order += `&sort=value,${modalData.valueSelect}`;
+      this.transferProp.order += `&sort=value,${modalData.valueSelect}`;
     }
     this.getTransfers();
   }

@@ -9,4 +9,6 @@ export interface TransferFormModel {
   value?: number;
   currency?: string;
   accountNo?: string;
+  order?: string;
+  batch?: number;
 }
