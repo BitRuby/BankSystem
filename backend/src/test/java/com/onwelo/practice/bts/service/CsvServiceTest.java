@@ -4,6 +4,7 @@ import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.repository.BankAccountRepository;
 import com.onwelo.practice.bts.repository.TransferRepository;
+import com.onwelo.practice.bts.session.SessionIncoming;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
 import org.junit.jupiter.api.Assertions;
@@ -11,12 +12,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.File;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 @TestPropertySource(locations = "classpath:application-test.properties")
 @SpringBootTest
 public class CsvServiceTest {
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionIncoming.class);
+
     @Autowired
     private CsvService csvService;
 
@@ -68,14 +72,31 @@ public class CsvServiceTest {
     @Test
     void createCsvFromDatabase() {
         ArrayList<Transfer> transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
-        File file = csvService.getCsvFromTransfers(transfers, "tmp.csv");
+        StringWriter stringWriter = csvService.getCsvFromTransfers(transfers);
+
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("tmp.csv"))) {
+            bufferedWriter.write(stringWriter.toString());
+        } catch (IOException e) {
+            Logger.debug(e.getMessage(), e);
+        }
+
+        File file = new File("tmp.csv");
         Assertions.assertNotNull(file);
     }
 
     @Test
     void readTransfersFromCsv() {
         ArrayList<Transfer> tmpTransfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
-        File file = csvService.getCsvFromTransfers(tmpTransfers, "tmp.csv");
+        StringWriter stringWriter = csvService.getCsvFromTransfers(tmpTransfers);
+
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("tmp.csv"))) {
+            bufferedWriter.write(stringWriter.toString());
+        } catch (IOException e) {
+            Logger.debug(e.getMessage(), e);
+        }
+
+        File file = new File("tmp.csv");
+
         ArrayList<Transfer> transfers = csvService.getTransfersFromCsv(file);
         Assertions.assertNotNull(transfers);
     }

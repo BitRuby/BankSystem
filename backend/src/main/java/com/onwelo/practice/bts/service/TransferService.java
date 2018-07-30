@@ -7,8 +7,10 @@ import com.onwelo.practice.bts.exceptions.MissingFieldException;
 import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.exceptions.NotValidField;
 import com.onwelo.practice.bts.repository.TransferRepository;
+import com.onwelo.practice.bts.session.SessionOutgoing;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -22,14 +24,14 @@ import java.util.List;
 @Service
 public class TransferService {
 
+    private final String bankIBAN;
     @Autowired
     private TransferRepository transferRepository;
 
     @Autowired
     private BankAccountService bankAccountService;
 
-
-    private final String bankIBAN;
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionOutgoing.class);
 
     @Autowired
     public TransferService(@Value("${bank.iban}") String bankIBAN) {
@@ -72,15 +74,31 @@ public class TransferService {
         switch (transfer.getTransferType()) {
             case OUTGOING:
                 transfer.setCreateTime(now);
-                bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+
+                if (bankAccount.getMoneyAmount().compareTo(transfer.getValue()) > 0) {
+                    bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+                    bankAccount.setMoneyBlocked(bankAccount.getMoneyBlocked().add(transfer.getValue()));
+                } else {
+                    Logger.debug("New transfer: not enough money to add new transfer");
+                }
+
                 break;
+
             case INCOMING:
                 bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().add(transfer.getValue()));
                 break;
+
             default:
                 transfer.setTransferType(TransferType.OUTGOING);
                 transfer.setCreateTime(now);
-                bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+
+                if (bankAccount.getMoneyAmount().compareTo(transfer.getValue()) > 0) {
+                    bankAccount.setMoneyAmount(bankAccount.getMoneyAmount().subtract(transfer.getValue()));
+                    bankAccount.setMoneyBlocked(bankAccount.getMoneyBlocked().add(transfer.getValue()));
+                } else {
+                    Logger.debug("New transfer: not enough money to add new transfer");
+                }
+
                 break;
         }
 

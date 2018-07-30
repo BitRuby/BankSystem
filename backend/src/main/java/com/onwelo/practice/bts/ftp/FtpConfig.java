@@ -20,7 +20,7 @@ public class FtpConfig {
     private String passphrase;
     @Value("${ftp.port}")
     private int port;
-    @Value("${ftp.directory}")
+    @Value("${bank.iban}")
     private String ftpDirectory;
     @Value("${ftp.autostart}")
     private boolean isAutostart;
