@@ -17,6 +17,7 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {FormsModule} from '@angular/forms';
 import localePl from '@angular/common/locales/pl';
+import {HeaderComponent} from './header/header.component';
 
 registerLocaleData(localePl);
 @NgModule({
@@ -31,7 +32,8 @@ registerLocaleData(localePl);
     TransferListModalComponent,
     FooterComponent,
     NavigationComponent,
-    AppGroupByPipe
+    AppGroupByPipe,
+    HeaderComponent
   ],
   entryComponents: [
     TransferListModalComponent,

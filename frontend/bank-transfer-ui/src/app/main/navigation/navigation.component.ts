@@ -1,7 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../../core/user/user.model';
-import {UserService} from '../../core/user/user.service';
-import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -9,21 +6,14 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  user: User;
   isNavbarCollapsed: boolean;
-  constructor(private route: ActivatedRoute, private userService: UserService) {
+
+  constructor() {
 
   }
 
   ngOnInit() {
-    this.getUser();
-  }
 
-  getUser(): void {
-    const id = 2;
-    this.userService.getUser(id)
-      .subscribe(user => this.user = user);
   }
-
 
 }
