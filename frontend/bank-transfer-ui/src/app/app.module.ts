@@ -5,7 +5,7 @@ import {NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppInterceptor} from './app.interceptor';
-import {NgxSpinnerService} from 'ngx-spinner';
+import {NgxSpinnerModule} from 'ngx-spinner';
 
 
 @NgModule({
@@ -16,11 +16,11 @@ import {NgxSpinnerService} from 'ngx-spinner';
     BrowserModule,
     AppRoutingModule,
     NgbModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    NgxSpinnerModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true},
-    NgxSpinnerService
+    {provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

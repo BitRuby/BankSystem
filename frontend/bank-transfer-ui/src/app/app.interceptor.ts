@@ -13,10 +13,10 @@ export class AppInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // this.spinner.show();
     return next.handle(req)
       .pipe(
         tap(event => {
+          this.spinner.show();
           if (event instanceof HttpResponse) {
             console.log('all looks good');
             console.log(event.status);
@@ -30,7 +30,7 @@ export class AppInterceptor implements HttpInterceptor {
         }),
         finalize(() => {
           setTimeout(() => {
-            // this.spinner.hide();
+            this.spinner.hide();
           }, 1000);
         })
       );

@@ -14,7 +14,6 @@ import {CommonModule, registerLocaleData} from '@angular/common';
 import {MainRoutingModule} from './main-routing.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
-import {NgxSpinnerModule} from 'ngx-spinner';
 import {FormsModule} from '@angular/forms';
 import localePl from '@angular/common/locales/pl';
 import {HeaderComponent} from './header/header.component';
@@ -44,7 +43,6 @@ registerLocaleData(localePl);
     MainRoutingModule,
     NgbModule,
     InfiniteScrollModule,
-    NgxSpinnerModule,
     FormsModule
   ]
 })
