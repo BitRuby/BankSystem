@@ -1,5 +1,7 @@
 package com.onwelo.practice.bts.ftp;
 
+import com.onwelo.practice.bts.entity.Transfer;
+import com.onwelo.practice.bts.service.CsvService;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +9,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class FtpService implements FtpBaseInterface {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(FtpService.class);
     private FtpConfig ftpConfig;
     private FTPClient ftpClient;
+    @Autowired
+    private CsvService csvService;
+    private ArrayList<Transfer> transferArrayList = new ArrayList<>();
 
 
     @Autowired
@@ -79,11 +83,8 @@ public class FtpService implements FtpBaseInterface {
     }
 
     @Override
-    public boolean getFileFromBankRemoteDir(OutputStream outputStream) {
+    public boolean getFileFromBankRemoteDir(OutputStream outputStream, String remotePath) {
         try {
-            //TODO - Add to properties bank info to set base bank remote directory
-            String remotePath = "bank";
-            Logger.debug("Trying to retrieve a file from remote path " + remotePath);
             return ftpClient.retrieveFile(remotePath, outputStream);
         } catch (IOException e) {
             Logger.error(e.getMessage(), e);
@@ -155,7 +156,23 @@ public class FtpService implements FtpBaseInterface {
     }
 
     @Override
-    public List<String> getFilesListFromDirectory(String deletePath) throws IOException {
-        return Arrays.asList(ftpClient.listNames(deletePath));
+    public List<String> getFilesListFromDirectory(String path) throws IOException {
+        return Arrays.asList(ftpClient.listNames(path));
     }
+
+    @Override
+    public ArrayList<Transfer> retriveAllFile(String bankDirectoryPath) {
+        transferArrayList = new ArrayList<>();
+        File f = new File("tmp.csv");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(f)) {
+            getFileFromBankRemoteDir(fileOutputStream, bankDirectoryPath);
+            transferArrayList.addAll(csvService.getTransfersFromCsv(f));
+            ftpClient.changeToParentDirectory();
+            f.delete();
+        } catch (IOException e) {
+            Logger.debug("Problem with retrive file from ftp");
+        }
+        return transferArrayList;
+    }
+
 }

@@ -1,9 +1,12 @@
 package com.onwelo.practice.bts.ftp;
 
 
+import com.onwelo.practice.bts.entity.Transfer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface FtpBaseInterface {
@@ -17,6 +20,7 @@ public interface FtpBaseInterface {
 
     /**
      * Logouts the active user and disconnects from the server.
+     *
      * @return boolean true if successful, false otherwise.
      */
     boolean closeConnection();
@@ -35,15 +39,16 @@ public interface FtpBaseInterface {
      * Retrieve a file from bank dir on the ftp server.
      *
      * @param outputStream stream the file is read into.
+     * @param remotePath   remote path for the file.
      * @return boolean true if successful retrive all files, false otherwise.
      */
-    boolean getFileFromBankRemoteDir(OutputStream outputStream);
+    boolean getFileFromBankRemoteDir(OutputStream outputStream, String remotePath);
 
     /**
      * Store a file on the ftp server.
      *
-     * @param inputStream   Stream the new file is read from.
-     * @param outboundPath  Remote path the file should be placed at.
+     * @param inputStream  Stream the new file is read from.
+     * @param outboundPath Remote path the file should be placed at.
      * @return boolean true if successful, false otherwise.
      */
 
@@ -52,8 +57,8 @@ public interface FtpBaseInterface {
     /**
      * Store a file on the ftp server.
      *
-     * @param sourcePath Local path the file is read from.
-     * @param outboundPath   Remote path the file should be placed at.
+     * @param sourcePath   Local path the file is read from.
+     * @param outboundPath Remote path the file should be placed at.
      * @return boolean true if successful, false otherwise.
      */
 
@@ -69,7 +74,7 @@ public interface FtpBaseInterface {
 
     /**
      * Create directory on ftp server.
-     *
+     * @param outboundPath
      * @return boolean true if connected, false otherwise.
      */
 
@@ -77,7 +82,7 @@ public interface FtpBaseInterface {
 
     /**
      * Delete all files from directory on ftp server
-     *
+     * @param deletePath
      * @return boolean true if connected, false otherwise.
      */
 
@@ -85,9 +90,17 @@ public interface FtpBaseInterface {
 
     /**
      * Get list of all files from directory on ftp server
-     *
+     * @param path
      * @return list of files name
      */
 
-    List<String> getFilesListFromDirectory(String deletePath) throws IOException;
+    List<String> getFilesListFromDirectory(String path) throws IOException;
+
+    /**
+     * Get all files from directory on ftp server
+     * @param bankDirectoryPath
+     * @return list of files name
+     */
+
+    ArrayList<Transfer> retriveAllFile(String bankDirectoryPath);
 }

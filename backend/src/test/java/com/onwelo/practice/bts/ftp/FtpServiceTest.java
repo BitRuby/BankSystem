@@ -202,8 +202,8 @@ public class FtpServiceTest {
     void tryDeleteAllFilesAtGivenPath() throws IOException {
         ftpService = new FtpService(getStandardTestFtpConfig());
         ftpService.openConnection();
-        ftpService.createDirectory("/jafka");
-        assertTrue(ftpService.deleteAllFiles("/"));
+        ftpService.getFilesListFromDirectory("/1160");
+        assertTrue(ftpService.deleteAllFiles("/1160"));
     }
 
 
