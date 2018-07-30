@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Transfer} from '../../core/transfer/transfer.model';
-import {TransferService} from '../../core/transfer/transfer.service';
+import {TransferFormModel} from '../../core/transfer/transfer.form.model';
 import {ActivatedRoute} from '@angular/router';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NgxSpinnerService} from 'ngx-spinner';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TransferService} from '../../core/transfer/transfer.service';
+import {TransferListModalComponent} from '../transfer-list-modal/transfer-list-modal.component';
+
 
 @Component({
   selector: 'app-transfer-list',
@@ -12,26 +14,12 @@ import {NgxSpinnerService} from 'ngx-spinner';
 })
 export class TransferListComponent implements OnInit {
   transfer: Transfer[];
-  batch: number;
-  closeResult: string;
-  order: string;
-  dateCheckbox: boolean;
-  dateSelect: string;
-  titleCheckbox: boolean;
-  titleSelect: string;
-  valueCheckbox: boolean;
-  valueSelect: string;
+  transferProp: TransferFormModel;
 
-  constructor(private route: ActivatedRoute,
-              private modalService: NgbModal, private spinner: NgxSpinnerService, private transferService: TransferService) {
-    this.dateSelect = 'asc';
-    this.titleSelect = 'asc';
-    this.valueSelect = 'asc';
-    this.dateCheckbox = false;
-    this.titleCheckbox = false;
-    this.valueCheckbox = false;
-    this.order = '&sort=createTime,desc';
-    this.batch = 10;
+  constructor(private route: ActivatedRoute, private modalService: NgbModal, private transferService: TransferService) {
+    this.transferProp = {};
+    this.transferProp.order = '&sort=createTime,desc';
+    this.transferProp.batch = 10;
   }
 
   ngOnInit() {
@@ -39,52 +27,37 @@ export class TransferListComponent implements OnInit {
   }
 
   private getTransfers(): void {
-    this.spinner.show();
     const id = +this.route.snapshot.paramMap.get('id');
-    this.transferService.getTransfers(id, this.batch, this.order)
+    this.transferService.getTransfers(id, this.transferProp.batch, this.transferProp.order)
       .subscribe(transfer => {
         this.transfer = transfer['content'];
-        setTimeout(() => {
-          this.spinner.hide();
-        }, 1000);
       });
-  }
-
-  private open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
-    }
   }
 
   private onScroll() {
     const number = 10;
-    this.batch += number;
+    this.transferProp.batch += number;
     this.getTransfers();
   }
 
-  private close() {
-    this.order = '';
-    if (this.dateCheckbox) {
-      this.order += `&sort=createTime,${this.dateSelect || 'desc'}`;
+  private open() {
+    const modalRef = this.modalService.open(TransferListModalComponent);
+    modalRef.result.then((result) => {
+      this.close(result);
+    }, () => {
+    })
+  }
+
+  private close(modalData) {
+    this.transferProp.order = '';
+    if (modalData.dateCheckbox) {
+      this.transferProp.order += `&sort=createTime,${modalData.dateSelect || 'desc'}`;
     }
-    if (this.titleCheckbox) {
-      this.order += `&sort=title,${this.titleSelect}`;
+    if (modalData.titleCheckbox) {
+      this.transferProp.order += `&sort=title,${modalData.titleSelect}`;
     }
-    if (this.valueCheckbox) {
-      this.order += `&sort=value,${this.valueSelect}`;
+    if (modalData.valueCheckbox) {
+      this.transferProp.order += `&sort=value,${modalData.valueSelect}`;
     }
     this.getTransfers();
   }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NewTransferModalComponent} from '../new-transfer-modal/new-transfer-modal.component';
+import {TransferFormModel} from '../../core/transfer/transfer.form.model';
 
 @Component({
   selector: 'app-new-transfer',
@@ -7,37 +8,25 @@ import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./new-transfer.component.css']
 })
 export class NewTransferComponent implements OnInit {
-  closeResult: string;
-  name: string;
-  currency: string;
-  value: number;
-  accountNo: string;
+  transfer: TransferFormModel;
 
   constructor(private modalService: NgbModal) {
-    this.currency = 'PLN';
-    this.name = 'Przelew do kogoś';
-    this.value = 24.99;
-    this.accountNo = '25 0002 1010 0000 2020 9400 2067';
+    this.transfer = {};
+    this.transfer.currency = 'PLN';
   }
 
   ngOnInit() {
   }
 
-  private open(transfer) {
-    this.modalService.open(transfer, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  private open() {
+    const modalRef = this.modalService.open(NewTransferModalComponent);
+    modalRef.componentInstance.newTransferForm.name = this.transfer.name;
+    modalRef.componentInstance.newTransferForm.currency = this.transfer.currency;
+    modalRef.componentInstance.newTransferForm.value = this.transfer.value;
+    modalRef.componentInstance.newTransferForm.accountNo = this.transfer.accountNo;
+    modalRef.result.then((result) => {
+    }, () => {
     });
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 }
