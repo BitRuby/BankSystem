@@ -74,7 +74,7 @@ public interface FtpBaseInterface {
 
     /**
      * Create directory on ftp server.
-     *
+     * @param outboundPath
      * @return boolean true if connected, false otherwise.
      */
 
@@ -82,7 +82,7 @@ public interface FtpBaseInterface {
 
     /**
      * Delete all files from directory on ftp server
-     *
+     * @param deletePath
      * @return boolean true if connected, false otherwise.
      */
 
@@ -90,7 +90,7 @@ public interface FtpBaseInterface {
 
     /**
      * Get list of all files from directory on ftp server
-     *
+     * @param path
      * @return list of files name
      */
 
@@ -98,7 +98,7 @@ public interface FtpBaseInterface {
 
     /**
      * Get all files from directory on ftp server
-     *
+     * @param bankDirectoryPath
      * @return list of files name
      */
 

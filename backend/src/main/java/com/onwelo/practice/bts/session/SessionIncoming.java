@@ -44,10 +44,7 @@ public class SessionIncoming {
     }
 
     private boolean retriveAllTransferFile() throws IOException {
-
         Logger.debug("bankDirectory ->" + bankDirectory);
-
-
         Logger.debug("getFilesListFromDirectory(bankDirectoryPath)->" + ftpService.getFilesListFromDirectory("/" + bankDirectory));
         ftpService.getFilesListFromDirectory("/" + bankDirectory).stream().forEach(s -> {
             transferArrayList = ftpService.retriveAllFile(s);
