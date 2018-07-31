@@ -27,8 +27,7 @@ public class SessionIncoming {
     @Autowired
     private FtpService ftpService;
 
-    @Scheduled(cron = "0 0 3,9,15 * * *")
-        // everyday at 3:00, 9:00, 15:00
+    @Scheduled(cron = "0 0 3,9,15 * * *") // everyday at 3:00, 9:00, 15:00
     void startSessionIncoming() throws IOException {
         Logger.info("** Incoming session starting **");
 
