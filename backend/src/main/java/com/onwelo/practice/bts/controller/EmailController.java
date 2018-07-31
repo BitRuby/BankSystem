@@ -18,8 +18,8 @@ public class EmailController {
         this.templateEngine = templateEngine;
     }
 
-    @PostMapping("/api/sendmail")
-    public void sendEmail(@RequestBody EmailConfig emailConfig) {
+    @RequestMapping(value = "/api/email", method = RequestMethod.POST)
+    public EmailConfig sendEmail(@RequestBody EmailConfig emailConfig) {
         Context context = new Context();
         context.setVariable("subject", emailConfig.getSubject());
         context.setVariable("accountNo", emailConfig.getAccountNo());
@@ -30,5 +30,6 @@ public class EmailController {
         
         String body = templateEngine.process("emailTemplate", context);
         emailService.sendEmail(emailConfig.getTo(), emailConfig.getSubject(), body);
+        return emailConfig;
     }
 }
