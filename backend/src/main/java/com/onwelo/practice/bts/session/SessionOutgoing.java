@@ -10,6 +10,7 @@ import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -39,9 +40,16 @@ public class SessionOutgoing {
     @Autowired
     private FtpService ftpService;
 
+    @Value("${bank.iban}")
+    private String bankIban;
+
     @Scheduled(cron = "0 0 6,12,18 * * *") // everyday at 6:00, 12:00, 18:00
-    public void someMainMethod() {
+    public void startSessionOutgoing() {
         Logger.info("** Outgoing session starting **");
+
+        if (!ftpService.isConnected()) {
+            ftpService.openConnection();
+        }
 
         getTransfers();
         if (!Objects.requireNonNull(transfers).isEmpty()) {
@@ -105,7 +113,7 @@ public class SessionOutgoing {
             ftpService.createDirectory(map.getKey());
 
             if (ftpService.addFile(inputStream,
-                    "/" + map.getKey() + "/transfers_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".csv")) {
+                    "/" + map.getKey() + "/" + bankIban + "_transfers_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".csv")) {
                 Logger.info("Outgoing session: successful upload csv to ftp");
             } else {
                 Logger.debug("Outgoing session: failed upload csv to ftp");
