@@ -17,7 +17,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendEmail(String to, String subject, String content) {
+    public void sendEmail(String to, String subject, String body) {
         MimeMessage message = mailSender.createMimeMessage();
 
         try {
@@ -27,7 +27,7 @@ public class EmailService {
             helper.setReplyTo(BankEmail);
 
             helper.setSubject(subject);
-            helper.setText(content, true);
+            helper.setText(body, true);
         } catch (MessagingException e) {
             Logger.debug(e.getMessage(), e);
         }

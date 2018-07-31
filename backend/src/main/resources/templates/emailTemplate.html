@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:remove="all">CodeCouple Newsletter</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 
@@ -14,7 +13,7 @@
     }
 
     .container {
-        padding: 12px;
+        padding: 6px 24px;
     }
 
     .container-title {
@@ -33,7 +32,8 @@
 </div>
 
 <div class="container">
-    <p th:text="${description}">description</p>
+    <p><b>BankUI</b> odrzucił Twój przelew na rachunek <b th:text="${accountNo}">accountNo</b> o tytule <b th:text="${title}">title</b> w kwocie <b th:text="${value}">value</b> wysłany <b th:text="${transferDate}">transferDate</b>.</p>
+    <p>Uzasadnienie: <b th:text="${reason}">reason</b>.</p>
 </div>
 
 </body>
