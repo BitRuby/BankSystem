@@ -63,7 +63,7 @@ public class SessionOutgoing {
     }
 
     private void getTransfers() {
-        transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.REALIZED);
+        transfers = (ArrayList<Transfer>) transferService.getTransfersByStatus(TransferStatus.PENDING);
 
         if (transfers.isEmpty()) {
             Logger.info("Outgoing session: no transfers in this session");
