@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../../core/user/user.model';
-import {UserService} from '../../core/user/user.service';
+import {User} from "../../core/user/user.model";
 import {ActivatedRoute} from '@angular/router';
+import {UserService} from '../../core/user/user.service';
+
 
 @Component({
-  selector: 'app-account-details',
-  templateUrl: './account-details.component.html',
-  styleUrls: ['./account-details.component.css']
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
 })
-export class AccountDetailsComponent implements OnInit {
+export class HeaderComponent implements OnInit {
   user: User;
 
   constructor(private route: ActivatedRoute, private userService: UserService) {
-
   }
 
   ngOnInit() {
@@ -20,7 +20,7 @@ export class AccountDetailsComponent implements OnInit {
   }
 
   getUser(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
+    const id = 2;
     this.userService.getUser(id)
       .subscribe(user => this.user = user);
   }
