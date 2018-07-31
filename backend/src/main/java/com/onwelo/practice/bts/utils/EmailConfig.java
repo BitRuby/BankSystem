@@ -27,4 +27,14 @@ public class EmailConfig implements Serializable {
         this.transferDate = transferDate;
         this.reason = reason;
     }
+
+    public String toJson() {
+        return "{ \"to\": \"" + this.to + "\"," +
+                "\"subject\": \"" + this.subject + "\"," +
+                "\"accountNo\": \"" + this.accountNo + "\"," +
+                "\"title\": \"" + this.title + "\"," +
+                "\"value\": \"" + this.value + "\"," +
+                "\"transferDate\": \"" + this.transferDate + "\"," +
+                "\"reason\": \"" + this.reason + "\" }";
+    }
 }
