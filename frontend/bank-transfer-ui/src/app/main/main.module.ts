@@ -9,13 +9,14 @@ import {TransferListComponent} from './transfer-list/transfer-list.component';
 import {TransferListModalComponent} from './transfer-list-modal/transfer-list-modal.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {AppGroupByPipe} from '../app-groupBy.pipe';
+import {HeaderComponent} from './header/header.component';
+import {MainAmountValidationDirective} from './main-amount-validation.directive';
 import {CommonModule, registerLocaleData} from '@angular/common';
 import {MainRoutingModule} from './main-routing.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import localePl from '@angular/common/locales/pl';
-import {HeaderComponent} from './header/header.component';
 
 registerLocaleData(localePl);
 @NgModule({
@@ -30,7 +31,8 @@ registerLocaleData(localePl);
     TransferListModalComponent,
     NavigationComponent,
     AppGroupByPipe,
-    HeaderComponent
+    HeaderComponent,
+    MainAmountValidationDirective
   ],
   entryComponents: [
     TransferListModalComponent,
@@ -41,7 +43,8 @@ registerLocaleData(localePl);
     MainRoutingModule,
     NgbModule,
     InfiniteScrollModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class MainModule { }

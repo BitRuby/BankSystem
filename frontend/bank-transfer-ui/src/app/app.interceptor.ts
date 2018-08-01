@@ -24,6 +24,7 @@ export class AppInterceptor implements HttpInterceptor {
             }
           }
         }, error => {
+          console.error(error.error);
         }),
         finalize(() => {
           this.count--;
