@@ -1,7 +1,6 @@
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Component, OnInit} from '@angular/core';
-import {NewTransferModalComponent} from '../new-transfer-modal/new-transfer-modal.component';
-import {TransferFormModel} from '../../core/transfer/transfer.form.model';
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-new-transfer',
@@ -9,11 +8,14 @@ import {TransferFormModel} from '../../core/transfer/transfer.form.model';
   styleUrls: ['./new-transfer.component.css']
 })
 export class NewTransferComponent implements OnInit {
-  transfer: TransferFormModel;
+  closeResult: string;
+  name: string;
+  currency: string;
+  value: number;
+  accountNo: number;
 
   constructor(private modalService: NgbModal) {
-    this.transfer = {};
-    this.transfer.currency = 'PLN';
+    this.currency = 'PLN';
   }
 
   ngOnInit() {
