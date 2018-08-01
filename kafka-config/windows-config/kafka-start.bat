@@ -17,7 +17,7 @@ TIMEOUT /T 16
 start bin\windows\kafka-console-producer.bat --topic make-transfer --broker-list localhost:9092,localhost:9093,localhost:9094
 start bin\windows\kafka-console-producer.bat --topic status-sender --broker-list localhost:9092,localhost:9093,localhost:9094
 
-start bin\windows\kafka-console-consumer.bat --topic make-transfer --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --from-beginning
-start bin\windows\kafka-console-consumer.bat --topic status-sender --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --from-beginning
+start bin\windows\kafka-console-consumer.bat --topic make-transfer --bootstrap-server localhost:9092
+start bin\windows\kafka-console-consumer.bat --topic status-sender --bootstrap-server localhost:9092
 
 
