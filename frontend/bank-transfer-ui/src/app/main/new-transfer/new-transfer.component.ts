@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TransferFormModel} from '../../core/transfer/transfer.form.model';
+import {NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BankService} from '../../core/bank/bank.service';
+import {TransferService} from '../../core/transfer/transfer.service';
 import {NewTransferModalComponent} from '../new-transfer-modal/new-transfer-modal.component';
+
 
 @Component({
   selector: 'app-new-transfer',
@@ -11,10 +14,9 @@ import {NewTransferModalComponent} from '../new-transfer-modal/new-transfer-moda
 })
 export class NewTransferComponent implements OnInit {
   transfer: TransferFormModel;
+  @ViewChild('newTransfer') public newTransfer: NgForm;
 
-
-  constructor(private modalService: NgbModal, private bankService: BankService) {
-
+  constructor(private modalService: NgbModal, private bankService: BankService, private transferService: TransferService) {
     this.transfer = {};
     this.transfer.currency = 'PLN';
   }
@@ -30,9 +32,34 @@ export class NewTransferComponent implements OnInit {
         this.transfer.bankName = '';
       });
   }
-  private onSubmit() {
-    console.log('Valid');
+
+  private put() {
+    this.transferService.sendTransfers({
+      'title': this.transfer.name,
+      'value': this.transfer.value,
+      'accountId': {
+        'id': 2
+      },
+      'accountNo': this.transfer.accountNo,
+      'currency': this.transfer.currency,
+      'transferType': 'OUTGOING'
+    })
+      .subscribe(transfer => {
+        console.log('Poszło');
+      }, error => {
+        console.log('ni chuja');
+      });
   }
+
+  private clear() {
+    this.newTransfer.reset();
+    this.transfer = {};
+    this.transfer.currency = 'PLN';
+  }
+
+  private displaySuccessAlert() {
+  }
+
   private open() {
     const modalRef = this.modalService.open(NewTransferModalComponent);
     modalRef.componentInstance.newTransferForm.name = this.transfer.name;
@@ -41,6 +68,9 @@ export class NewTransferComponent implements OnInit {
     modalRef.componentInstance.newTransferForm.accountNo = this.transfer.accountNo;
     modalRef.componentInstance.newTransferForm.bankName = this.transfer.bankName;
     modalRef.result.then((result) => {
+      this.put();
+      this.clear();
+      this.displaySuccessAlert();
     }, () => {
     });
   }
