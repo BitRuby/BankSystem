@@ -9,7 +9,10 @@ import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.service.BankAccountService;
 import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.TransferType;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 
-import static com.onwelo.practice.bts.service.BankAccountServiceTest.*;
+import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd0;
+import static com.onwelo.practice.bts.service.BankAccountServiceTest.bd100;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

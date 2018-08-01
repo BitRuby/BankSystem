@@ -42,6 +42,8 @@
         <spring.boot.maven.version>2.0.3.RELEASE</spring.boot.maven.version>
         <docker.image.prefix>springio</docker.image.prefix>
         <apache-kafka.version>2.1.8.RELEASE</apache-kafka.version>
+        <spring.context.version>5.0.7.RELEASE</spring.context.version>
+        <javax.mail.version>1.6.1</javax.mail.version>
     </properties>
 
     <dependencies>
@@ -234,12 +236,12 @@
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
-            <version>1.6.1</version>
+            <version>${javax.mail.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>5.0.7.RELEASE</version>
+            <version>${spring.context.version}</version>
         </dependency>
     </dependencies>
 
