@@ -1,24 +1,32 @@
-version: '3'
+version: '3.5'
 
 services:
   mysql:
+    container_name: 'mysql'
     image: mysql/mysql-server:8.0.11
     ports:
-    - 3336:3306
+      - 3336:3306
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: 'bank'
+      MYSQL_USER: 'hr'
+      MYSQL_PASSWORD: 'hr'
 
   backend:
-    image: backend
-    ports:
-    - 8088:8080
+    container_name: 'backend'
+    image: 'backend'
     links:
-    - "mysql"
+      - mysql
 
   frontend:
-    image: frontend
-    build: '.'
+    container_name: 'frontend'
+    image: 'frontend'
     ports:
-    - 4207:4200
+      - 4200:4200
+      - 8080:4200
     links:
-    - "backend"
+      - backend
+
+# sudo systemctl stop docker
+# sudo dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock

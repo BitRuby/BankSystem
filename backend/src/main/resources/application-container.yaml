@@ -1,14 +1,17 @@
 spring:
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql:3306/bank
     username: hr
     password: hr
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+    database: mysql
 
 ftp:
-  host: 192.168.1.84
+  host: localhost
   port: 21599
   user: uibank
   passphrase: passub
