@@ -14,52 +14,65 @@ import java.util.ArrayList;
 
 @Component
 public class SessionIncoming {
-
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionIncoming.class);
+
     @Value("${bank.iban}")
     private String bankDirectory;
+
     private ArrayList<Transfer> transferArrayList;
+
     @Autowired
     private TransferService transferService;
+
     @Autowired
     private FtpService ftpService;
 
     @Scheduled(cron = "0 0 3,9,15 * * *") // everyday at 3:00, 9:00, 15:00
-    void startSessionIngoing() throws IOException {
-        if (ftpService.isConnected()) {
-            retriveAllTransferFile();
-        } else {
-            alternativeSessionIngoingStart();
+    void startSessionIncoming() throws IOException {
+        Logger.info("** Incoming session starting **");
+
+        if (!ftpService.isConnected()) {
+            ftpService.openConnection();
         }
+
+        if (retrieveAllTransferFile()) {
+            clearDirectory();
+        }
+
+        Logger.info("** Incoming session ending **");
     }
 
-    private void alternativeSessionIngoingStart() {
-        if (ftpService.openConnection()) {
-            try {
-                retriveAllTransferFile();
-            } catch (IOException e) {
-                Logger.debug("alternativeSessionIngoingStart - > " + e);
-            }
-        }
-    }
+    private Boolean retrieveAllTransferFile() throws IOException {
+        Logger.info("Incoming session: getting csv files from ftp");
 
-    private boolean retriveAllTransferFile() throws IOException {
-        Logger.debug("bankDirectory ->" + bankDirectory);
-        Logger.debug("getFilesListFromDirectory(bankDirectoryPath)->" + ftpService.getFilesListFromDirectory("/" + bankDirectory));
-        ftpService.getFilesListFromDirectory("/" + bankDirectory).stream().forEach(s -> {
+        transferArrayList = null;
+        ftpService.getFilesListFromDirectory("/" + bankDirectory).forEach(s -> {
             transferArrayList = ftpService.retriveAllFile(s);
-            Logger.debug("transferArrayList.isEmpty() ->" + transferArrayList.isEmpty());
             if (!transferArrayList.isEmpty()) {
                 addAllTransfers(s);
             }
         });
-        return false;
+
+        if (transferArrayList == null) {
+            Logger.info("Incoming session: no transfers in this session");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void addAllTransfers(String s) {
-        Logger.debug("Start adding to db -> " + bankDirectory + " :: " + s);
+        Logger.info("Incoming session: adding transfers from bank [" + s.substring(6, 10) + "] to database... ");
         transferArrayList.forEach(transfer -> transferService.addTransfer(transfer));
-        Logger.debug("Stop adding to db -> " + bankDirectory + " :: " + s);
     }
 
+    private void clearDirectory() {
+        Logger.info("Incoming session: clearing bank directory");
+
+        try {
+            ftpService.deleteAllFiles("/" + bankDirectory);
+        } catch (IOException e) {
+            Logger.debug(e.getMessage(), e);
+        }
+    }
 }
