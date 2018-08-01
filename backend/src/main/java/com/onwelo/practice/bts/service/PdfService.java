@@ -53,9 +53,9 @@ public class PdfService {
         Path path;
 
         if (isRest) {
-            path = Paths.get("backend/src/main/resources/pdf/pdfTheme.html");
+            path = Paths.get("backend/src/main/resources/templates/pdfTemplate.html");
         } else {
-            path = Paths.get("src/main/resources/pdf/pdfTheme.html");
+            path = Paths.get("src/main/resources/templates/pdfTemplate.html");
         }
 
         byte[] themeContent = null;

@@ -1,0 +1,51 @@
+﻿<html>
+<head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
+</head>
+
+<style>
+    body {
+        padding: 24px;
+        color: rgb(57, 63, 77);
+        font-size: 16px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .container-title {
+        background-color: rgb(65, 72, 87);
+        color: #fff;
+    }
+
+    hr.line {
+        border-top: 1px solid rgb(57, 63, 77);
+    }
+</style>
+
+<body>
+<div class="container container-title">
+    <h1>Bank<b style="color: rgb(113, 200, 55)">UI</b> - twój najgorszy bank</h1>
+</div>
+
+<div class="container">
+    <h2>Bankujesz - tracisz</h2>
+</div>
+
+<div class="container">
+    <h3>Potwierdzenie płatności</h3>
+    <p>Data wysłania przelewu: <b>${date}</b></p>
+    <hr class="line" align="left" width="10%"/>
+    <p>Rachunek źródłowy: <b>${accountNoOwner}</b></p>
+    <p>Rachunek docelowy: <b>${accountNoTarget}</b></p>
+    <hr class="line" align="left" width="10%"/>
+    <p>Tytuł: <b>${title}</b></p>
+    <p>Kwota: <b>${value}</b></p>
+</div>
+<div class="container-footer">
+
+</div>
+</body>
+</html>
