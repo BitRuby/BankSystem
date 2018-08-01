@@ -34,13 +34,13 @@ export class TransferListComponent implements OnInit {
       });
   }
 
-  private onScroll() {
+  onScroll() {
     const number = 10;
     this.transferProp.batch += number;
     this.getTransfers();
   }
 
-  private open() {
+  open() {
     const modalRef = this.modalService.open(TransferListModalComponent);
     modalRef.result.then((result) => {
       this.close(result);

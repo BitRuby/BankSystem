@@ -19,7 +19,7 @@ export class NewTransferComponent implements OnInit {
   ngOnInit() {
   }
 
-  private open() {
+  open() {
     const modalRef = this.modalService.open(NewTransferModalComponent);
     modalRef.componentInstance.newTransferForm.name = this.transfer.name;
     modalRef.componentInstance.newTransferForm.currency = this.transfer.currency;
