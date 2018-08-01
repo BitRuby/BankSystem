@@ -46,12 +46,20 @@
         <div class="col-md-8 col-sm-12 mt-3">
           <div class="form-group">
             <label for="InputAccountNo">Account number</label>
-            <input type="text" class="form-control" id="InputAccountNo" aria-describedby="nameAccount"
-                   placeholder="Enter account number" [(ngModel)]="transfer.accountNo" (blur)="checkBankName()"
-                   name="accountNo" #accountNo="ngModel" required>
-            <small [hidden]="accountNo.valid || accountNo.pristine"
+            <input type="text" appAsyncBankValidator required class="form-control" id="InputAccountNo"
+                   aria-describedby="nameAccount"
+                   placeholder="Enter account number" [(ngModel)]="transfer.accountNo"
+                   name="accountNo" #accountNo="ngModel" [ngModelOptions]="{updateOn: 'blur'}" (blur)="getBankName()">
+            <small [hidden]="(!accountNo.errors?.bank || accountNo.pristine)"
+                   class="form-text text-danger">
+              Account number is invalid
+            </small>
+            <small [hidden]="!accountNo.errors?.required || accountNo.pristine"
                    class="form-text text-danger">
               Account number is required
+            </small>
+            <small>
+              {{transfer.bankName}}
             </small>
             <small id="nameAccount" class="form-text text-muted">Fill field with account number where transfer will be
               proceed.

@@ -11,6 +11,8 @@
   <h4 class="mt-0 mb-3">{{newTransferForm.value | currency:newTransferForm.currency:'code':'1.2-2':'pl'}}</h4>
   <label class="mb-0">Account number</label>
   <h4 class="mt-0 mb-3">{{newTransferForm.accountNo}}</h4>
+  <label class="mb-0">Bank</label>
+  <h4 class="mt-0 mb-3">{{newTransferForm.bankName}}</h4>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Accept</button>

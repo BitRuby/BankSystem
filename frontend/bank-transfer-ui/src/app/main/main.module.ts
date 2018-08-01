@@ -11,6 +11,7 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {AppGroupByPipe} from '../app-groupBy.pipe';
 import {HeaderComponent} from './header/header.component';
 import {MainAmountValidationDirective} from './main-amount-validation.directive';
+import {MainBankAsyncValidatorDirective} from './main-bank-async-validator.directive';
 import {CommonModule, registerLocaleData} from '@angular/common';
 import {MainRoutingModule} from './main-routing.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -32,7 +33,8 @@ registerLocaleData(localePl);
     NavigationComponent,
     AppGroupByPipe,
     HeaderComponent,
-    MainAmountValidationDirective
+    MainAmountValidationDirective,
+    MainBankAsyncValidatorDirective
   ],
   entryComponents: [
     TransferListModalComponent,

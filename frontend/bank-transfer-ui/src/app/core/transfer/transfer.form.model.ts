@@ -11,4 +11,5 @@ export interface TransferFormModel {
   accountNo?: string;
   order?: string;
   batch?: number;
+  bankName?: string;
 }
