@@ -10,6 +10,8 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class FtpService implements FtpBaseInterface {
@@ -125,5 +127,35 @@ public class FtpService implements FtpBaseInterface {
         }
         Logger.debug(METHODNAME + "Current connection status for FTP server -> " + connected);
         return connected;
+    }
+
+    @Override
+    public boolean createDirectory(String outboundPath) {
+        final String METHODNAME = "<createDirectory> : ";
+        try {
+            return ftpClient.makeDirectory(outboundPath);
+        } catch (IOException e) {
+            Logger.error(METHODNAME + e.getMessage(), e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteAllFiles(String deletePath) throws IOException {
+        final String METHODNAME = "<deleteAllFiles> : ";
+        getFilesListFromDirectory(deletePath).stream().forEach(s -> {
+            try {
+                ftpClient.deleteFile(s);
+            } catch (IOException e) {
+                Logger.debug("Problem with  delete file from ftp");
+            }
+
+        });
+        return true;
+    }
+
+    @Override
+    public List<String> getFilesListFromDirectory(String deletePath) throws IOException {
+        return Arrays.asList(ftpClient.listNames(deletePath));
     }
 }
