@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.google.gson.Gson;
 import com.onwelo.practice.bts.utils.Currency;
 import com.onwelo.practice.bts.utils.MoneySerializer;
 import com.onwelo.practice.bts.utils.TransferStatus;
@@ -19,7 +20,6 @@ import org.hibernate.annotations.Where;
 import org.jvnet.hk2.annotations.Optional;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 @ToString(exclude = "accountId")
 @Table(name = "transfer")
 @Where(clause = "is_active=1")
-public class Transfer  {
+public class Transfer {
     @Id
     @Optional
     @Column(name = "id")
@@ -63,8 +63,12 @@ public class Transfer  {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createTime;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "booking_date")
     private LocalDateTime bookingDate;
@@ -75,13 +79,6 @@ public class Transfer  {
 
     @Column(name = "is_active")
     private Boolean active = true;
-
-    @PrePersist
-    protected void onCreate() {
-        if (createTime == null) {
-            createTime = LocalDateTime.now();
-        }
-    }
 
     public Transfer(String title, BigDecimal value, BankAccount accountId, String accountNo, TransferType transferType) {
         this.title = title;
@@ -114,8 +111,14 @@ public class Transfer  {
         this.currency = currency;
     }
 
+    @PrePersist
+    protected void onCreate() {
+        if (createTime == null) {
+            createTime = LocalDateTime.now();
+        }
+    }
+
     public void setAccountNo(String accountNo) {
         this.accountNo = accountNo.replace(" ", "");
     }
-
 }
