@@ -7,6 +7,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
+  private count = 0;
   constructor(private spinner: NgxSpinnerService) {
   }
   intercept(
@@ -16,22 +17,21 @@ export class AppInterceptor implements HttpInterceptor {
     return next.handle(req)
       .pipe(
         tap(event => {
-          this.spinner.show();
           if (event instanceof HttpResponse) {
-            console.log('all looks good');
-            console.log(event.status);
+            this.count++;
+            if (this.count === 1) {
+              this.spinner.show();
+            }
           }
         }, error => {
-          console.log('----response----');
-          console.error('status code:');
-          console.error(error.status);
-          console.error(error.message);
-          console.log('--- end of response---');
         }),
         finalize(() => {
-          setTimeout(() => {
-            this.spinner.hide();
-          }, 1000);
+          this.count--;
+          if (this.count === 0) {
+            setTimeout(() => {
+              this.spinner.hide();
+            }, 1000);
+          }
         })
       );
 
