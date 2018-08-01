@@ -1,7 +1,5 @@
 package com.onwelo.practice.bts.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.onwelo.practice.bts.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
