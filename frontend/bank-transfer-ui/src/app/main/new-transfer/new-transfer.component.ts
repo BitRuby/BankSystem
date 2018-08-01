@@ -1,6 +1,8 @@
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Component, OnInit} from '@angular/core';
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {TransferFormModel} from '../../core/transfer/transfer.form.model';
+import {BankService} from '../../core/bank/bank.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NewTransferModalComponent} from '../new-transfer-modal/new-transfer-modal.component';
 
 @Component({
   selector: 'app-new-transfer',
@@ -8,20 +10,29 @@ import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./new-transfer.component.css']
 })
 export class NewTransferComponent implements OnInit {
-  closeResult: string;
-  name: string;
-  currency: string;
-  value: number;
-  accountNo: number;
+  transfer: TransferFormModel;
 
-  constructor(private modalService: NgbModal) {
-    this.currency = 'PLN';
+  constructor(private modalService: NgbModal, private bankService: BankService) {
+
+    this.transfer = {};
+    this.transfer.currency = 'PLN';
   }
 
+  private checkBankName(): void {
+    this.bankService.getBankName(this.transfer.accountNo)
+      .subscribe(response => {
+
+      }, error => {
+
+      });
+  }
   ngOnInit() {
   }
 
-  open() {
+  private onSubmit() {
+    console.log('Valid');
+  }
+  private open() {
     const modalRef = this.modalService.open(NewTransferModalComponent);
     modalRef.componentInstance.newTransferForm.name = this.transfer.name;
     modalRef.componentInstance.newTransferForm.currency = this.transfer.currency;

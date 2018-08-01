@@ -1,4 +1,4 @@
-import {TransferContent} from "./transfer.content.model";
+import {TransferContent} from './transfer.content.model';
 
 export interface Transfer {
   content: TransferContent;

@@ -63,6 +63,15 @@ app-footer {
 .bg-custom {
   background: rgb(57, 63, 77) !important;
 }
+
+.ng-valid[required], .ng-valid.required {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* red */
+}
+
 @media (min-width: 576px) and (max-width: 991px) {
   .container {
     padding: 0 !important;
