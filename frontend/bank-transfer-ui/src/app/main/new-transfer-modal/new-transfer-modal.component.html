@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">New transfer summary</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body my-3">
+  <label class="mb-0">Name</label>
+  <h4 class="mt-0 mb-3">{{newTransferForm.name}}</h4>
+  <label class="mb-0">Value</label>
+  <h4 class="mt-0 mb-3">{{newTransferForm.value | currency:newTransferForm.currency:'code':'1.2-2':'pl'}}</h4>
+  <label class="mb-0">Account number</label>
+  <h4 class="mt-0 mb-3">{{newTransferForm.accountNo}}</h4>
+  <label class="mb-0">Bank</label>
+  <h4 class="mt-0 mb-3">{{newTransferForm.bankName}}</h4>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Accept</button>
+</div>
