@@ -16,10 +16,9 @@ import java.util.Map;
 
 @EnableKafka
 public class Saga {
-    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferConsumer.class);
-    private final static String topicStatus = "status-sender";
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(Saga.class);
     private static Map<Long, ValidatorMessage> transfers = new HashMap<>();
-    public static final String APPROVED = "APPROVED";
+    private final static String topicStatus = "status-sender";
 
     @Autowired
     private TransferService transferService;
@@ -59,7 +58,7 @@ public class Saga {
             author[Integer.valueOf(transferStatus[1])] = true;
 
             Boolean[] status = message.getStatus();
-            if (transferStatus[2].equals(APPROVED)) {
+            if (transferStatus[2].equals(TransferStatus.APPROVED.toString())) {
                 status[Integer.valueOf(transferStatus[1])] = true;
             }
 
@@ -70,7 +69,7 @@ public class Saga {
             author[Integer.valueOf(transferStatus[1])] = true;
 
             Boolean[] status = message.getStatus();
-            if (transferStatus[2].equals(APPROVED)) {
+            if (transferStatus[2].equals(TransferStatus.APPROVED.toString())) {
                 status[Integer.valueOf(transferStatus[1])] = true;
             }
 

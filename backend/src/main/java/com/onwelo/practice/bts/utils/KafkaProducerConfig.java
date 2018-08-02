@@ -1,6 +1,9 @@
 package com.onwelo.practice.bts.utils;
 
 import com.onwelo.practice.bts.fds.TransferProducer;
+import com.onwelo.practice.bts.fds.TransferValidatorEUR;
+import com.onwelo.practice.bts.fds.TransferValidatorPLN;
+import com.onwelo.practice.bts.fds.TransferValidatorSpam;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

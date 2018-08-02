@@ -25,12 +25,8 @@ import java.time.temporal.ChronoUnit;
 @Configurable
 @Component
 public class TransferValidatorSpam {
-    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferConsumer.class);
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferValidatorSpam.class);
     private final static String topicReceive = "make-transfer";
-    private final static String topicSend = "status-sender";
-
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
     private TransferService transferService;
@@ -42,7 +38,6 @@ public class TransferValidatorSpam {
         SimpleModule module = new SimpleModule();
         module.addDeserializer(Transfer.class, new TransferDeserializer());
         mapper.registerModule(module);
-       BankAccount bankAccount = new BankAccount("29 1160 2202 0000 0003 1193 5598", "Jan", "Kowalski", BigDecimal.valueOf(10000000), BigDecimal.valueOf(0));
 
         Transfer transfer = mapper.readValue(jsonTransfer, Transfer.class);
         String status = validate(transfer);
@@ -64,6 +59,6 @@ public class TransferValidatorSpam {
     }
 
     private void sendStatus(String status) {
-        kafkaTemplate.send(topicSend, status);
+        new TransferProducer().send(status);
     }
 }

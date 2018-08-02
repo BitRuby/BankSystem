@@ -1,6 +1,8 @@
 package com.onwelo.practice.bts.utils;
 
-import com.onwelo.practice.bts.fds.TransferConsumer;
+import com.onwelo.practice.bts.fds.TransferValidatorEUR;
+import com.onwelo.practice.bts.fds.TransferValidatorPLN;
+import com.onwelo.practice.bts.fds.TransferValidatorSpam;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +47,17 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public TransferConsumer transferConsumer() {
-        return new TransferConsumer();
+    public TransferValidatorPLN transferValidatorPLN() {
+        return new TransferValidatorPLN();
+    }
+
+    @Bean
+    public TransferValidatorEUR transferValidatorEUR() {
+        return new TransferValidatorEUR();
+    }
+
+    @Bean
+    public TransferValidatorSpam transferValidatorSpam() {
+        return new TransferValidatorSpam();
     }
 }
