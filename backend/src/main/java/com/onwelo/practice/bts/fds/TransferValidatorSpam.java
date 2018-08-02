@@ -59,6 +59,6 @@ public class TransferValidatorSpam {
     }
 
     private void sendStatus(String status) {
-        new TransferProducer().send(status);
+        new TransferProducer().sendStatus(status);
     }
 }

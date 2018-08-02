@@ -1,5 +1,6 @@
 package com.onwelo.practice.bts.utils;
 
+import com.onwelo.practice.bts.fds.Saga;
 import com.onwelo.practice.bts.fds.TransferValidatorEUR;
 import com.onwelo.practice.bts.fds.TransferValidatorPLN;
 import com.onwelo.practice.bts.fds.TransferValidatorSpam;
@@ -59,5 +60,10 @@ public class KafkaConsumerConfig {
     @Bean
     public TransferValidatorSpam transferValidatorSpam() {
         return new TransferValidatorSpam();
+    }
+
+    @Bean
+    public Saga saga() {
+        return new Saga();
     }
 }

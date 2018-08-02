@@ -8,6 +8,7 @@ import com.onwelo.practice.bts.exceptions.ForbiddenException;
 import com.onwelo.practice.bts.exceptions.MissingFieldException;
 import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.exceptions.NotValidField;
+import com.onwelo.practice.bts.fds.TransferProducer;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.session.SessionOutgoing;
 import com.onwelo.practice.bts.utils.TransferStatus;
@@ -119,7 +120,8 @@ public class TransferService {
         } catch (JsonProcessingException e) {
             Logger.debug(e.getMessage(), e);
         }
-        kafkaTemplate.send(kafkaTopic, jsonContent);
+
+        new TransferProducer().sendJson(jsonContent);
 
         return transfer;
 

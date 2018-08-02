@@ -51,6 +51,6 @@ public class TransferValidatorEUR {
     }
 
     private void send(String status) {
-        new TransferProducer().send(status);
+        new TransferProducer().sendStatus(status);
     }
 }
