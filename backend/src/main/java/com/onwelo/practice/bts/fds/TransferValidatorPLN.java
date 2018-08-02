@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.Currency;
+import com.onwelo.practice.bts.utils.TransferStatus;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -38,12 +39,12 @@ public class TransferValidatorPLN {
     private String validate(Transfer transfer) {
         if (transfer.getCurrency().equals(Currency.PLN)) {
             if (transfer.getValue().compareTo(BigDecimal.valueOf(15000L)) > 0) {
-                return transfer.getId() + ",0,CANCELED";
+                return transfer.getId() + ",0," + TransferStatus.CANCELED.toString();
             } else {
-                return transfer.getId() + ",0,APPROVED";
+                return transfer.getId() + ",0," + TransferStatus.APPROVED.toString();
             }
         } else {
-            return transfer.getId() + ",0,APPROVED";
+            return transfer.getId() + ",0," + TransferStatus.APPROVED.toString();
         }
     }
 

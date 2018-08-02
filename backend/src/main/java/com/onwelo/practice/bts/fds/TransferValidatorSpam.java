@@ -6,6 +6,7 @@ import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.service.TransferService;
 import com.onwelo.practice.bts.utils.Currency;
+import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +54,12 @@ public class TransferValidatorSpam {
 
         if (last != null) {
             if (ChronoUnit.SECONDS.between(last.getCreateTime(), transfer.getCreateTime()) < 30L) {
-                return transfer.getId() + ",2,CANCELED";
+                return transfer.getId() + ",2," + TransferStatus.CANCELED.toString();
             } else {
-                return transfer.getId() + ",2,APPROVED";
+                return transfer.getId() + ",2," + TransferStatus.APPROVED.toString();
             }
         } else {
-            return transfer.getId() + ",2,APPROVED";
+            return transfer.getId() + ",2," + TransferStatus.APPROVED.toString();
         }
     }
 
