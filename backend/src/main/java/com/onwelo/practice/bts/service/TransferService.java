@@ -1,5 +1,7 @@
 package com.onwelo.practice.bts.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.exceptions.ForbiddenException;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +33,10 @@ public class TransferService {
 
     @Autowired
     private BankAccountService bankAccountService;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+    private final static String kafkaTopic = "make-transfer";
 
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionOutgoing.class);
 
@@ -103,7 +110,19 @@ public class TransferService {
         }
 
         bankAccountService.updateBankAccount(bankAccount);
-        return transferRepository.save(transfer);
+
+        transfer = transferRepository.save(transfer);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonContent = null;
+        try {
+            jsonContent = mapper.writeValueAsString(transfer);
+        } catch (JsonProcessingException e) {
+            Logger.debug(e.getMessage(), e);
+        }
+        kafkaTemplate.send(kafkaTopic, jsonContent);
+
+        return transfer;
+
     }
 
     public Transfer updateTransfer(Transfer transfer) {

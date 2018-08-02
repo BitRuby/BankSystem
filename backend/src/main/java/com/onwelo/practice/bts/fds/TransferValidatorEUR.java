@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.Currency;
+import com.onwelo.practice.bts.utils.TransferStatus;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,12 +47,12 @@ public class TransferValidatorEUR {
 
         if (transfer.getCurrency().equals(Currency.EUR)) {
             if (transfer.getValue().compareTo(BigDecimal.valueOf(4000)) > 0) {
-                return transfer.getId() + ",2,CANCELED";
+                return transfer.getId() + ",1," + TransferStatus.CANCELED.toString();
             } else {
-                return transfer.getId() + ",2,APPROVED";
+                return transfer.getId() + ",1," + TransferStatus.APPROVED.toString();
             }
         } else {
-            return transfer.getId() + ",2,APPROVED";
+            return transfer.getId() + ",1," + TransferStatus.APPROVED.toString();
         }
     }
 
