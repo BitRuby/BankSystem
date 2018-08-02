@@ -43,7 +43,7 @@ public class TransferValidatorPLN {
                 return transfer.getId() + ",1,APPROVED";
             }
         } else {
-            return transfer.getId() + "1, APPROVED";
+            return transfer.getId() + "1,APPROVED";
         }
     }
 
