@@ -39,7 +39,7 @@ public class TransferService {
     private KafkaTemplate<String, String> kafkaTemplate;
     private final static String kafkaTopic = "make-transfer";
 
-    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionOutgoing.class);
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferService.class);
 
     @Autowired
     public TransferService(@Value("${bank.iban}") String bankIBAN) {
@@ -121,10 +121,9 @@ public class TransferService {
             Logger.debug(e.getMessage(), e);
         }
 
-        new TransferProducer().sendJson(jsonContent);
+        // new TransferProducer().sendJson(jsonContent);
 
         return transfer;
-
     }
 
     public Transfer updateTransfer(Transfer transfer) {
