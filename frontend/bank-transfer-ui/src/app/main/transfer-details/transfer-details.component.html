@@ -1,10 +1,36 @@
-
-<div class="content">
-
-  <div class="container">
-
-    <h1>Sample text</h1>
-
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">{{transferContent.title}} details</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <label class="mb-0">Transfer ID</label>
+      <h5 class="mt-0 mb-3">{{transferContent?.id}}</h5>
+      <label class="mb-0">Value</label>
+      <h5 class="mt-0 mb-3">{{transferContent?.value}}</h5>
+    </div>
+    <div class="col-md-6">
+      <label class="mb-0">Create time</label>
+      <h5 class="mt-0 mb-3">{{transferContent?.createTime | date}}</h5>
+      <label class="mb-0">Booking date</label>
+      <h5 class="mt-0 mb-3">{{transferContent?.createTime | date}}</h5>
+    </div>
   </div>
+  <label class="mb-0">Account number</label>
+  <h5 class="mt-0 mb-3">{{transferContent?.accountNo}}</h5>
+  <label class="mb-0">Transfer status</label>
+  <h5 class="mt-0 mb-3">{{transferContent?.status}}</h5>
+  <label class="mb-0">Transfer type</label>
+  <label class="mb-0">Transfer type</label>
+  <h5 class="mt-0 mb-3">{{transferContent?.transferType}}</h5>
+  <label class="mb-0">Active</label>
+  <h5 class="mt-0 mb-3">{{transferContent?.active}}</h5>
 
+</div>
+<div class="modal-footer">
+  <a target="_blank" class="btn btn-outline-success" href="{{pdf()}}">Export to PDF</a>
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(null)">Close</button>
 </div>

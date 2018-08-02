@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {TransferFormModel} from "../../core/transfer/transfer.form.model";
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {TransferFormModel} from '../../core/transfer/transfer.form.model';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-transfer-list-modal',

@@ -36,7 +36,7 @@
               <label for="InputValue">Value</label>
               <input type="text" appValidateAccount required class="form-control" id="InputValue"
                      aria-describedby="valueHelp"
-                     [(ngModel)]="transfer.value" name="value" #value="ngModel" [ngModelOptions]="{updateOn: 'blur'}">
+                     [(ngModel)]="transfer.value" placeholder="Enter value" name="value" #value="ngModel" [ngModelOptions]="{updateOn: 'blur'}">
             </div>
           </div>
           <small [hidden]="(!value.errors?.format || value.pristine)"

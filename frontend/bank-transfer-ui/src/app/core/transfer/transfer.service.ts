@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/internal/Observable';
 import {environment} from '../../../environments/environment';
+import {TransferContent} from './transfer.content.model';
 import {Transfer} from './transfer.model';
 import {TransferRequest} from './transfer.request.model';
 
@@ -11,6 +12,11 @@ import {TransferRequest} from './transfer.request.model';
 })
 export class TransferService {
   constructor(private httpClient: HttpClient) {
+  }
+
+  getOneTransfer(id: number): Observable<TransferContent> {
+    const url = `${environment.apiUrl}/transfers/${id}`;
+    return this.httpClient.get<TransferContent>(url);
   }
 
   getTransfers(id: number, batch: number, order: string): Observable<Transfer[]> {

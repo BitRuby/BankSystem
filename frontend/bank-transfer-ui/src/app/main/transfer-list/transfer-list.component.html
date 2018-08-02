@@ -6,10 +6,11 @@
       <button type="button" class="btn btn-secondary btn-custom btn-lg" (click)="open()">Filter options
       </button>
     </div>
+    <small>Click on transfer to get more details</small>
     <div *ngFor="let tran of transfer | groupBy:'createTime'">
       <p class="mb-1 mt-4">{{tran?.key | date:'fullDate'}}</p>
       <ul class="list-group">
-        <li class="list-group-item list-group-item-dark list-group-item-custom" *ngFor="let list of tran.value">
+        <li class="list-group-item list-group-item-dark list-group-item-custom" *ngFor="let list of tran.value" (click)="showDetails(list.id)">
           <div class="row">
             <div class="col-md-2 col-sm-3">{{list?.status}}</div>
             <div class="col-md-3 col-sm-3">{{list?.title}}</div>

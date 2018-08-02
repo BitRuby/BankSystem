@@ -38,7 +38,8 @@ registerLocaleData(localePl);
   ],
   entryComponents: [
     TransferListModalComponent,
-    NewTransferModalComponent
+    NewTransferModalComponent,
+    TransferDetailsComponent,
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TransferService} from '../../core/transfer/transfer.service';
 import {TransferListModalComponent} from '../transfer-list-modal/transfer-list-modal.component';
+import {TransferDetailsComponent} from '../transfer-details/transfer-details.component';
 
 
 @Component({
@@ -45,10 +46,25 @@ export class TransferListComponent implements OnInit {
     modalRef.result.then((result) => {
       this.close(result);
     }, () => {
-    })
+    });
+  }
+
+  private showDetails(id) {
+    const modalRef = this.modalService.open(TransferDetailsComponent);
+    modalRef.componentInstance.loadData(id);
+    modalRef.result.then((result) => {
+      this.close(result);
+    }, () => {
+    });
   }
 
   private close(modalData) {
+    if (!modalData) {
+      return;
+    }
+    if (modalData === 'pdf') {
+      return;
+    }
     this.transferProp.order = '';
     if (modalData.dateCheckbox) {
       this.transferProp.order += `&sort=createTime,${modalData.dateSelect || 'desc'}`;
