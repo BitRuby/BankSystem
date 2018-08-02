@@ -46,12 +46,12 @@ public class TransferValidatorEUR {
 
         if (transfer.getCurrency().equals(Currency.EUR)) {
             if (transfer.getValue().compareTo(BigDecimal.valueOf(4000)) > 0) {
-                return transfer.getId() + ",2,CANCELED";
+                return transfer.getId() + ",1,CANCELED";
             } else {
-                return transfer.getId() + ",2,APPROVED";
+                return transfer.getId() + ",1,APPROVED";
             }
         } else {
-            return transfer.getId() + ",2,APPROVED";
+            return transfer.getId() + ",1,APPROVED";
         }
     }
 

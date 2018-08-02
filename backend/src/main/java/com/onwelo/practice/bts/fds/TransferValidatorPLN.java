@@ -38,12 +38,12 @@ public class TransferValidatorPLN {
     private String validate(Transfer transfer) {
         if (transfer.getCurrency().equals(Currency.PLN)) {
             if (transfer.getValue().compareTo(BigDecimal.valueOf(15000L)) > 0) {
-                return transfer.getId() + ",1,CANCELED";
+                return transfer.getId() + ",0,CANCELED";
             } else {
-                return transfer.getId() + ",1,APPROVED";
+                return transfer.getId() + ",0,APPROVED";
             }
         } else {
-            return transfer.getId() + "1, APPROVED";
+            return transfer.getId() + ",0,APPROVED";
         }
     }
 

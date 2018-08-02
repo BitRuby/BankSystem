@@ -28,7 +28,7 @@ public class Saga {
         }
 
         if("APPROVED".equals(transferStatus[2])) {
-            checkSum |= (1 << (Byte.valueOf(transferStatus[1]) - 1));
+            checkSum |= (1 << Byte.valueOf(transferStatus[1]));
         }
 
         transfers.put(Long.valueOf(transferStatus[0]), checkSum);

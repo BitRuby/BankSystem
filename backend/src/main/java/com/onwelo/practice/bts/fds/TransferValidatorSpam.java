@@ -53,12 +53,12 @@ public class TransferValidatorSpam {
 
         if (last != null) {
             if (ChronoUnit.SECONDS.between(last.getCreateTime(), transfer.getCreateTime()) < 30L) {
-                return transfer.getId() + ",3,CANCELED";
+                return transfer.getId() + ",2,CANCELED";
             } else {
-                return transfer.getId() + ",3,APPROVED";
+                return transfer.getId() + ",2,APPROVED";
             }
         } else {
-            return transfer.getId() + ",3,APPROVED";
+            return transfer.getId() + ",2,APPROVED";
         }
     }
 
