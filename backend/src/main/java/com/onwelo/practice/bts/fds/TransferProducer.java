@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class TransferProducer {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferProducer.class);
     private final ObjectMapper mapper = new ObjectMapper();
-    @Value("${fds.topic.transfer}")
+    @Value("${kafka.topic.transfer}")
     private String topic = "make-transfer";
 
     @Autowired

@@ -14,8 +14,6 @@ import java.io.IOException;
 @EnableKafka
 public class TransferConsumer {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferConsumer.class);
-    // @Value("${fds.topic.transfer}")
-    private String topic = "make-transfer";
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
