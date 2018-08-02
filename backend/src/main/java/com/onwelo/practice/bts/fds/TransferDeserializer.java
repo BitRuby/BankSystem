@@ -6,11 +6,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
-import com.onwelo.practice.bts.service.BankAccountService;
 import com.onwelo.practice.bts.utils.Currency;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import com.onwelo.practice.bts.utils.TransferType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -21,8 +19,6 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class TransferDeserializer extends StdDeserializer<Transfer> {
 
-    @Autowired
-    private BankAccountService bankAccountService;
 
     public TransferDeserializer() {
         this(null);
@@ -43,7 +39,6 @@ public class TransferDeserializer extends StdDeserializer<Transfer> {
         BigDecimal value = node.get("value").decimalValue();
         BankAccount accountId = new BankAccount();
         accountId.setId(accId);
-        //BankAccount accountId = null;
         String accountNo = node.get("accountNo").asText();
         TransferStatus transferStatus = TransferStatus.valueOf(node.get("status").asText());
         TransferType transferType = TransferType.valueOf(node.get("transferType").asText());
