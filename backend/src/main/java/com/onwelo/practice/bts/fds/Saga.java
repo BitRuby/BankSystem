@@ -12,7 +12,7 @@ import java.util.Map;
 public class Saga {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferConsumer.class);
     private final static String topicStatus = "status-sender";
-    private static Map<Long, ArrayList<String[]>> transfers = new HashMap<>();
+    private static Map<Long, Byte> transfers = new HashMap<>();
 
     @KafkaListener(topics = topicStatus, groupId = "saga")
     public void receive(String status) {
@@ -20,6 +20,18 @@ public class Saga {
     }
 
     private void addToMap(String[] transferStatus) {
+        Long id = Long.valueOf(transferStatus[0]);
+        byte checkSum = 0;
+
+        if (transfers.containsKey(Long.valueOf(transferStatus[0]))) {
+            checkSum = transfers.get(id);
+        }
+
+        if("APPROVED".equals(transferStatus[2])) {
+            checkSum |= (1 << (Byte.valueOf(transferStatus[1]) - 1));
+        }
+
+        transfers.put(Long.valueOf(transferStatus[0]), checkSum);
     }
 
     private void checkTransfers() {
