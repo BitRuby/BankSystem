@@ -1,4 +1,4 @@
-package com.onwelo.practice.bts.fsd;
+package com.onwelo.practice.bts.fds;
 
 public class TransferValidatorPLN {
     // odbiera make-transfer

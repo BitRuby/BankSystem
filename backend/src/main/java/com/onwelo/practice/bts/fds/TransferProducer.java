@@ -1,4 +1,4 @@
-package com.onwelo.practice.bts.fsd;
+package com.onwelo.practice.bts.fds;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class TransferProducer {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferProducer.class);
     private final ObjectMapper mapper = new ObjectMapper();
-    @Value("${fsd.topic.transfer}")
+    @Value("${fds.topic.transfer}")
     private String topic = "make-transfer";
 
     @Autowired

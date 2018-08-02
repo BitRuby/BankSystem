@@ -1,4 +1,4 @@
-package com.onwelo.practice.bts.fsd;
+package com.onwelo.practice.bts.fds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -14,7 +14,7 @@ import java.io.IOException;
 @EnableKafka
 public class TransferConsumer {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferConsumer.class);
-    // @Value("${fsd.topic.transfer}")
+    // @Value("${fds.topic.transfer}")
     private String topic = "make-transfer";
 
     @Autowired

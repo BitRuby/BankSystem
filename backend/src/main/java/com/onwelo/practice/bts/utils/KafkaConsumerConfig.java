@@ -1,6 +1,6 @@
 package com.onwelo.practice.bts.utils;
 
-import com.onwelo.practice.bts.fsd.TransferConsumer;
+import com.onwelo.practice.bts.fds.TransferConsumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value("${spring.fsd.bootstrap-servers}")
+    @Value("${spring.fds.bootstrap-servers}")
     private String bootstrapServers;
 
     @Bean

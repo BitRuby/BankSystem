@@ -1,6 +1,6 @@
 package com.onwelo.practice.bts.utils;
 
-import com.onwelo.practice.bts.fsd.TransferProducer;
+import com.onwelo.practice.bts.fds.TransferProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${spring.fsd.bootstrap-servers}")
+    @Value("${spring.fds.bootstrap-servers}")
     private String bootstrapServers;
 
     @Bean

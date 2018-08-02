@@ -1,4 +1,4 @@
-package com.onwelo.practice.bts.fsd;
+package com.onwelo.practice.bts.fds;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
