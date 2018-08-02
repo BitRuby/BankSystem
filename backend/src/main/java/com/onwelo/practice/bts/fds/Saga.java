@@ -26,18 +26,8 @@ public class Saga {
     @Getter
     @Setter
     private class ValidatorMessage {
-        private Boolean[] author;
-        private Boolean[] status;
-        
-        ValidatorMessage() {
-            for (Boolean state : author) {
-                state = false;
-            }
-
-            for (Boolean state : status) {
-                state = false;
-            }
-        }
+        private boolean[] author = new boolean[3];
+        private boolean[] status = new boolean[3];
     }
 
     @KafkaListener(topics = topicStatus, groupId = "saga")
@@ -54,10 +44,10 @@ public class Saga {
         if (transfers.containsKey(transferId)) {
             ValidatorMessage message = transfers.get(transferId);
 
-            Boolean[] author = message.getAuthor();
+            boolean[] author = message.getAuthor();
             author[Integer.valueOf(transferStatus[1])] = true;
 
-            Boolean[] status = message.getStatus();
+            boolean[] status = message.getStatus();
             if (transferStatus[2].equals(TransferStatus.APPROVED.toString())) {
                 status[Integer.valueOf(transferStatus[1])] = true;
             }
@@ -65,10 +55,10 @@ public class Saga {
             transfers.replace(transferId, message);
         } else {
             ValidatorMessage message = new ValidatorMessage();
-            Boolean[] author = message.getAuthor();
+            boolean[] author = message.getAuthor();
             author[Integer.valueOf(transferStatus[1])] = true;
 
-            Boolean[] status = message.getStatus();
+            boolean[] status = message.getStatus();
             if (transferStatus[2].equals(TransferStatus.APPROVED.toString())) {
                 status[Integer.valueOf(transferStatus[1])] = true;
             }
@@ -80,9 +70,9 @@ public class Saga {
     private void checkTransfers() {
         for (Map.Entry<Long, ValidatorMessage> entry : transfers.entrySet()) {
             ValidatorMessage message = entry.getValue();
-            Boolean[] author = message.getAuthor();
+            boolean[] author = message.getAuthor();
             if (author[0] && author[1] && author[2]) {
-                Boolean[] status = message.getStatus();
+                boolean[] status = message.getStatus();
                 if (status[0] && status[1] && status[2]) {
                     Transfer transfer = transferService.getTransferById(entry.getKey());
                     transfer.setStatus(TransferStatus.APPROVED);

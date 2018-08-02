@@ -6,7 +6,7 @@ import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.utils.Currency;
 import com.onwelo.practice.bts.utils.TransferStatus;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -15,11 +15,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 @EnableKafka
-@Configurable
 @Component
 public class TransferValidatorPLN {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferValidatorPLN.class);
     private final static String topicReceive = "make-transfer";
+    @Autowired
+    private TransferProducer transferProducer;
 
     @KafkaListener(topics = topicReceive, groupId = "transfer1")
     public void receive(String jsonTransfer) throws IOException {
@@ -47,6 +48,6 @@ public class TransferValidatorPLN {
     }
 
     private void sendStatus(String status) {
-        new TransferProducer().sendStatus(status);
+        transferProducer.sendStatus(status);
     }
 }

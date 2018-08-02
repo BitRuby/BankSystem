@@ -44,6 +44,6 @@ public class KafkaProducerConfig {
 
     @Bean
     public TransferProducer transferProducer() {
-        return new TransferProducer();
+        return new TransferProducer(kafkaTemplate());
     }
 }

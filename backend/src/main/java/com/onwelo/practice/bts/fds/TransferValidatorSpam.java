@@ -2,27 +2,19 @@ package com.onwelo.practice.bts.fds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.service.TransferService;
-import com.onwelo.practice.bts.utils.Currency;
 import com.onwelo.practice.bts.utils.TransferStatus;
-import com.onwelo.practice.bts.utils.TransferType;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 
 @EnableKafka
-@Configurable
 @Component
 public class TransferValidatorSpam {
     private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferValidatorSpam.class);
@@ -30,6 +22,8 @@ public class TransferValidatorSpam {
 
     @Autowired
     private TransferService transferService;
+    @Autowired
+    private TransferProducer transferProducer;
 
     @KafkaListener(topics = topicReceive, groupId = "transfer3")
     public void receive(String jsonTransfer) throws IOException {
@@ -59,6 +53,6 @@ public class TransferValidatorSpam {
     }
 
     private void sendStatus(String status) {
-        new TransferProducer().sendStatus(status);
+        transferProducer.sendStatus(status);
     }
 }
