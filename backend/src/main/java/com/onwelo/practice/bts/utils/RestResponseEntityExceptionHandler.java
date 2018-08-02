@@ -1,7 +1,5 @@
 package com.onwelo.practice.bts.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.onwelo.practice.bts.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -40,5 +38,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = {ForbiddenException.class})
     protected ResponseEntity<String> handleForbiddenException(Exception e) {
         return new ResponseEntity<>(stringToJson("error", e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {Throwable.class})
+    protected ResponseEntity<String> handleThrowableException(Exception e) {
+        return new ResponseEntity<>(stringToJson("error", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

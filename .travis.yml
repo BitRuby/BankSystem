@@ -2,7 +2,8 @@ matrix:
   include:
     - language: java
       jdk: oraclejdk10
-      before_install: cd backend
+      before_install:
+        - cd backend
       install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       script:  mvn test
 
@@ -16,7 +17,6 @@ branches:
   only:
     - master
     - develop
-
 
 notifications:
   email:

@@ -26,3 +26,6 @@
 
 ### Logger ###
 logback.xml
+
+### META-INF ###
+/src/main/java/META-INF

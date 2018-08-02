@@ -3,7 +3,10 @@ package com.onwelo.practice.bts.controller;
 import com.onwelo.practice.bts.service.EmailService;
 import com.onwelo.practice.bts.utils.EmailConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 

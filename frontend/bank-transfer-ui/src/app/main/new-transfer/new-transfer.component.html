@@ -1,10 +1,70 @@
+<div class="container">
+    <div class="content">
 
-<div class="content">
-
-  <div class="container">
-
-    <h1>Sample text</h1>
-
-  </div>
-
+      <h3 class="display-4 mb-3">New transfer</h3>
+      <hr class="mb-3">
+      <form (ngSubmit)="onSubmit()" #newTransfer="ngForm">
+      <div class="row">
+        <div class="col-md-8 col-sm-12">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="email" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name"
+                   [(ngModel)]="transfer.name" name="name" #name="ngModel" required>
+            <small [hidden]="name.valid || name.pristine"
+                   class="form-text text-danger">
+              Name is required
+            </small>
+            <small id="nameHelp" class="form-text text-muted">Transfer will be labeled with this name.</small>
+          </div>
+        </div>
+        <div class="col-md-8 col-sm-12">
+          <div class="form-row">
+            <div class="form-group col-md-3 col-sm-4 mb-0">
+              <label for="inputCurrency">Currency</label>
+              <select id="inputCurrency" class="form-control" [(ngModel)]="transfer.currency" name="currency">
+                <option value="PLN" selected>PLN</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4 col-sm-8 mb-0 mt-custom">
+              <label for="InputValue">Value</label>
+              <input type="text" appValidateAccount required class="form-control" id="InputValue"
+                     aria-describedby="valueHelp"
+                     [(ngModel)]="transfer.value" name="value" #value="ngModel" [ngModelOptions]="{updateOn: 'blur'}">
+            </div>
+          </div>
+          <small [hidden]="(!value.errors?.format || value.pristine)"
+                 class="form-text text-danger">
+            Value must be entered in following format: 123.12
+          </small>
+          <small [hidden]="!value.errors?.required || value.pristine"
+                 class="form-text text-danger">
+            Value is required
+          </small>
+          <small id="valueHelp" class="form-text text-muted">Please enter currency and value.</small>
+        </div>
+        <div class="col-md-8 col-sm-12 mt-3">
+          <div class="form-group">
+            <label for="InputAccountNo">Account number</label>
+            <input type="text" class="form-control" id="InputAccountNo" aria-describedby="nameAccount"
+                   placeholder="Enter account number" [(ngModel)]="transfer.accountNo" (blur)="checkBankName()"
+                   name="accountNo" #accountNo="ngModel" required>
+            <small [hidden]="accountNo.valid || accountNo.pristine"
+                   class="form-text text-danger">
+              Account number is required
+            </small>
+            <small id="nameAccount" class="form-text text-muted">Fill field with account number where transfer will be
+              proceed.
+            </small>
+          </div>
+        </div>
+        <div class="col-md-8 col-sm-12 mt-3">
+          <button class="btn btn-dark btn-custom" type="submit" (click)="open()" [disabled]="!newTransfer.form.valid">
+            Proceed
+          </button>
+        </div>
+      </div>
+      </form>
+    </div>
 </div>
+

@@ -1,11 +1,14 @@
 package com.onwelo.practice.bts.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onwelo.practice.bts.entity.BankAccount;
 import com.onwelo.practice.bts.entity.Transfer;
 import com.onwelo.practice.bts.exceptions.ForbiddenException;
 import com.onwelo.practice.bts.exceptions.MissingFieldException;
 import com.onwelo.practice.bts.exceptions.NotFoundException;
 import com.onwelo.practice.bts.exceptions.NotValidField;
+import com.onwelo.practice.bts.fds.TransferProducer;
 import com.onwelo.practice.bts.repository.TransferRepository;
 import com.onwelo.practice.bts.session.SessionOutgoing;
 import com.onwelo.practice.bts.utils.TransferStatus;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,7 +35,9 @@ public class TransferService {
     @Autowired
     private BankAccountService bankAccountService;
 
-    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(SessionOutgoing.class);
+    private static org.slf4j.Logger Logger = LoggerFactory.getLogger(TransferService.class);
+    @Autowired
+    private TransferProducer transferProducer;
 
     @Autowired
     public TransferService(@Value("${bank.iban}") String bankIBAN) {
@@ -103,7 +109,19 @@ public class TransferService {
         }
 
         bankAccountService.updateBankAccount(bankAccount);
-        return transferRepository.save(transfer);
+
+        transfer = transferRepository.save(transfer);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonContent = null;
+        try {
+            jsonContent = mapper.writeValueAsString(transfer);
+        } catch (JsonProcessingException e) {
+            Logger.debug(e.getMessage(), e);
+        }
+
+        transferProducer.sendJson(jsonContent);
+
+        return transfer;
     }
 
     public Transfer updateTransfer(Transfer transfer) {
@@ -125,7 +143,7 @@ public class TransferService {
     }
 
     public Page<Transfer> getTransferByAccountId(Long id, Pageable pageable) {
-        return transferRepository.findAllByAccountId_IdOrderByCreateTimeDesc(id, pageable);
+        return transferRepository.findAllByAccountId_Id(id, pageable);
     }
 
     private Transfer innerTransfer(String senderAccNo, Transfer transfer) {
@@ -146,5 +164,15 @@ public class TransferService {
         bankAccountService.updateBankAccount(incoming.getAccountId());
 
         return transferRepository.save(incoming);
+    }
+
+    public Transfer getSecondTransferSortedByCreateTime(Long accountId) {
+        ArrayList<Transfer> ar = transferRepository.findTop2ByAccountId_IdOrderByCreateTimeDesc(accountId);
+
+        if (ar != null && !ar.isEmpty()) {
+            return ar.get(1);
+        } else {
+            return null;
+        }
     }
 }
