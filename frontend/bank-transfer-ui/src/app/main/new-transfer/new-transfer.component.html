@@ -2,6 +2,13 @@
     <div class="content">
       <h3 class="display-4 mb-3">New transfer</h3>
       <hr class="mb-3">
+      <div class="alert alert-success" *ngIf="transferAlert.transferSuccess">
+        <strong>We're transfering your money.</strong>
+      </div>
+      <div class="alert alert-danger" *ngIf="transferAlert.transferRejected">
+        <strong>Your transfer has been rejected.</strong> <span
+        class="text-capitalize"> {{transferAlert.rejectMessage}} </span>
+      </div>
       <form #newTransfer="ngForm">
       <div class="row">
         <div class="col-md-8 col-sm-12">

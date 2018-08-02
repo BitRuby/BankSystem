@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TransferFormModel} from '../../core/transfer/transfer.form.model';
+import {TransferAlert} from '../../core/transfer/transfer.alert.model';
 import {NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BankService} from '../../core/bank/bank.service';
@@ -14,10 +15,12 @@ import {NewTransferModalComponent} from '../new-transfer-modal/new-transfer-moda
 })
 export class NewTransferComponent implements OnInit {
   transfer: TransferFormModel;
+  transferAlert: TransferAlert;
   @ViewChild('newTransfer') public newTransfer: NgForm;
 
   constructor(private modalService: NgbModal, private bankService: BankService, private transferService: TransferService) {
     this.transfer = {};
+    this.transferAlert = {};
     this.transfer.currency = 'PLN';
   }
 
@@ -45,9 +48,12 @@ export class NewTransferComponent implements OnInit {
       'transferType': 'OUTGOING'
     })
       .subscribe(transfer => {
-        console.log('Poszło');
+        this.transferAlert.transferSuccess = true;
+        this.transferAlert.transferRejected = false;
       }, error => {
-        console.log('ni chuja');
+        this.transferAlert.transferSuccess = false;
+        this.transferAlert.transferRejected = true;
+        this.transferAlert.rejectMessage = error.error.error;
       });
   }
 
@@ -55,9 +61,6 @@ export class NewTransferComponent implements OnInit {
     this.newTransfer.reset();
     this.transfer = {};
     this.transfer.currency = 'PLN';
-  }
-
-  private displaySuccessAlert() {
   }
 
   private open() {
@@ -70,7 +73,6 @@ export class NewTransferComponent implements OnInit {
     modalRef.result.then((result) => {
       this.put();
       this.clear();
-      this.displaySuccessAlert();
     }, () => {
     });
   }
