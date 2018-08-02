@@ -39,4 +39,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<String> handleForbiddenException(Exception e) {
         return new ResponseEntity<>(stringToJson("error", e.getMessage()), HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(value = {Throwable.class})
+    protected ResponseEntity<String> handleThrowableException(Exception e) {
+        return new ResponseEntity<>(stringToJson("error", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
