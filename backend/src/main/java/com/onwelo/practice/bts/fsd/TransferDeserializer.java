@@ -1,4 +1,4 @@
-package com.onwelo.practice.bts.kafka;
+package com.onwelo.practice.bts.fsd;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
