@@ -10,9 +10,70 @@
   font-style: normal;
 }
 
-body {
+html, body {
+  height: 100% !important;
   min-height: 100vh !important;
 }
+
+app-root {
+  min-height: 100vh !important;
+  display: flex;
+  flex-direction: column;
+}
+
+app-main {
+  flex: 1;
+}
+
+app-login {
+  flex: 1;
+}
+
+app-footer {
+  z-index: 10;
+}
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 .content {
-  padding: 20px 0;
+  flex: 1;
+  padding: 50px 0 100px 0;
+  background: rgb(255, 255, 255);
+}
+
+.modal-body {
+  margin: 3em 0;
+}
+
+.modal-open {
+  overflow: auto !important;
+}
+
+.modal-header {
+  background: rgb(57, 63, 77);
+  color: rgb(255, 255, 255);
+}
+.modal-content {
+  border-radius: .4rem !important;
+}
+
+.bg-custom {
+  background: rgb(57, 63, 77) !important;
+}
+
+.ng-valid[required], .ng-valid.required {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* red */
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+  .container {
+    padding: 0 !important;
+  }
 }

@@ -1,10 +1,26 @@
 
-<div class="content">
-
   <div class="container">
+    <div class="content">
 
-    <h1>Sample text</h1>
-
+      <h3 class="display-4 mb-3">My Account</h3>
+      <hr class="mb-3">
+        <div class="row">
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="mr-auto p-2 card text-white bg-custom mr-3">
+              <div class="card-header">Profile</div>
+              <div class="card-body">
+                <p class="card-title">First name</p>
+                <h5>{{user?.firstName}}</h5>
+                <p class="card-title">Last name</p>
+                <h5>{{user?.lastName}}</h5>
+                <p class="card-title">Account ID</p>
+                <h5>{{user?.id}}</h5>
+                <p class="card-title">Account status</p>
+                <h5>{{user?.active}}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
   </div>
 
-</div>

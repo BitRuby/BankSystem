@@ -125,7 +125,7 @@ public class TransferService {
     }
 
     public Page<Transfer> getTransferByAccountId(Long id, Pageable pageable) {
-        return transferRepository.findAllByAccountId_IdOrderByCreateTimeDesc(id, pageable);
+        return transferRepository.findAllByAccountId_Id(id, pageable);
     }
 
     private Transfer innerTransfer(String senderAccNo, Transfer transfer) {

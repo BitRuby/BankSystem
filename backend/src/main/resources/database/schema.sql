@@ -1,4 +1,13 @@
-create table bank
+CREATE USER 'hr'@'%'
+  IDENTIFIED BY 'hr';
+GRANT ALL PRIVILEGES ON *.* TO 'hr'@'%'
+WITH GRANT OPTION;
+
+CREATE DATABASE IF NOT EXISTS bank;
+
+USE bank;
+
+CREATE TABLE IF NOT EXISTS bank
 (
   id         bigint auto_increment primary key,
   address    varchar(255) null,
@@ -9,9 +18,9 @@ create table bank
   sort_code  varchar(8)   null,
   constraint UK_sort_code unique (sort_code)
 )
-  engine = MyISAM;
+  ENGINE = MyISAM;
 
-create table bank_account
+CREATE TABLE IF NOT EXISTS bank_account
 (
   id            bigint         auto_increment primary key,
   account_no    varchar(26) null,
@@ -22,9 +31,9 @@ create table bank_account
   money_blocked decimal(19, 2) default 0,
   constraint UK_account_no unique (account_no)
 )
-  engine = MyISAM;
+  ENGINE = MyISAM;
 
-create table transfer
+CREATE TABLE IF NOT EXISTS transfer
 (
   id            bigint     auto_increment primary key,
   account_no    varchar(26)    null,
@@ -38,8 +47,8 @@ create table transfer
   account_id    bigint         not null,
   is_active     bit        default 1
 )
-  engine = MyISAM;
+  ENGINE = MyISAM;
 
-create index FK_account
-  on transfer (account_id);
+CREATE INDEX FK_account
+  ON transfer (account_id);
 

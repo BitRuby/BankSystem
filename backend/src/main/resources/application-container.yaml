@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql:3306/bank
+    username: hr
+    password: hr
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database: mysql
+
+  mail:
+    host: smtp-mail.outlook.com
+    username: onwelo-bts@outlook.com
+    password: OnweloBts123
+    port: 587
+    smtp:
+      auth: true
+    starttls:
+      enable: true
+      required: true
+
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: transfers
+
+kafka:
+  topic:
+    transfer: make-transfer
+    status: status-sender
+
+jackson:
+  serialization:
+    WRITE_DATES_AS_TIMESTAMPS: false
+
+ftp:
+  host: localhost
+  port: 21599
+  user: uibank
+  passphrase: passub
+  directory: 1160
+  autostart: true
+  timeout: 100

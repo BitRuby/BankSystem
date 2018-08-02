@@ -15,5 +15,5 @@ public interface TransferRepository extends PagingAndSortingRepository<Transfer,
 
     ArrayList<Transfer> findAllByStatus(TransferStatus status);
 
-    Page<Transfer> findAllByAccountId_IdOrderByCreateTimeDesc(Long account_id, Pageable pageable);
+    Page<Transfer> findAllByAccountId_Id(Long account_id, Pageable pageable);
 }
