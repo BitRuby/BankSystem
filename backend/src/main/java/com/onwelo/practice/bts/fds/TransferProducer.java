@@ -14,6 +14,8 @@ public class TransferProducer {
     private final ObjectMapper mapper = new ObjectMapper();
     @Value("${kafka.topic.transfer}")
     private String sendTopic;
+    @Value("${kafka.topic.transfer}")
+    private String topic = "make-transfer";
 
     @Autowired
     private TransferService transferService;

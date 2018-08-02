@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 public interface TransferRepository extends PagingAndSortingRepository<Transfer, Long> {
@@ -16,4 +17,6 @@ public interface TransferRepository extends PagingAndSortingRepository<Transfer,
     ArrayList<Transfer> findAllByStatus(TransferStatus status);
 
     Page<Transfer> findAllByAccountId_Id(Long account_id, Pageable pageable);
+
+    ArrayList<Transfer> findTop2ByAccountId_IdOrderByCreateTimeDesc(Long account_id);
 }

@@ -147,4 +147,14 @@ public class TransferService {
 
         return transferRepository.save(incoming);
     }
+
+    public Transfer getSecondTransferSortedByCreateTime(Long accountId) {
+        ArrayList<Transfer> ar = transferRepository.findTop2ByAccountId_IdOrderByCreateTimeDesc(accountId);
+
+        if (ar != null && !ar.isEmpty()) {
+            return ar.get(1);
+        } else {
+            return null;
+        }
+    }
 }
