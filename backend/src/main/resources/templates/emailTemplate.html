@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<style>
+    body {
+        padding: 24px;
+        color: rgb(57, 63, 77);
+        font-size: 16px;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .container {
+        padding: 6px 24px;
+    }
+
+    .container-title {
+        background-color: rgb(65, 72, 87);
+        color: #fff;
+    }
+</style>
+
+<body>
+<div class="container container-title">
+    <h1>Bank<b style="color: rgb(113, 200, 55)">UI</b> - twój najgorszy bank</h1>
+</div>
+
+<div class="container">
+    <h2 th:text="${subject}">subject</h2>
+</div>
+
+<div class="container">
+    <p><b>BankUI</b> odrzucił Twój przelew na rachunek <b th:text="${accountNo}">accountNo</b> o tytule <b th:text="${title}">title</b> w kwocie <b th:text="${value}">value</b> wysłany <b th:text="${transferDate}">transferDate</b>.</p>
+    <p>Uzasadnienie: <b th:text="${reason}">reason</b>.</p>
+</div>
+
+</body>
+</html>
