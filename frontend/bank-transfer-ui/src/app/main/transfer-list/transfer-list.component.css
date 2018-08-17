@@ -1,0 +1,16 @@
+.list-group-item-custom {
+  background: rgb(57, 63, 77);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+.list-group-item-custom {
+  cursor: pointer;
+}
+.list-group-item-custom:hover {
+  background: rgb(77, 83, 97);
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}

@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Filter options</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <div class="input-group-text">
+        <input [(ngModel)]="transferForm.dateCheckbox" type="checkbox">
+      </div>
+      <label class="input-group-text">
+        Date
+      </label>
+    </div>
+    <select class="custom-select" [(ngModel)]="transferForm.dateSelect" [disabled]="!transferForm.dateCheckbox">
+      <option value="asc">ASC</option>
+      <option value="desc">DESC</option>
+    </select>
+  </div>
+
+  <div class="input-group my-3">
+    <div class="input-group-prepend">
+      <div class="input-group-text">
+        <input [(ngModel)]="transferForm.titleCheckbox" type="checkbox">
+      </div>
+      <label class="input-group-text">
+        Title
+      </label>
+    </div>
+    <select class="custom-select" [(ngModel)]="transferForm.titleSelect" [disabled]="!transferForm.titleCheckbox">
+      <option value="asc">ASC</option>
+      <option value="desc">DESC</option>
+    </select>
+  </div>
+  <div class="input-group my-3">
+    <div class="input-group-prepend">
+      <div class="input-group-text">
+        <input [(ngModel)]="transferForm.valueCheckbox" type="checkbox">
+      </div>
+      <label class="input-group-text">
+        Value
+      </label>
+    </div>
+    <select class="custom-select" [(ngModel)]="transferForm.valueSelect" [disabled]="!transferForm.valueCheckbox">
+      <option value="asc">ASC</option>
+      <option value="desc">DESC</option>
+    </select>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(transferForm)">Save</button>
+</div>
